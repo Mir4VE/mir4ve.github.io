@@ -86,7 +86,7 @@
             font-feature-settings: 'tnum' 1;
             letter-spacing: 0.045em;
         }
-        .event-title { min-width: 0; max-width: 100%; white-space: nowrap; }
+        .event-title { min-width: 0; max-width: 100%; white-space: nowrap; text-transform: uppercase; }
         .timer-progress-fill { transition: width 900ms linear, background-color 900ms linear, box-shadow 900ms linear; }
         /* Barra de espera: azul grisáceo discreto, visible sin competir con la barra activa. */
         .timer-progress-track.waiting-track { background: rgba(148, 163, 184, .09) !important; border-color: rgba(148, 163, 184, .17) !important; }
@@ -121,11 +121,21 @@
                         0 0 22px rgba(96, 165, 250, .09) !important;
             background-color: rgba(15, 23, 42, .94);
         }
-        .event-card.glow-active, .event-card.glow-active:hover { border-color: rgba(34, 197, 94, .7) !important; }
-        .event-card.glow-active:hover {
+        /* Las tarjetas de eventos en curso mantienen el mismo halo verde al pasar el cursor.
+           No pulsa ni cambia de intensidad: la diferencia frente a las tarjetas en espera es estable. */
+        .event-card.glow-active,
+        .event-card.glow-active:hover,
+        .event-card.glow-active:focus-within {
+            /* Las tarjetas en curso conservan siempre el mismo fondo, borde y halo verde.
+               El hover azul de las tarjetas en espera nunca debe aplicarse aquí. */
+            background-color: rgba(2, 44, 34, .2) !important;
+            border-color: rgba(34, 197, 94, .7) !important;
             box-shadow: 0 0 0 1px rgba(34, 197, 94, .12),
                         0 8px 24px rgba(15, 23, 42, .22),
                         0 0 24px rgba(34, 197, 94, .16) !important;
+            transition: none !important;
+            animation: none !important;
+            transform: none !important;
         }
         .countdown-number { animation: none !important; }
         /* Indicador de espera: ciclo continuo de 5 s, sincronizado para evitar reinicios al actualizar las tarjetas. */
@@ -179,11 +189,11 @@
         .nav-group-trigger { font-family:'Inter', 'Segoe UI', Arial, sans-serif; letter-spacing:.025em; display:inline-flex; align-items:center; gap:.6rem; white-space:nowrap; padding:.65rem 1rem; border:1px solid rgba(148,163,184,.22); border-radius:.75rem; background:rgba(15,23,42,.82); color:#cbd5e1; font-size:.72rem; font-weight:900; transition:all .18s ease; }
         .nav-group-trigger:hover, .nav-group-trigger[aria-expanded="true"] { border-color:rgba(251,191,36,.48); color:#fef3c7; background:rgba(245,158,11,.1); }
         .nav-group-trigger.group-active { border-color:rgba(251,191,36,.5); color:#fcd34d; background:rgba(245,158,11,.1); }
-        .nav-submenu { position:absolute; left:0; top:calc(100% + .5rem); min-width:190px; padding:.35rem; border:1px solid rgba(148,163,184,.25); border-radius:.85rem; background:#111827; box-shadow:0 18px 45px rgba(0,0,0,.42); z-index:100; }
-        .nav-submenu-option { font-family:'Inter', 'Segoe UI', Arial, sans-serif; letter-spacing:.025em; display:flex; align-items:center; gap:.65rem; width:100%; padding:.7rem .8rem; border-radius:.55rem; color:#cbd5e1; text-align:left; font-size:.72rem; font-weight:500; white-space:nowrap; }
+        .nav-submenu { position:absolute; left:50%; right:auto; top:calc(100% + .5rem); transform:translateX(-50%); width:max-content; min-width:100%; max-width:min(88vw, 280px); box-sizing:border-box; padding:.35rem; border:1px solid rgba(148,163,184,.25); border-radius:.85rem; background:#111827; box-shadow:0 18px 45px rgba(0,0,0,.42); z-index:100; }
+        .nav-submenu-option { font-family:'Inter', 'Segoe UI', Arial, sans-serif; letter-spacing:.025em; display:flex; align-items:center; gap:.65rem; width:100%; min-width:0; box-sizing:border-box; padding:.7rem .8rem; border-radius:.55rem; color:#cbd5e1; text-align:left; font-size:.72rem; font-weight:500; white-space:normal; overflow-wrap:anywhere; }
         .nav-submenu-option:hover { background:rgba(148,163,184,.12); color:#fff; }
         .nav-submenu-option[aria-current="page"] { background:rgba(245,158,11,.16); color:#fcd34d; }
-        @media (max-width:640px) { #header-time-counters { width:100%; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.35rem; } .header-time-chip { min-width:0; min-height:4.2rem; padding:.38rem .22rem; grid-template-rows:2.05rem 1.2rem; } .header-time-label { font-size:clamp(.39rem, 1.7vw, .46rem); letter-spacing:.015em; } .header-time-value { font-size:clamp(.49rem, 2.2vw, .65rem); letter-spacing:0; } #time-format-toggle { min-width:2.6rem; min-height:1.7rem; font-size:.62rem; padding:.25rem .4rem; } .nav-group-trigger { padding:.65rem .75rem; } .nav-submenu { min-width:175px; } }
+        @media (max-width:640px) { #header-time-counters { width:100%; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.35rem; } .header-time-chip { min-width:0; min-height:4.2rem; padding:.38rem .22rem; grid-template-rows:2.05rem 1.2rem; } .header-time-label { font-size:clamp(.39rem, 1.7vw, .46rem); letter-spacing:.015em; } .header-time-value { font-size:clamp(.49rem, 2.2vw, .65rem); letter-spacing:0; } #time-format-toggle { min-width:2.6rem; min-height:1.7rem; font-size:.62rem; padding:.25rem .4rem; } .nav-group-trigger { padding:.65rem .75rem; } .nav-submenu { min-width:100%; max-width:88vw; } }
         /* Header controls: subdued at rest, crisp and warm on hover. */
         #sponsor-btn, #sponsor-btn #sponsor-label { color: #ddd6fe !important; transition: color .2s ease, border-color .2s ease, background .2s ease, transform .2s ease; }
         #sponsor-btn:hover, #sponsor-btn:hover #sponsor-label { color: #ddd6fe !important; }
@@ -195,8 +205,20 @@
         #global-alert-btn.alerts-enabled { border-color: rgba(250,204,21,.5); background: rgba(250,204,21,.1); color: #facc15; }
         #global-alert-btn.alerts-enabled #global-alert-icon { color: #facc15 !important; filter: drop-shadow(0 0 7px rgba(250,204,21,.45)); }
         /* Language menu centered under its trigger, with a quick soft entrance. */
-        #lang-menu { left: 50%; right: auto; transform: translateX(-50%); transform-origin: top center; }
+        #lang-menu { left: 50%; right: auto; transform: translateX(-50%); transform-origin: top center; width:max-content; min-width:100%; max-width:min(88vw, 280px); box-sizing:border-box; }
+        #lang-menu button { min-width:0; white-space:normal; overflow-wrap:anywhere; }
+        #server-menu { left:50%; right:auto; transform:translateX(-50%); width:max-content; min-width:100%; max-width:min(88vw, 280px); box-sizing:border-box; }
+        #server-menu .server-option { min-width:0; white-space:normal; overflow-wrap:anywhere; }
         #lang-menu.menu-pop-in { animation: language-menu-in .22s cubic-bezier(.2,.8,.2,1) both; }
+        /* Keep expanded dropdowns centered beneath their trigger and within the viewport. */
+        .nav-submenu { left:50%; right:auto; transform:translateX(-50%); width:max-content; min-width:100%; max-width:min(88vw, 260px); }
+        .nav-submenu-option { justify-content:center; text-align:center; }
+        .nav-submenu-option .submenu-label { min-width:0; text-align:center; overflow-wrap:anywhere; }
+        #lang-menu { left:50%; right:auto; transform:translateX(-50%); width:max-content; min-width:100%; max-width:min(88vw, 240px); }
+        #lang-menu button { width:100%; text-align:center; }
+        #server-menu { left:50%; right:auto; transform:translateX(-50%); width:max-content; min-width:145px; max-width:min(88vw, 190px); }
+        #server-menu .server-option { display:flex; align-items:center; justify-content:space-between; gap:.45rem; width:100%; min-width:0; white-space:nowrap; overflow-wrap:normal; padding-left:.65rem; padding-right:.65rem; }
+        #server-menu .server-option span { float:none; flex:0 0 auto; }
         @keyframes language-menu-in { from { opacity: 0; transform: translate(-50%,-7px) scale(.96); } to { opacity: 1; transform: translate(-50%,0) scale(1); } }
         /* Make the region selector feel like the key global navigation control. */
         #server-select { position: relative; isolation: isolate; border-color: rgba(251,191,36,.55) !important; background: linear-gradient(135deg,rgba(245,158,11,.24),rgba(59,130,246,.13)) !important; color: #fde68a !important; box-shadow: 0 0 0 1px rgba(251,191,36,.08), 0 4px 16px rgba(245,158,11,.09); transition: all .2s ease; }
@@ -248,6 +270,15 @@
             box-shadow: 0 0 25px rgba(34, 197, 94, 0.22);
             border-color: rgba(34, 197, 94, 0.7) !important;
         }
+        /* La campana desactivada conserva exactamente su aspecto al pasar el cursor. */
+        .alert-bell-button:hover .bell-off,
+        .alert-bell-button:focus-visible .bell-off {
+            color: #94a3b8 !important;
+            opacity: .4 !important;
+            filter: none !important;
+            animation: none !important;
+            transform: none !important;
+        }
         .bell-active {
             color: #f59e0b !important;
             filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.9));
@@ -281,19 +312,27 @@
             91% { transform: rotate(-3deg); }
             94% { transform: rotate(0deg); }
         }
+        /* Scrollbar fina y discreta, integrada con la interfaz oscura. */
+        .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #334155 transparent;
+        }
         .custom-scrollbar::-webkit-scrollbar {
-            height: 6px;
-            width: 6px;
+            width: 5px;
+            height: 5px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: #0c0f1d;
+            background: transparent;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #1a2238;
-            border-radius: 4px;
+            background: rgba(100, 116, 139, .62);
+            border: 1px solid transparent;
+            border-radius: 999px;
+            background-clip: padding-box;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #f59e0b;
+            background: rgba(245, 158, 11, .72);
+            background-clip: padding-box;
         }
         /* Brand wordmark: elegant, legible, and consistent across screen sizes. */
         .brand-wordmark { font-family:'Manrope','Inter',sans-serif !important; font-weight:800 !important; letter-spacing:-.035em !important; line-height:1.15; }
@@ -423,7 +462,367 @@
             html { scroll-behavior: auto !important; }
         }
 
-</style>
+
+
+        /* Corrección responsive: nunca comprimir las etiquetas de los eventos.
+           Si no cabe el contenido en horizontal, la tarjeta pasa a una columna. */
+        #events-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            align-items: stretch;
+        }
+        #events-grid > .event-card {
+            min-width: 0;
+        }
+        .event-card .event-card-content {
+            min-width: 0;
+        }
+        .event-card .event-card-content > .flex.items-center.justify-between.gap-2.mb-3 {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: .65rem;
+        }
+        .event-card .event-title {
+            display: inline-flex;
+            flex: 0 1 auto;
+            width: fit-content;
+            max-width: 100%;
+            min-width: max-content;
+            white-space: normal !important;
+            overflow-wrap: normal !important;
+            word-break: normal !important;
+            hyphens: none;
+            line-height: 1.35;
+        }
+        .event-card .event-title i {
+            flex: 0 0 auto;
+        }
+        .event-card .event-card-content > .flex.items-center.justify-between.gap-2.mb-3 > .flex.items-center.gap-2 {
+            flex: 0 1 auto;
+            min-width: 0;
+            flex-wrap: wrap;
+        }
+        .event-card .event-card-content > .flex.items-center.justify-between.gap-2.mb-3 button {
+            flex: 0 0 auto;
+        }
+        /* Dos columnas solo cuando cada tarjeta conserva espacio suficiente. */
+        @media (max-width: 760px) {
+            #events-grid {
+                grid-template-columns: minmax(0, 1fr) !important;
+                gap: .85rem !important;
+            }
+            .event-card .event-card-content > .flex.items-center.justify-between.gap-2.mb-3 {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .event-card .event-title {
+                align-self: flex-start;
+                min-width: 0;
+                width: fit-content;
+                max-width: 100%;
+            }
+            .event-card .event-card-content > .flex.items-center.justify-between.gap-2.mb-3 > .flex.items-center.gap-2 {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+        @media (min-width: 761px) and (max-width: 1050px) {
+            #events-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            }
+        }
+        /* No dividir palabras o cifras por la fuerza en ningún ancho. */
+        .event-card, .event-card * {
+            word-break: normal;
+            hyphens: none;
+        }
+        .event-card .countdown-number,
+        .event-card .timer-number,
+        .event-card .timer-progress-track {
+            min-width: 0;
+        }
+    
+
+        /* Iconos centrados cuando los botones de navegación ocultan sus etiquetas. */
+        @media (max-width: 640px) {
+            #home-nav-btn, #about-nav-btn {
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                text-align: center !important;
+                gap: 0 !important;
+            }
+            #home-nav-btn > i, #about-nav-btn > i {
+                display: block !important;
+                flex: 0 0 auto !important;
+                width: 1em !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                text-align: center !important;
+                line-height: 1 !important;
+            }
+            #home-nav-btn > span, #about-nav-btn > span {
+                display: none !important;
+            }
+        }
+
+        /* Mantener centrados los iconos en cualquier control que pase a modo solo-icono. */
+        @media (max-width: 640px) {
+            #sponsor-btn, #global-alert-btn {
+                align-items: center !important;
+                justify-content: center !important;
+                text-align: center !important;
+            }
+            #sponsor-btn > i, #global-alert-btn > i {
+                margin: 0 auto !important;
+                flex: 0 0 auto !important;
+                text-align: center !important;
+            }
+        }
+
+    
+
+        /* TIMERS y Mir4VE con el mismo tamaño para una cabecera equilibrada. */
+        #site-intro-title .brand-timers,
+        #site-intro-title .brand-name {
+            font-size: 1em;
+        }
+
+        /* Marca BETA en línea junto a Mir4VE para evitar problemas de alineación. */
+        #site-intro-title .brand-name-beta {
+            display: inline-flex;
+            align-items: baseline;
+            gap: .38em;
+            white-space: nowrap;
+        }
+        #site-intro-title .beta-superscript {
+            position: static;
+            display: inline-block;
+            transform: none;
+            vertical-align: baseline;
+            font-family: 'Inter', sans-serif;
+            font-size: .48em;
+            font-weight: 900;
+            line-height: 1.2;
+            letter-spacing: .10em;
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, .30);
+            background: rgba(245, 158, 11, .20);
+            border-radius: .375rem;
+            padding: .16em .34em;
+            box-shadow: 0 0 8px rgba(245, 158, 11, .10);
+            pointer-events: none;
+        }
+        #server-picker + #time-format-toggle { margin-left: .15rem; }
+        #time-format-toggle { flex-shrink: 0; }
+        #online-pill { flex: 0 0 auto; white-space: nowrap; margin-left: .15rem; }
+        @media (max-width: 420px) {
+            #online-pill { gap: .25rem; padding-left: .4rem; padding-right: .4rem; font-size: 10px; }
+        }
+
+    
+
+        /* Botón 12/24 en tono rojizo de alto contraste. */
+        #time-format-toggle {
+            border-color: rgba(248, 113, 113, .88) !important;
+            background: rgba(220, 38, 38, .28) !important;
+            color: #fee2e2 !important;
+            box-shadow: inset 0 0 0 1px rgba(254, 202, 202, .12), 0 0 10px rgba(220, 38, 38, .20) !important;
+        }
+        #time-format-toggle:hover,
+        #time-format-toggle:focus-visible {
+            border-color: rgba(252, 165, 165, 1) !important;
+            background: rgba(220, 38, 38, .48) !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 14px rgba(239, 68, 68, .34) !important;
+        }
+
+        /* En el botón de patrocinio compacto, mostrar solo el icono y centrarlo. */
+        @media (max-width: 640px) {
+            #sponsor-btn {
+                width: 40px !important;
+                min-width: 40px !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                gap: 0 !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            #sponsor-btn #sponsor-label,
+            #sponsor-btn .sponsor-label {
+                display: none !important;
+            }
+            #sponsor-btn > i,
+            #sponsor-btn > svg {
+                margin: 0 !important;
+                flex: 0 0 auto !important;
+            }
+        }
+
+        /* Ajustes globales para navegadores y elementos con scroll propios. */
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #334155 transparent;
+        }
+        *::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        *::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        *::-webkit-scrollbar-thumb {
+            background: rgba(100, 116, 139, .62);
+            border: 1px solid transparent;
+            border-radius: 999px;
+            background-clip: padding-box;
+        }
+        *::-webkit-scrollbar-thumb:hover,
+        *::-webkit-scrollbar-thumb:active {
+            background: rgba(245, 158, 11, .72);
+            background-clip: padding-box;
+        }
+
+    
+        /* Final submenu alignment pass: consistent icon/text columns at every viewport. */
+        .nav-submenu {
+            left: 50% !important;
+            right: auto !important;
+            transform: translateX(-50%) !important;
+            width: max-content;
+            min-width: 100%;
+            max-width: min(88vw, 280px);
+            box-sizing: border-box;
+        }
+        .nav-submenu-option {
+            display: grid !important;
+            grid-template-columns: 1rem minmax(0, 1fr);
+            align-items: center;
+            justify-content: stretch !important;
+            column-gap: .65rem;
+            width: 100%;
+            min-width: 0;
+            text-align: left !important;
+            white-space: normal;
+            overflow-wrap: normal;
+        }
+        .nav-submenu-option > i {
+            display: block;
+            width: 1rem;
+            min-width: 1rem;
+            margin: 0;
+            text-align: center;
+            justify-self: center;
+        }
+        .nav-submenu-option .submenu-label {
+            display: block;
+            min-width: 0;
+            width: 100%;
+            text-align: left !important;
+            overflow-wrap: anywhere;
+            word-break: normal;
+        }
+        #lang-menu {
+            left: 50% !important;
+            right: auto !important;
+            transform: translateX(-50%) !important;
+            width: max-content;
+            min-width: 100%;
+            max-width: min(88vw, 240px);
+            box-sizing: border-box;
+        }
+        #lang-menu button {
+            display: grid !important;
+            grid-template-columns: 1.25rem minmax(0, 1fr);
+            align-items: center;
+            justify-content: stretch;
+            column-gap: .5rem;
+            width: 100%;
+            min-width: 0;
+            text-align: left !important;
+            white-space: normal;
+            overflow-wrap: anywhere;
+        }
+        #lang-menu button img {
+            display: block;
+            width: 1.25rem;
+            height: auto;
+            justify-self: center;
+        }
+        #server-menu {
+            left: 50% !important;
+            right: auto !important;
+            transform: translateX(-50%) !important;
+            width: max-content;
+            min-width: 145px;
+            max-width: min(88vw, 190px);
+            box-sizing: border-box;
+        }
+        #server-menu .server-option {
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            column-gap: .6rem;
+            width: 100%;
+            min-width: 0;
+            text-align: left;
+            white-space: nowrap;
+            overflow-wrap: normal;
+        }
+        #server-menu .server-option span {
+            float: none !important;
+            justify-self: end;
+            white-space: nowrap;
+        }
+        @media (max-width: 640px) {
+            .nav-submenu { max-width: min(88vw, 280px); }
+            #lang-menu { max-width: min(88vw, 240px); }
+            #server-menu { max-width: min(88vw, 190px); }
+        }
+
+
+        /* About view: editorial layout, clear hierarchy, and responsive feature cards. */
+        #about-view .about-shell { isolation:isolate; }
+        #about-view .about-hero-title { letter-spacing:-.045em; text-wrap:balance; }
+        #about-view #about-lead { font-size:clamp(1rem,1.25vw,1.16rem); line-height:1.9; color:#cbd5e1; }
+        #about-view .about-highlights { max-width:980px; }
+        #about-view .about-highlight { display:flex; align-items:center; gap:.8rem; min-width:0; padding:.9rem 1rem; border:1px solid rgba(148,163,184,.16); border-radius:1rem; background:rgba(15,23,42,.52); color:#e2e8f0; font-size:.68rem; font-weight:850; letter-spacing:.09em; line-height:1.5; }
+        #about-view .about-highlight-icon { display:grid; place-items:center; flex:0 0 2.4rem; height:2.4rem; border-radius:.8rem; background:rgba(148,163,184,.08); font-size:1rem; }
+        #about-view .about-section-heading { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+        #about-view .about-heading-mark { display:grid; place-items:center; width:2.7rem; height:2.7rem; flex:0 0 2.7rem; border:1px solid rgba(196,181,253,.2); border-radius:.9rem; background:rgba(139,92,246,.1); color:#c4b5fd; }
+        #about-view .about-heading-mark-green { border-color:rgba(110,231,183,.2); background:rgba(16,185,129,.08); color:#a7f3d0; }
+        #about-view .about-feature-grid { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+        #about-view .about-feature-card { display:grid; grid-template-columns:2.75rem minmax(0,1fr); align-content:start; gap:1rem; min-width:0; padding:1.25rem; border:1px solid rgba(148,163,184,.17); border-radius:1.15rem; background:linear-gradient(145deg,rgba(15,23,42,.82),rgba(15,23,42,.48)); transition:transform .2s ease,border-color .2s ease,background .2s ease; }
+        #about-view .about-feature-card:hover { transform:translateY(-2px); border-color:rgba(167,139,250,.35); background:linear-gradient(145deg,rgba(30,41,59,.88),rgba(15,23,42,.58)); }
+        #about-view .about-feature-card-wide { grid-column:1 / -1; }
+        #about-view .about-card-icon { display:grid; place-items:center; width:2.75rem; height:2.75rem; border:1px solid; border-radius:.9rem; font-size:1.1rem; }
+        #about-view .about-feature-card h3 { margin:0; color:#f8fafc; font-size:1rem; font-weight:850; line-height:1.5; letter-spacing:-.01em; text-transform:none; }
+        #about-view .about-feature-card p { margin-top:.55rem; color:#b8c4d5; font-size:.875rem; line-height:1.85; overflow-wrap:break-word; }
+        #about-view .about-roadmap { box-shadow:inset 0 1px rgba(255,255,255,.025); }
+        #about-view .about-roadmap-grid { display:grid !important; grid-template-columns:repeat(3,minmax(0,1fr)); }
+        #about-view .about-roadmap-item { min-width:0; padding:1rem; border:1px solid rgba(110,231,183,.12); border-radius:1rem; background:rgba(2,44,34,.2); }
+        #about-view .about-roadmap-item > i { color:#6ee7b7; font-size:1rem; }
+        #about-view .about-roadmap-item h4 { margin-top:.7rem; color:#ecfdf5; font-size:.88rem; font-weight:850; }
+        #about-view .about-roadmap-item p { margin-top:.4rem; color:#a7b9b5; font-size:.8rem; line-height:1.75; }
+        #about-view .about-community-icon { display:grid; place-items:center; width:3.5rem; height:3.5rem; border:1px solid rgba(249,168,212,.25); border-radius:1.15rem; background:rgba(236,72,153,.1); color:#f9a8d4; font-size:1.45rem; }
+        #about-view .about-cta { display:inline-flex; align-items:center; justify-content:center; gap:.65rem; max-width:100%; min-height:2.9rem; padding:.8rem 1rem; border:1px solid; border-radius:.9rem; font-size:.8rem; font-weight:800; line-height:1.4; transition:transform .18s ease,background .18s ease; }
+        #about-view .about-cta:hover { transform:translateY(-1px); }
+        #about-view .about-cta-instagram { border-color:rgba(244,114,182,.3); background:rgba(236,72,153,.1); color:#fbcfe8; }
+        #about-view .about-cta-instagram:hover { background:rgba(236,72,153,.18); }
+        #about-view .about-cta-home { border-color:rgba(251,191,36,.3); background:rgba(245,158,11,.08); color:#fde68a; }
+        #about-view .about-cta-home:hover { background:rgba(245,158,11,.15); }
+        #about-view #about-disclaimer { color:#7c8ba1; }
+        @media (max-width: 767px) {
+          #about-view .about-feature-grid { grid-template-columns:minmax(0,1fr); }
+          #about-view .about-feature-card-wide { grid-column:auto; }
+          #about-view .about-roadmap-grid { grid-template-columns:minmax(0,1fr); }
+          #about-view .about-highlight { padding:.75rem; font-size:.62rem; }
+          #about-view .about-feature-card { padding:1rem; gap:.8rem; }
+          #about-view .about-shell { border-radius:1.25rem; }
+        }
+        @media (prefers-reduced-motion: reduce) { #about-view .about-feature-card, #about-view .about-cta { transition:none; } #about-view .about-feature-card:hover, #about-view .about-cta:hover { transform:none; } }
+    </style>
 </head>
 <body class="p-3 sm:p-6 select-none custom-scrollbar">
 
@@ -437,7 +836,7 @@
             </div>
             <div>
                 <div class="flex items-center gap-2">
-                    <h1 class="font-orbitron text-lg sm:text-xl font-extrabold tracking-tight text-white brand-wordmark">TIMERS <span class="brand-divider">|</span> Mir4VE</h1>
+                    
                     <div class="relative" id="server-picker">
                         <button type="button" id="server-select" onclick="toggleServerMenu()" aria-haspopup="true" aria-expanded="false" class="text-[10px] font-bold px-2 py-1 rounded-md bg-amber-500/20 text-amber-400 border border-amber-500/30 font-orbitron inline-flex items-center gap-1.5 hover:bg-amber-500/30 transition-colors">
                             <span id="server-select-label">GLOBAL▸ NA</span><i class="fa-solid fa-chevron-down text-[9px]"></i>
@@ -450,8 +849,12 @@
                             <button type="button" data-server="SA" onclick="selectServer('SA')" class="server-option w-full text-left rounded-lg px-3 py-2 text-xs font-bold hover:bg-slate-700/60">SA <span class="float-right text-slate-400">UTC-3</span></button>
                         </div>
                     </div>
-                    <span title="Página en desarrollo" class="text-[10px] font-black tracking-widest px-2 py-0.5 rounded-md bg-violet-500/15 text-violet-300 border border-violet-400/30 font-orbitron">BETA</span>
+                    
                     <button id="time-format-toggle" type="button" onclick="toggleTimeFormat()" aria-label="Cambiar formato horario" title="Cambiar entre formato de 24 y 12 horas">24H</button>
+                    <span id="online-pill" class="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-400 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold border border-emerald-500/20" title="Usuarios con conexión activa a esta página">
+                        <i class="fa-solid fa-eye text-[10px] animate-pulse" aria-hidden="true"></i>
+                        <span id="online-counter" aria-live="polite" title="Contador de sesiones activas">—</span> <span id="lbl-online">online</span>
+                    </span>
                 </div>
                 <div id="brand-subline" class="flex items-center flex-wrap gap-3 mt-1 text-xs text-slate-400">
                     <div id="header-time-counters" aria-label="Relojes y reinicio semanal">
@@ -459,10 +862,6 @@
                         <div class="header-time-chip"><span id="lbl-local-time" class="header-time-label">HORA LOCAL</span><span id="local-clock" class="header-time-value">00 : 00 : 00</span></div>
                         <div class="header-time-chip"><span id="lbl-week-reset" class="header-time-label">REINICIO SEMANAL</span><span id="week-reset-clock" class="header-time-value">—</span></div>
                     </div>
-                    <span id="online-pill" class="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-400 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold border border-emerald-500/20">
-                        <i class="fa-solid fa-eye text-[10px] animate-pulse"></i>
-                        <span id="online-counter" aria-live="polite" title="Contador de sesiones activas">—</span> <span id="lbl-online">online</span>
-                    </span>
                 </div>
             </div>
         </div>
@@ -515,7 +914,7 @@
                     <div class="mb-1.5 flex flex-wrap items-center gap-2">
                         <span id="intro-community" class="text-[10px] font-bold uppercase tracking-[0.22em] text-amber-400">DARKOMENS COMMUNITY</span>
                     </div>
-                    <h2 id="site-intro-title" class="font-orbitron text-lg sm:text-xl font-extrabold tracking-tight text-white brand-wordmark">TIMERS <span class="brand-divider">|</span> Mir4VE</h2>
+                    <h2 id="site-intro-title" class="font-orbitron text-lg sm:text-xl font-extrabold tracking-tight text-white brand-wordmark"><span class="brand-timers">TIMERS</span> <span class="brand-divider">|</span> <span class="brand-name-beta"><span class="brand-name">Mir4VE</span><span class="beta-superscript" title="Página en desarrollo">BETA</span></span></h2>
                     <p id="intro-description" class="mt-2 max-w-4xl text-sm sm:text-[15px] leading-relaxed text-slate-300">Consulta los horarios de todos los eventos de MIR4 Global en tiempo real.</p>
                 </div>
                 <div class="hidden sm:flex shrink-0 flex-col items-center justify-center rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-center">
@@ -578,22 +977,58 @@
     </div>
 
     <!-- ABOUT / PROJECT GUIDE: independent reading view; timer engine keeps running -->
-    <main id="about-view" class="hidden max-w-7xl mx-auto mb-8">
-      <section class="relative overflow-hidden rounded-2xl border border-violet-400/20 bg-gradient-to-br from-slate-950 via-[#101326] to-[#171126] p-5 sm:p-8 shadow-2xl">
-        <div aria-hidden="true" class="absolute -right-10 -top-10 h-56 w-56 rounded-full bg-violet-500/10 blur-3xl"></div>
-        <div class="relative">
-          <div class="flex flex-wrap items-center gap-3 mb-4"><span class="inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-3 py-1 text-xs font-bold tracking-wider text-violet-200"><i class="fa-solid fa-book-open"></i><span id="about-eyebrow">GUÍA DEL PROYECTO</span></span><span class="rounded-full border border-amber-400/30 bg-amber-400/10 px-3 py-1 text-[10px] font-black tracking-[0.2em] text-amber-300">BETA</span></div>
-          <h2 id="about-title" class="font-orbitron text-2xl sm:text-3xl font-black text-white leading-tight">⚔️ TIMERS | Mir4VE — Un proyecto de la comunidad DarkOmens</h2>
-          <p id="about-lead" class="mt-4 max-w-4xl text-base sm:text-lg leading-relaxed text-slate-300">Esta página reúne herramientas prácticas para la comunidad de MIR4 Global: consulta horarios, organiza tus entradas y recibe avisos sin tener que calcular cada evento por tu cuenta.</p>
-          <div class="mt-7 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <article class="rounded-xl border border-slate-700/70 bg-slate-900/60 p-5 md:col-span-2"><h3 id="about-locastore-title" class="flex items-center gap-2 text-base font-extrabold text-amber-300"><i class="fa-solid fa-compass"></i> 🧭 Locastore y recursos</h3><p id="about-locastore" class="mt-3 text-sm leading-7 text-slate-300"></p></article>
-            <article class="rounded-xl border border-slate-700/70 bg-slate-900/60 p-5"><h3 id="about-schedule-title" class="flex items-center gap-2 text-base font-extrabold text-amber-300"><i class="fa-solid fa-calendar-check"></i> ⏱️ Horarios y temporizadores</h3><p id="about-schedule" class="mt-3 text-sm leading-7 text-slate-300"></p></article>
-            <article class="rounded-xl border border-slate-700/70 bg-slate-900/60 p-5"><h3 id="about-alerts-title" class="flex items-center gap-2 text-base font-extrabold text-amber-300"><i class="fa-solid fa-bell"></i> 🔔 Alertas sonoras</h3><p id="about-alerts" class="mt-3 text-sm leading-7 text-slate-300"></p></article>
-            <article class="rounded-xl border border-slate-700/70 bg-slate-900/60 p-5"><h3 id="about-regions-title" class="flex items-center gap-2 text-base font-extrabold text-amber-300"><i class="fa-solid fa-earth-americas"></i> 🌎 Regiones y hora del servidor</h3><p id="about-regions" class="mt-3 text-sm leading-7 text-slate-300"></p></article>
-            <article class="rounded-xl border border-slate-700/70 bg-slate-900/60 p-5"><h3 id="about-presence-title" class="flex items-center gap-2 text-base font-extrabold text-amber-300"><i class="fa-solid fa-users"></i> 👥 Comunidad y presencia</h3><p id="about-presence" class="mt-3 text-sm leading-7 text-slate-300"></p></article>
+    <main id="about-view" class="hidden max-w-7xl mx-auto mb-8 px-3 sm:px-5">
+      <section class="about-shell relative overflow-hidden rounded-3xl border border-violet-400/20 bg-gradient-to-br from-slate-950 via-[#101326] to-[#171126] p-5 sm:p-8 lg:p-10 shadow-2xl">
+        <div aria-hidden="true" class="about-glow about-glow-one absolute -right-10 -top-10 h-64 w-64 rounded-full bg-violet-500/15 blur-3xl"></div>
+        <div aria-hidden="true" class="about-glow about-glow-two absolute -bottom-16 -left-12 h-56 w-56 rounded-full bg-emerald-500/10 blur-3xl"></div>
+        <div class="relative z-10">
+          <div class="flex flex-wrap items-center gap-2.5 mb-5">
+            <span class="inline-flex items-center gap-2 rounded-full border border-violet-300/30 bg-violet-400/10 px-3.5 py-1.5 text-[11px] font-extrabold tracking-[.16em] text-violet-200"><i class="fa-solid fa-book-open"></i><span id="about-eyebrow">GUÍA DEL PROYECTO</span></span>
+            <span class="inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-400/10 px-3.5 py-1.5 text-[10px] font-black tracking-[.18em] text-amber-200"><span class="h-1.5 w-1.5 rounded-full bg-amber-300"></span>BETA</span>
+            <span class="inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-400/5 px-3.5 py-1.5 text-[10px] font-bold tracking-wider text-emerald-200"><i class="fa-solid fa-heart"></i><span id="about-community-tag">HECHO PARA LA COMUNIDAD</span></span>
           </div>
-          <div class="mt-6 rounded-xl border border-emerald-400/20 bg-emerald-500/5 p-5 sm:p-6"><h3 id="about-fan-title" class="text-lg font-black text-white">💚 De fans para fans</h3><p id="about-fan" class="mt-2 text-sm sm:text-base leading-7 text-slate-300"></p><p id="about-feedback" class="mt-3 text-sm leading-7 text-slate-300"></p><div class="mt-5 flex flex-wrap gap-3"><a href="https://www.instagram.com/shovi.oficial/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-xl border border-pink-400/30 bg-pink-500/10 px-4 py-3 text-sm font-bold text-pink-200 transition hover:bg-pink-500/20"><i class="fa-brands fa-instagram text-lg"></i><span id="about-instagram">Contactar por Instagram</span><i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></a><button type="button" onclick="showHomeView()" class="inline-flex items-center gap-2 rounded-xl border border-amber-400/30 bg-amber-500/10 px-4 py-3 text-sm font-bold text-amber-200 transition hover:bg-amber-500/20"><i class="fa-solid fa-house"></i><span id="about-back">Volver a los temporizadores</span></button></div></div>
-          <p id="about-disclaimer" class="mt-5 text-xs leading-6 text-slate-500"></p>
+          <div class="max-w-4xl">
+            <h2 id="about-title" class="about-hero-title text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">TIMERS | Mir4VE · Comunidad DarkOmens</h2>
+            <p id="about-lead" class="mt-5 max-w-3xl text-base sm:text-lg leading-8 text-slate-300"></p>
+          </div>
+          <div class="about-highlights mt-7 grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="about-highlight"><span class="about-highlight-icon text-amber-200"><i class="fa-solid fa-stopwatch"></i></span><span id="about-highlight-timers">HORARIOS A SIMPLE VISTA</span></div>
+            <div class="about-highlight"><span class="about-highlight-icon text-sky-200"><i class="fa-solid fa-bell"></i></span><span id="about-highlight-alerts">AVISOS PARA NO PERDERTE NADA</span></div>
+            <div class="about-highlight"><span class="about-highlight-icon text-emerald-200"><i class="fa-solid fa-mobile-screen"></i></span><span id="about-highlight-responsive">ORDENADOR Y MÓVIL</span></div>
+          </div>
+
+          <div class="about-section-heading mt-10 mb-5"><div><p id="about-features-eyebrow" class="text-[10px] font-black uppercase tracking-[.24em] text-violet-300">EXPLORA LA PLATAFORMA</p><h3 id="about-features-title" class="mt-1 text-xl sm:text-2xl font-extrabold text-white">Todo lo que puedes hacer</h3></div><span class="about-heading-mark"><i class="fa-solid fa-layer-group"></i></span></div>
+          <div class="about-feature-grid grid grid-cols-1 md:grid-cols-2 gap-4">
+            <article class="about-feature-card about-feature-card-wide"><div class="about-card-icon text-amber-200 bg-amber-400/10 border-amber-300/20"><i class="fa-solid fa-calendar-check"></i></div><div><h3 id="about-schedule-title">Horarios y temporizadores</h3><p id="about-schedule" class="mt-2"></p></div></article>
+            <article class="about-feature-card"><div class="about-card-icon text-rose-200 bg-rose-400/10 border-rose-300/20"><i class="fa-solid fa-bell"></i></div><div><h3 id="about-alerts-title">Alertas sonoras</h3><p id="about-alerts" class="mt-2"></p></div></article>
+            <article class="about-feature-card"><div class="about-card-icon text-sky-200 bg-sky-400/10 border-sky-300/20"><i class="fa-solid fa-earth-americas"></i></div><div><h3 id="about-regions-title">Región e idioma</h3><p id="about-regions" class="mt-2"></p></div></article>
+            <article class="about-feature-card"><div class="about-card-icon text-violet-200 bg-violet-400/10 border-violet-300/20"><i class="fa-solid fa-sliders"></i></div><div><h3 id="about-locastore-title">Preferencias guardadas</h3><p id="about-locastore" class="mt-2"></p></div></article>
+            <article class="about-feature-card"><div class="about-card-icon text-emerald-200 bg-emerald-400/10 border-emerald-300/20"><i class="fa-solid fa-users"></i></div><div><h3 id="about-presence-title">Comunidad en línea</h3><p id="about-presence" class="mt-2"></p></div></article>
+            <article class="about-feature-card"><div class="about-card-icon text-fuchsia-200 bg-fuchsia-400/10 border-fuchsia-300/20"><i class="fa-solid fa-compass"></i></div><div><h3 id="about-use-title">Una navegación sencilla</h3><p id="about-use"></p></div></article>
+          </div>
+
+          <div class="about-section-heading mt-10 mb-5"><div><p id="about-roadmap-eyebrow" class="text-[10px] font-black uppercase tracking-[.24em] text-emerald-300">EVOLUCIÓN CONTINUA</p><h3 id="about-roadmap-title" class="mt-1 text-xl sm:text-2xl font-extrabold text-white">Lo que puede venir después</h3></div><span class="about-heading-mark about-heading-mark-green"><i class="fa-solid fa-route"></i></span></div>
+          <div class="about-roadmap rounded-2xl border border-emerald-300/20 bg-emerald-400/[.045] p-5 sm:p-6">
+            <p id="about-roadmap-lead" class="max-w-3xl text-sm sm:text-base leading-7 text-slate-300"></p>
+            <div class="about-roadmap-grid mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="about-roadmap-item"><i class="fa-solid fa-wand-magic-sparkles"></i><h4 id="about-roadmap-one-title">Más comodidad</h4><p id="about-roadmap-one"></p></div>
+              <div class="about-roadmap-item"><i class="fa-solid fa-calendar-days"></i><h4 id="about-roadmap-two-title">Información más clara</h4><p id="about-roadmap-two"></p></div>
+              <div class="about-roadmap-item"><i class="fa-solid fa-comments"></i><h4 id="about-roadmap-three-title">Ideas de la comunidad</h4><p id="about-roadmap-three"></p></div>
+            </div>
+            <p id="about-roadmap-note" class="mt-4 text-xs leading-6 text-emerald-100/60"></p>
+          </div>
+
+          <div class="about-community-panel mt-6 rounded-2xl border border-pink-300/20 bg-gradient-to-r from-pink-500/[.07] via-violet-500/[.06] to-transparent p-5 sm:p-7">
+            <div class="flex flex-col lg:flex-row lg:items-center gap-5 lg:gap-8">
+              <div class="about-community-icon shrink-0"><i class="fa-solid fa-heart"></i></div>
+              <div class="min-w-0 flex-1"><p id="about-fan-eyebrow" class="text-[10px] font-black uppercase tracking-[.22em] text-pink-200">DE FANS PARA FANS</p><h3 id="about-fan-title" class="mt-1 text-xl sm:text-2xl font-black text-white">Un proyecto de la comunidad DarkOmens</h3><p id="about-fan" class="mt-2 text-sm sm:text-base leading-7 text-slate-300"></p><p id="about-feedback" class="mt-3 text-sm leading-7 text-slate-300"></p></div>
+            </div>
+            <div class="mt-6 flex flex-wrap gap-3">
+              <a href="https://www.instagram.com/shovi.oficial/" target="_blank" rel="noopener noreferrer" class="about-cta about-cta-instagram"><i class="fa-brands fa-instagram text-lg"></i><span id="about-instagram">Escribir por Instagram</span><i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-70"></i></a>
+              <button type="button" onclick="showHomeView()" class="about-cta about-cta-home"><i class="fa-solid fa-house"></i><span id="about-back">Volver a los temporizadores</span></button>
+            </div>
+          </div>
+          <p id="about-disclaimer" class="mt-5 border-t border-white/5 pt-4 text-xs leading-6 text-slate-500"></p>
         </div>
       </section>
     </main>
@@ -723,7 +1158,7 @@
                 tabs: { ALL: "TODAS", FRENESI: "FRENESÍ", FURIA: "FURIA", LIDERES: "LIDER III", CIMA: "CIMA", WB_VALLES: "VALLES", WB_LABERINTOS: "LABERINTOS", PURGATORIO: "PURGATORIO", ORATORIO: "ORATORIO CRÍPTICO" },
                 statusActive: "En curso", statusWaiting: "En espera", nextOpening: "Próxima apertura:", durationActive: "Duración activa:", opensIn: "Abre en:", closesIn: "Cierra en:",
                 toastTitle: "¡EVENTO ACTIVADO!", toastSub: "Alerta de TIMERS | Mir4VE", nextQueueTitle: "Próximos ciclos en espera:", durationMin: "min", durationHour: "1 hora", timePrefix: "en ", unitHour: "h", unitMinute: "m", unitSecond: "s",
-                eventTitles: { frenesi: "MS ◂FRENESÍ▸", furia: "MS ◂FURIA▸", lideres: "MS ◂LIDER 3▸", oratorio: "Oratorio Críptico", cima_inferior: "SP ◂JEFE SUR▸", cima_superior: "SP ◂JEFE NORTE▸", purgatorio: "Purgatorio", wb_valles: "WB ◂VALLES▸", wb_laberintos: "WB ◂LABERINTOS▸" },
+                eventTitles: { frenesi: "MS ◂FRENESÍ▸", furia: "MS ◂FURIA▸", lideres: "MS ◂LIDER 3▸", oratorio: "◂Oratorio Críptico▸", cima_inferior: "SP ◂JEFE SUR▸", cima_superior: "SP ◂JEFE NORTE▸", purgatorio: "◂Purgatorio▸", wb_valles: "WB ◂VALLES▸", wb_laberintos: "WB ◂LABERINTOS▸" },
                 bellTitle: "Alertas para este evento", stop: "DETENER"
             },
             pt: {
@@ -732,7 +1167,7 @@
                 tabs: { ALL: "TODOS", FRENESI: "FRENESI", FURIA: "FÚRIA", LIDERES: "LÍDER III", CIMA: "PICO SECRETO", WB_VALLES: "VALES", WB_LABERINTOS: "LABIRINTOS", PURGATORIO: "PURGATÓRIO", ORATORIO: "SANTUÁRIO SECRETO" },
                 statusActive: "Em andamento", statusWaiting: "Aguardando", nextOpening: "Próxima abertura:", durationActive: "Duração ativa:", opensIn: "Abre em:", closesIn: "Fecha em:",
                 toastTitle: "EVENTO INICIADO!", toastSub: "Alerta do TIMERS | Mir4VE", nextQueueTitle: "Próximos ciclos aguardando:", durationMin: "min", durationHour: "1 hora", timePrefix: "em ", unitHour: "h", unitMinute: "min", unitSecond: "s",
-                eventTitles: { frenesi: "MS ◂FRENESI▸", furia: "MS ◂FÚRIA▸", lideres: "MS ◂LÍDER 3▸", oratorio: "Santuário Secreto", cima_inferior: "SP ◂BOSS SUL▸", cima_superior: "SP ◂BOSS NORTE▸", purgatorio: "Purgatório", wb_valles: "WB ◂VALES▸", wb_laberintos: "WB ◂LABIRINTOS▸" },
+                eventTitles: { frenesi: "MS ◂FRENESI▸", furia: "MS ◂FÚRIA▸", lideres: "MS ◂LÍDER 3▸", oratorio: "◂Santuário Secreto▸", cima_inferior: "SP ◂BOSS SUL▸", cima_superior: "SP ◂BOSS NORTE▸", purgatorio: "◂Purgatório▸", wb_valles: "WB ◂VALES▸", wb_laberintos: "WB ◂LABIRINTOS▸" },
                 bellTitle: "Alertas para este evento", stop: "PARAR"
             },
             en: {
@@ -741,7 +1176,7 @@
                 tabs: { ALL: "ALL", FRENESI: "FRENZY", FURIA: "FURY", LIDERES: "LEADER III", CIMA: "SECRET PEAK", WB_VALLES: "VALLEYS", WB_LABERINTOS: "LABYRINTHS", PURGATORIO: "PURGATORY", ORATORIO: "CRYPTIC SANCTUARY" },
                 statusActive: "Active", statusWaiting: "Waiting", nextOpening: "Next opening:", durationActive: "Active duration:", opensIn: "Opens in:", closesIn: "Closes in:",
                 toastTitle: "EVENT STARTED!", toastSub: "TIMERS | Mir4VE alert", nextQueueTitle: "Upcoming waiting cycles:", durationMin: "min", durationHour: "1 hour", timePrefix: "in ", unitHour: "h", unitMinute: "m", unitSecond: "s",
-                eventTitles: { frenesi: "MS ◂FRENZY▸", furia: "MS ◂FURY▸", lideres: "MS ◂LEADER 3▸", oratorio: "Cryptic Sanctuary", cima_inferior: "SP ◂SOUTH BOSS▸", cima_superior: "SP ◂NORTH BOSS▸", purgatorio: "Purgatory", wb_valles: "World Boss ◂VALLEYS▸", wb_laberintos: "World Boss ◂LABYRINTHS▸" },
+                eventTitles: { frenesi: "MS ◂FRENZY▸", furia: "MS ◂FURY▸", lideres: "MS ◂LEADER 3▸", oratorio: "◂Cryptic Sanctuary▸", cima_inferior: "SP ◂SOUTH BOSS▸", cima_superior: "SP ◂NORTH BOSS▸", purgatorio: "◂Purgatory▸", wb_valles: "World Boss ◂VALLEYS▸", wb_laberintos: "World Boss ◂LABYRINTHS▸" },
                 bellTitle: "Alerts for this event", stop: "STOP"
             }
         };
@@ -1063,7 +1498,7 @@
                     osc.type = step % 2 === 0 ? 'sine' : 'triangle';
                     osc.frequency.setValueAtTime(step % 2 === 0 ? 880 : 1046.50, now);
                     gain.gain.setValueAtTime(0.0001, now);
-                    gain.gain.exponentialRampToValueAtTime(0.14, now + 0.015);
+                    gain.gain.exponentialRampToValueAtTime(0.18, now + 0.015);
                     gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.30);
                     osc.connect(gain); gain.connect(audioCtx.destination);
                     osc.start(now); osc.stop(now + 0.32);
@@ -1124,6 +1559,29 @@
                 osc.start(now); osc.stop(now + 0.07);
             } catch (e) {}
         }
+        // Dedicated 12/24-hour format cue: a soft, warm two-note ascending chime.
+        // Separate from the general UI click and all event/alert sounds.
+        function playTimeFormatSound() {
+            initAudioContext();
+            if (!audioCtx) return;
+            try {
+                const now = audioCtx.currentTime;
+                [[659.25, 0, 0.035, 0.075], [880, 0.055, 0.027, 0.095]].forEach(([frequency, delay, volume, duration]) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(frequency, now + delay);
+                    gain.gain.setValueAtTime(0.0001, now + delay);
+                    gain.gain.exponentialRampToValueAtTime(volume, now + delay + 0.012);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + delay + duration);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now + delay);
+                    osc.stop(now + delay + duration + 0.01);
+                });
+            } catch (e) {}
+        }
+
         // Unlock/resume Web Audio on the first real user gesture so later scheduled alerts can be heard.
         // Browsers block automatic audio until the visitor interacts with the page at least once.
         document.addEventListener('pointerdown', () => {
@@ -1288,7 +1746,7 @@
         }
 
         function toggleTimeFormat() {
-            playUiClickSound();
+            playTimeFormatSound();
             timeFormat = timeFormat === '24h' ? '12h' : '24h';
             appStorage.setItem(STORAGE_TIME_FORMAT, timeFormat);
             renderTimeFormatToggle();
@@ -1599,7 +2057,7 @@
                 if (evt.color === 'cyan') colorClass = "bg-cyan-500/10 text-cyan-300 border-cyan-500/30";
 
                 return `
-                <div class="event-card bg-brand-card/90 border border-brand-border/80 rounded-2xl p-5 shadow-xl relative flex flex-col justify-between ${isActive ? 'glow-active bg-emerald-950/20' : ''}">
+                <div class="event-card bg-brand-card/90 border border-brand-border/80 rounded-2xl p-5 shadow-xl relative flex flex-col justify-between ${isActive ? 'glow-active bg-emerald-950/20' : 'cursor-pointer'}" ${!isActive ? `onclick="toggleCardBell('${evt.id}', ${evt.state.startH}, ${evt.state.startM}, event)" title="${langDict.bellTitle}"` : ''}>
                     
                     <i class="event-watermark fa-solid ${evt.icon}" aria-hidden="true"></i>
                     <div class="event-card-content">
@@ -1613,7 +2071,7 @@
                             <div class="flex items-center gap-2">
                                 ${isActive
                                     ? `<span title="${langDict.statusActive}" aria-label="${langDict.statusActive}" class="p-1.5 rounded-lg border border-emerald-500/20 bg-emerald-500/5 bell-locked"><i class="fa-solid fa-circle-check text-sm"></i></span>`
-                                    : `<button type="button" onclick="toggleCardBell('${evt.id}', ${evt.state.startH}, ${evt.state.startM}, event)" title="${langDict.bellTitle}" aria-label="${langDict.bellTitle}" class="p-1.5 rounded-lg border border-brand-border/60 bg-brand-dark/60 text-slate-400 hover:text-amber-400 transition-colors"><i style="--loop-offset: ${loopOffset}" class="fa-solid fa-bell text-sm ${isBellOn ? 'bell-active bell-waiting-pulse' : 'opacity-40'}"></i></button>`}
+                                    : `<button type="button" onclick="toggleCardBell('${evt.id}', ${evt.state.startH}, ${evt.state.startM}, event)" title="${langDict.bellTitle}" aria-label="${langDict.bellTitle}" class="alert-bell-button p-1.5 rounded-lg border border-brand-border/60 bg-brand-dark/60 text-slate-400"><i style="--loop-offset: ${loopOffset}" class="fa-solid fa-bell text-sm ${isBellOn ? 'bell-active bell-waiting-pulse' : 'bell-off opacity-40'}"></i></button>`}
 
                                 <span style="--loop-offset: ${loopOffset}" class="text-[11px] font-orbitron font-bold px-2.5 py-1 rounded-lg ${isActive ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 animate-pulse' : 'bg-brand-dark/80 text-slate-400 border border-brand-border'}">
                                     ${isActive ? langDict.statusActive : `<span class="waiting-dots" style="--loop-offset: ${loopOffset}">${langDict.statusWaiting}</span>`}
@@ -1652,7 +2110,7 @@
                         const instanceBellOn = isOccurrenceBellOn(evt.id, instance.startH, instance.startM);
                         const instanceLabel = `${localizedTitle} · ${instanceIndex + 1}`;
                         return `
-                        <article class="event-card upcoming-cycle-card bg-brand-card/90 border border-brand-border/80 rounded-2xl p-5 shadow-xl relative flex flex-col justify-between min-w-0" aria-label="${instanceLabel}">
+                        <article class="event-card upcoming-cycle-card cursor-pointer bg-brand-card/90 border border-brand-border/80 rounded-2xl p-5 shadow-xl relative flex flex-col justify-between min-w-0" aria-label="${instanceLabel}" onclick="toggleCardBell('${evt.id}', ${instance.startH}, ${instance.startM}, event)" title="${langDict.bellTitle}">
                             <i class="event-watermark fa-solid ${evt.icon}" aria-hidden="true"></i>
                             <div class="event-card-content">
                                 <div class="flex items-center justify-between gap-2 mb-3">
@@ -1660,7 +2118,7 @@
                                         <i class="fa-solid ${evt.icon}" aria-hidden="true"></i>${localizedTitle}
                                     </span>
                                     <div class="flex items-center gap-2">
-                                        <button type="button" onclick="toggleCardBell('${evt.id}', ${instance.startH}, ${instance.startM}, event)" title="${langDict.bellTitle}" aria-label="${langDict.bellTitle}" class="p-1.5 rounded-lg border border-brand-border/60 bg-brand-dark/60 text-slate-400 hover:text-amber-400 transition-colors"><i style="--loop-offset: ${loopOffset}" class="fa-solid fa-bell text-sm ${instanceBellOn ? 'bell-active bell-waiting-pulse' : 'opacity-40'}"></i></button>
+                                        <button type="button" onclick="toggleCardBell('${evt.id}', ${instance.startH}, ${instance.startM}, event)" title="${langDict.bellTitle}" aria-label="${langDict.bellTitle}" class="alert-bell-button p-1.5 rounded-lg border border-brand-border/60 bg-brand-dark/60 text-slate-400"><i style="--loop-offset: ${loopOffset}" class="fa-solid fa-bell text-sm ${instanceBellOn ? 'bell-active bell-waiting-pulse' : 'bell-off opacity-40'}"></i></button>
                                         <span class="text-[11px] font-orbitron font-bold px-2.5 py-1 rounded-lg bg-brand-dark/80 text-slate-400 border border-brand-border"><span class="waiting-dots" style="--loop-offset: ${loopOffset}">${langDict.statusWaiting}</span></span>
                                     </div>
                                 </div>
@@ -1768,52 +2226,68 @@
 
         const ABOUT_I18N = {
           es: {
-            home:"INICIO", aboutNav:"SOBRE MÍ", eyebrow:"SOBRE EL PROYECTO", title:"TIMERS | Mir4VE · COMUNIDAD DARKOMENS",
-            lead:"💾 Tus preferencias se guardan automáticamente en este navegador, para que no tengas que configurarlo todo cada vez que vuelvas. Además, aquí tienes horarios, temporizadores y alertas para seguir los eventos de MIR4 Global con más facilidad.",
-            scheduleTitle:"⏱️ HORARIOS Y TEMPORIZADORES", schedule:"⚔️ Sigue las Cámaras de Frenesí y Furia, Líderes III, Cima, Purgatorio y Oratorio Críptico. Cada evento indica si está en espera o en curso, muestra la cuenta regresiva y una barra de progreso para saber de un vistazo cuánto falta. Usa las pestañas para encontrar rápidamente la categoría que necesitas.",
-            alertsTitle:"🔔 ALERTAS SONORAS", alerts:"Activa la campana general o elige qué eventos quieres vigilar con sus campanas individuales. 🔊 Recibirás un aviso cuando falte un minuto, además de sonidos suaves para los cambios y el final de los temporizadores. Las alertas siguen activas mientras consultas esta guía, y puedes detener un aviso desde el mensaje en pantalla.",
-            regionsTitle:"🌎 REGIÓN E IDIOMA", regions:"Elige la región del servidor —NA, ASIA, INMENA, EU o SA— y el reloj junto con los temporizadores se ajustarán a esa selección. 🌐 También puedes cambiar entre español, português e inglés para usar la página con más comodidad.",
-            presenceTitle:"👥 COMUNIDAD EN LÍNEA", presence:"El contador estima las IP públicas únicas con una conexión activa a esta página. Varias pestañas, navegadores, ventanas de incógnito o dispositivos que compartan la misma IP pública se cuentan como una sola presencia; un móvil con datos móviles puede contar por separado si usa otra IP. La IP se procesa como hash y no se guarda en texto plano. No identifica de forma fiable dispositivos físicos ni puede excluir todos los bots; no representa a los jugadores conectados dentro del juego.",
-            locastoreTitle:"💾 TUS OPCIONES SE QUEDAN GUARDADAS", locastore:"La página guarda automáticamente el idioma, región, formato horario, pestaña, vista y alertas en el almacenamiento persistente del navegador. Los ajustes se mantienen al cerrar y volver a abrir la página en el mismo navegador, perfil, dispositivo y dirección del sitio. No existe un mecanismo web que pueda impedir que el usuario o el navegador borre esos datos; borrar solo el historial no siempre borra los datos del sitio. Si abres este HTML como archivo local, recomendamos publicarlo en una URL HTTPS estable para que el origen de almacenamiento no cambie.",
-            fanTitle:"💚 PROYECTO DE LA COMUNIDAD DARKOMENS", fan:"TIMERS | Mir4VE es una iniciativa de la comunidad DarkOmens para consultar en un solo lugar los horarios de los eventos de MIR4 Global. El proyecto sigue en BETA y continúa mejorando con las sugerencias de la comunidad, tanto en computadora como en móvil.",
-            feedback:"💬 ¿Encontraste un error o se te ocurrió una mejora? Escríbeme por Instagram. Tus comentarios ayudan a que la herramienta sea cada vez más útil para toda la comunidad.",
-            instagram:"ESCRIBIR POR INSTAGRAM", back:"VOLVER A INICIO", disclaimer:"Proyecto de fans no oficial. No está afiliado ni respaldado por Wemade o el equipo oficial de MIR4."
+            home:"INICIO", aboutNav:"SOBRE MÍ", eyebrow:"GUÍA DEL PROYECTO", communityTag:"HECHO PARA LA COMUNIDAD", title:"TIMERS | Mir4VE · Comunidad DarkOmens",
+            lead:"Sigue los eventos de MIR4 Global desde un solo lugar: consulta horarios, revisa cuentas regresivas y configura alertas en una página adaptada a ordenador y móvil.",
+            highlightTimers:"HORARIOS A SIMPLE VISTA", highlightAlerts:"AVISOS PARA NO PERDERTE NADA", highlightResponsive:"ORDENADOR Y MÓVIL", featuresEyebrow:"EXPLORA LA PLATAFORMA", featuresTitle:"Todo lo que puedes hacer",
+            scheduleTitle:"Horarios y temporizadores", schedule:"Consulta los distintos contadores de eventos con estados, cuentas regresivas y barras de progreso. Filtra por categorías para encontrar rápidamente lo que buscas.",
+            alertsTitle:"Alertas sonoras", alerts:"Activa las alertas generales o selecciona avisos individuales. Recibe señales sonoras cuando se acerca un evento y detén el sonido desde la notificación. El navegador puede requerir una interacción previa para habilitar el audio.",
+            regionsTitle:"Región e idioma", regions:"Elige la región del servidor para adaptar los horarios y cambia entre español, português e inglés desde el selector de idioma.",
+            locastoreTitle:"Preferencias guardadas", locastore:"Tus preferencias de idioma, región, formato horario, vista y alertas se guardan en el navegador. Si borras sus datos o cambias de dispositivo, quizá debas configurarlas de nuevo.",
+            presenceTitle:"Comunidad en línea", presence:"Muestra una estimación de las conexiones activas a la página, no de los jugadores dentro de MIR4. Es una cifra orientativa basada en IP públicas y no identifica dispositivos con total precisión.",
+            useTitle:"Una navegación sencilla", use:"Explora las categorías mediante los botones y submenús, ajusta tus preferencias y disfruta de una interfaz adaptada a pantallas grandes y pequeñas.",
+            roadmapEyebrow:"EVOLUCIÓN CONTINUA", roadmapTitle:"Lo que puede venir después", roadmapLead:"El proyecto sigue en BETA y puede mejorar con el uso y las ideas de la comunidad. Estas son posibilidades, no funciones confirmadas ni fechas de lanzamiento.",
+            roadmapOneTitle:"Más comodidad", roadmapOne:"Afinar la navegación y la experiencia en móviles.", roadmapTwoTitle:"Información más clara", roadmapTwo:"Hacer más claros los horarios y la información útil.", roadmapThreeTitle:"Ideas de la comunidad", roadmapThree:"Escuchar sugerencias y priorizar mejoras útiles.", roadmapNote:"La evolución dependerá de la viabilidad técnica y las necesidades de la comunidad.",
+            fanEyebrow:"DE FANS PARA FANS", fanTitle:"Un proyecto de la comunidad DarkOmens", fan:"TIMERS | Mir4VE es una herramienta independiente de la comunidad DarkOmens, creada para facilitar el seguimiento de eventos de MIR4 Global en ordenador y móvil.",
+            feedback:"¿Tienes una sugerencia o encontraste algo que corregir? Escríbeme por Instagram y ayuda a mejorar la plataforma.",
+            instagram:"ESCRIBIR POR INSTAGRAM", back:"VOLVER A LOS TEMPORIZADORES", disclaimer:"Proyecto de fans no oficial. No está afiliado ni respaldado por Wemade o el equipo oficial de MIR4. Los horarios y funciones deben comprobarse según la información disponible y la región seleccionada."
           },
           pt: {
-            home:"INÍCIO", aboutNav:"SOBRE", eyebrow:"SOBRE O PROJETO", title:"TIMERS | Mir4VE · COMUNIDADE DARKOMENS",
-            lead:"💾 Suas preferências são salvas automaticamente neste navegador, para você não precisar configurar tudo novamente quando voltar. A página também reúne horários, temporizadores e alertas para acompanhar os eventos de MIR4 Global com mais facilidade.",
-            scheduleTitle:"⏱️ HORÁRIOS E TEMPORIZADORES", schedule:"⚔️ Acompanhe as Câmaras do Frenesi e da Fúria, Líder 3, Pico, World Boss de Vales e Labirintos, Purgatório e Santuário Secreto. Cada evento informa se está aguardando ou em andamento, mostra a contagem regressiva e uma barra de progresso para você ver quanto falta rapidamente. Use as abas para encontrar a categoria desejada.",
-            alertsTitle:"🔔 ALERTAS SONOROS", alerts:"Ative o sino geral ou escolha quais eventos deseja acompanhar com os sinos individuais. 🔊 Você ouvirá um aviso quando faltar um minuto, além de sons suaves para mudanças e término dos temporizadores. Os alertas continuam ativos enquanto você consulta este guia, e é possível parar um aviso pela mensagem na tela.",
-            regionsTitle:"🌎 REGIÃO E IDIOMA", regions:"Escolha a região do servidor —NA, ASIA, INMENA, EU ou SA— e o relógio e os temporizadores acompanharão essa seleção. 🌐 Você também pode alternar entre português, espanhol e inglês para usar a página com mais conforto.",
-            presenceTitle:"👥 COMUNIDADE ONLINE", presence:"O contador estima os endereços IP públicos únicos com uma conexão ativa nesta página. Abas, navegadores, janelas anônimas ou dispositivos que compartilham o mesmo IP público contam como uma presença; um celular usando dados móveis pode contar separadamente se tiver outro IP. O IP é processado como hash e não é salvo em texto simples. Não identifica dispositivos físicos de forma confiável nem consegue excluir todos os bots; não representa jogadores conectados dentro do jogo.",
-            locastoreTitle:"💾 SUAS OPÇÕES FICAM SALVAS", locastore:"A página salva automaticamente idioma, região, formato de hora, aba, tela e alertas no armazenamento persistente do navegador. As opções permanecem ao fechar e reabrir a página no mesmo navegador, perfil, dispositivo e endereço do site. Nenhum site pode impedir que o usuário ou o navegador apague esses dados; limpar apenas o histórico nem sempre apaga os dados do site. Se abrir este HTML como arquivo local, recomendamos publicá-lo em uma URL HTTPS estável para manter a mesma origem de armazenamento.",
-            fanTitle:"💚 PROJETO DA COMUNIDADE DARKOMENS", fan:"TIMERS | Mir4VE é uma iniciativa da comunidade DarkOmens para consultar em um só lugar os horários dos eventos de MIR4 Global. O projeto ainda está em BETA e continua melhorando com as sugestões da comunidade, tanto no computador quanto no celular.",
-            feedback:"💬 Encontrou um erro ou teve uma ideia para melhorar? Mande uma mensagem pelo Instagram. Suas sugestões ajudam a tornar esta ferramenta cada vez mais útil para a comunidade.",
-            instagram:"FALAR PELO INSTAGRAM", back:"VOLTAR AO INÍCIO", disclaimer:"Projeto de fãs não oficial. Não é afiliado nem endossado pela Wemade ou pela equipe oficial de MIR4."
+            home:"INÍCIO", aboutNav:"SOBRE", eyebrow:"GUIA DO PROJETO", communityTag:"FEITO PARA A COMUNIDADE", title:"TIMERS | Mir4VE · Comunidade DarkOmens",
+            lead:"Acompanhe os eventos de MIR4 Global em um só lugar: consulte horários, contagens regressivas e alertas em uma página adaptada para computador e celular.",
+            highlightTimers:"HORÁRIOS NUM RELANCE", highlightAlerts:"AVISOS PARA NÃO PERDER NADA", highlightResponsive:"COMPUTADOR E CELULAR", featuresEyebrow:"EXPLORE A PLATAFORMA", featuresTitle:"Tudo o que você pode fazer",
+            scheduleTitle:"Horários e temporizadores", schedule:"Consulte os diferentes temporizadores de eventos, com estados, contagens regressivas e barras de progresso. Filtre por categoria para encontrar rapidamente o que procura.",
+            alertsTitle:"Alertas sonoros", alerts:"Ative os alertas gerais ou escolha avisos individuais. Receba sinais sonoros quando um evento estiver próximo e pare o som pela notificação. O navegador pode exigir uma interação para liberar o áudio.",
+            regionsTitle:"Região e idioma", regions:"Escolha a região do servidor para ajustar os horários e alterne entre português, espanhol e inglês no seletor de idioma.",
+            locastoreTitle:"Preferências salvas", locastore:"Suas preferências de idioma, região, formato de hora, visualização e alertas ficam salvas no navegador. Se apagar os dados ou trocar de dispositivo, talvez precise configurá-las novamente.",
+            presenceTitle:"Comunidade online", presence:"Exibe uma estimativa das conexões ativas à página, não dos jogadores dentro de MIR4. É um número aproximado baseado em IPs públicos e não identifica dispositivos com total precisão.",
+            useTitle:"Navegação simples", use:"Explore as categorias pelos botões e submenus, ajuste suas preferências e use a interface adaptada a telas grandes e pequenas.",
+            roadmapEyebrow:"EVOLUÇÃO CONTÍNUA", roadmapTitle:"O que pode vir depois", roadmapLead:"O projeto continua em BETA e pode melhorar com o uso e as ideias da comunidade. Estas são possibilidades, não recursos confirmados nem datas de lançamento.",
+            roadmapOneTitle:"Mais praticidade", roadmapOne:"Aprimorar a navegação e a experiência em celulares.", roadmapTwoTitle:"Informações mais claras", roadmapTwo:"Deixar horários e informações úteis mais claros.", roadmapThreeTitle:"Ideias da comunidade", roadmapThree:"Ouvir sugestões e priorizar melhorias úteis.", roadmapNote:"A evolução dependerá da viabilidade técnica e das necessidades da comunidade.",
+            fanEyebrow:"FEITO POR FÃS, PARA FÃS", fanTitle:"Um projeto da comunidade DarkOmens", fan:"TIMERS | Mir4VE é uma ferramenta independente da comunidade DarkOmens, criada para facilitar o acompanhamento dos eventos de MIR4 Global no computador e no celular.",
+            feedback:"Tem uma sugestão ou encontrou algo para corrigir? Escreva pelo Instagram e ajude a melhorar a plataforma.",
+            instagram:"FALAR PELO INSTAGRAM", back:"VOLTAR AOS TEMPORIZADORES", disclaimer:"Projeto de fãs não oficial. Não é afiliado nem endossado pela Wemade ou pela equipe oficial de MIR4. Horários e recursos devem ser conferidos conforme as informações disponíveis e a região selecionada."
           },
           en: {
-            home:"HOME", aboutNav:"ABOUT", eyebrow:"ABOUT THE PROJECT", title:"TIMERS | Mir4VE · DARKOMENS COMMUNITY",
-            lead:"💾 Your preferences are saved automatically in this browser, so you don't have to set everything up again when you return. The page also brings together event schedules, timers, and alerts to help you follow MIR4 Global more easily.",
-            scheduleTitle:"⏱️ SCHEDULE AND TIMERS", schedule:"⚔️ Follow Frenzy Chamber, Fury Chamber, Leader's Chamber 3, Secret Peak, World Bosses in Valleys and Labyrinths, Purgatory and Cryptic Sanctuary. Each event shows whether it is waiting or active, its countdown, and a progress bar so you can see at a glance how much time remains. Use the tabs to find the category you need faster.",
-            alertsTitle:"🔔 SOUND ALERTS", alerts:"Turn on the main bell or choose which events to follow with their individual bells. 🔊 You’ll hear a warning when one minute remains, plus gentle sounds for timer changes and completion. Alerts stay active while you read this guide, and you can stop a sounding alert from the on-screen notification.",
-            regionsTitle:"🌎 REGION AND LANGUAGE", regions:"Choose a server region —NA, ASIA, INMENA, EU or SA— and the clock and timers will follow that selection. 🌐 You can also switch between English, Spanish and Portuguese for a more comfortable experience.",
-            presenceTitle:"👥 COMMUNITY ONLINE", presence:"The counter estimates unique public IP addresses with an active connection to this page. Tabs, browsers, private windows, or devices sharing the same public IP count as one presence; a phone on mobile data may count separately if it has a different IP. The IP is hashed before storage and is not saved as plain text. This cannot reliably identify physical devices or exclude every bot, and it does not show players connected inside the game.",
-            locastoreTitle:"💾 YOUR OPTIONS STAY SAVED", locastore:"The page automatically saves your language, server region, time format, selected tab, view, and alert preferences in persistent browser storage. They remain available after closing and reopening the page in the same browser, profile, device, and site address. A website cannot prevent the user or browser from deleting this data; clearing browsing history alone does not always clear site data. If you open this HTML as a local file, hosting it at a stable HTTPS URL is recommended so its storage origin stays consistent.",
-            fanTitle:"💚 DARKOMENS COMMUNITY PROJECT", fan:"TIMERS | Mir4VE is a DarkOmens community project that brings MIR4 Global event schedules together in one place. It is still in BETA and continues to improve with community feedback on both desktop and mobile.",
-            feedback:"💬 Spotted a bug or have an idea for an improvement? Send me a message on Instagram. Your feedback helps make this tool more useful for the whole community.",
-            instagram:"MESSAGE US ON INSTAGRAM", back:"BACK TO HOME", disclaimer:"Unofficial fan project. Not affiliated with or endorsed by Wemade or the official MIR4 team."
+            home:"HOME", aboutNav:"ABOUT", eyebrow:"PROJECT GUIDE", communityTag:"BUILT FOR THE COMMUNITY", title:"TIMERS | Mir4VE · DarkOmens Community",
+            lead:"Follow MIR4 Global events in one place. Check schedules, countdowns, and alerts through a page designed for both desktop and mobile.",
+            highlightTimers:"SCHEDULES AT A GLANCE", highlightAlerts:"ALERTS TO HELP YOU KEEP TRACK", highlightResponsive:"DESKTOP AND MOBILE", featuresEyebrow:"EXPLORE THE PLATFORM", featuresTitle:"What you can do",
+            scheduleTitle:"Schedules and timers", schedule:"Track the different event timers with status indicators, countdowns, and progress bars. Filter by category to find what you need quickly.",
+            alertsTitle:"Sound alerts", alerts:"Enable general or individual alerts. Get sound notifications as an event approaches and stop the sound from the on-screen notice. Your browser may require an interaction to enable audio.",
+            regionsTitle:"Region and language", regions:"Choose a server region to adjust displayed schedules, and switch between English, Spanish, and Portuguese in the language menu.",
+            locastoreTitle:"Saved preferences", locastore:"Your language, region, time format, view, and alert preferences are saved in your browser. Clearing site data or changing devices may require setting them up again.",
+            presenceTitle:"Community online", presence:"Shows an estimate of active connections to this page, not players inside MIR4. It is an approximate count based on public IPs and cannot identify devices with complete accuracy.",
+            useTitle:"Easy navigation", use:"Explore categories through the buttons and submenus, adjust your preferences, and enjoy an interface adapted to large and small screens.",
+            roadmapEyebrow:"CONTINUOUS IMPROVEMENT", roadmapTitle:"What may come next", roadmapLead:"The project is still in BETA and may evolve through use and community ideas. These are possibilities, not confirmed features or release dates.",
+            roadmapOneTitle:"More convenience", roadmapOne:"Refine navigation and the mobile experience.", roadmapTwoTitle:"Clearer information", roadmapTwo:"Make schedules and useful information clearer.", roadmapThreeTitle:"Community ideas", roadmapThree:"Listen to feedback and prioritize useful improvements.", roadmapNote:"Future changes depend on technical feasibility and community needs.",
+            fanEyebrow:"MADE BY FANS, FOR FANS", fanTitle:"A DarkOmens community project", fan:"TIMERS | Mir4VE is an independent DarkOmens community tool designed to make tracking MIR4 Global events easier on desktop and mobile.",
+            feedback:"Have a suggestion or spotted something to fix? Message me on Instagram and help improve the platform.",
+            instagram:"MESSAGE ON INSTAGRAM", back:"BACK TO TIMERS", disclaimer:"Unofficial fan project. Not affiliated with or endorsed by Wemade or the official MIR4 team. Schedules and features should be checked against available information and the selected region."
           }
         };
 
         function renderAboutLanguage() {
             const t = ABOUT_I18N[currentLang] || ABOUT_I18N.es;
             const fields = {
-                'home-nav-label':'home', 'about-nav-label':'aboutNav', 'about-eyebrow':'eyebrow',
-                'about-title':'title', 'about-lead':'lead', 'about-schedule-title':'scheduleTitle',
-                'about-schedule':'schedule', 'about-alerts-title':'alertsTitle', 'about-alerts':'alerts',
-                'about-regions-title':'regionsTitle', 'about-regions':'regions', 'about-presence-title':'presenceTitle',
-                'about-presence':'presence', 'about-locastore-title':'locastoreTitle', 'about-locastore':'locastore',
-                'about-fan-title':'fanTitle', 'about-fan':'fan', 'about-feedback':'feedback',
+                'home-nav-label':'home', 'about-nav-label':'aboutNav', 'about-eyebrow':'eyebrow', 'about-community-tag':'communityTag',
+                'about-title':'title', 'about-lead':'lead', 'about-highlight-timers':'highlightTimers', 'about-highlight-alerts':'highlightAlerts', 'about-highlight-responsive':'highlightResponsive',
+                'about-features-eyebrow':'featuresEyebrow', 'about-features-title':'featuresTitle',
+                'about-schedule-title':'scheduleTitle', 'about-schedule':'schedule', 'about-alerts-title':'alertsTitle', 'about-alerts':'alerts',
+                'about-regions-title':'regionsTitle', 'about-regions':'regions', 'about-presence-title':'presenceTitle', 'about-presence':'presence',
+                'about-locastore-title':'locastoreTitle', 'about-locastore':'locastore', 'about-use-title':'useTitle', 'about-use':'use',
+                'about-roadmap-eyebrow':'roadmapEyebrow', 'about-roadmap-title':'roadmapTitle', 'about-roadmap-lead':'roadmapLead',
+                'about-roadmap-one-title':'roadmapOneTitle', 'about-roadmap-one':'roadmapOne', 'about-roadmap-two-title':'roadmapTwoTitle', 'about-roadmap-two':'roadmapTwo',
+                'about-roadmap-three-title':'roadmapThreeTitle', 'about-roadmap-three':'roadmapThree', 'about-roadmap-note':'roadmapNote',
+                'about-fan-eyebrow':'fanEyebrow', 'about-fan-title':'fanTitle', 'about-fan':'fan', 'about-feedback':'feedback',
                 'about-instagram':'instagram', 'about-back':'back', 'about-disclaimer':'disclaimer'
             };
             Object.entries(fields).forEach(([id,key]) => {
@@ -1912,7 +2386,9 @@
             return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
+        let spectatorCounterInitialized = false;
         function initSpectatorCounter() {
+            if (spectatorCounterInitialized) return;
             const counter = document.getElementById('online-counter');
             if (!counter) return;
 
@@ -1928,6 +2404,7 @@
 
             try {
                 if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+                spectatorCounterInitialized = true;
                 const auth = firebase.auth();
                 const db = firebase.database();
                 const connectedRef = db.ref('.info/connected');
@@ -1936,6 +2413,8 @@
                 let lastConnectionRef = null;
                 let registeredUid = null;
                 let registrationInProgress = false;
+                let firebaseConnected = false;
+                let presenceConnectionRegistered = false;
                 let ipHashPromise = null;
 
                 // Count each IP only once, regardless of tabs or different browsers.
@@ -1943,6 +2422,9 @@
                 auth.signInAnonymously().then(credential => {
                     registeredUid = credential.user.uid;
                     ipHashPromise = getPublicIpHash().catch(error => { ipHashPromise = null; throw error; });
+                    // The .info/connected callback can fire before anonymous auth finishes.
+                    // Retry registration now that the UID is ready to avoid missing the first connection.
+                    registerPresenceIfConnected();
 
                     // Realtime counter: subscribe to IP nodes and their connection lists separately.
                     // Firebase pushes changes immediately; this does not require a page refresh.
@@ -1959,8 +2441,20 @@
                         if (ipConnectionListeners.has(ipKey)) return;
                         const connectionsRef = ipSnapshot.ref.child('connections');
                         const onConnectionsChanged = connectionsSnapshot => {
-                            activeIpNodes.set(ipKey, connectionsSnapshot.exists() && connectionsSnapshot.numChildren() > 0);
+                            const hasConnections = connectionsSnapshot.exists() && connectionsSnapshot.numChildren() > 0;
+                            activeIpNodes.set(ipKey, hasConnections);
                             renderOnlineCount();
+
+                            // Best-effort cleanup of empty IP nodes while at least one page is online.
+                            // The transaction prevents deleting a node if another tab/device connects concurrently.
+                            if (!hasConnections) {
+                                ipSnapshot.ref.transaction(current => {
+                                    if (current == null) return;
+                                    const connections = current.connections;
+                                    if (!connections || Object.keys(connections).length === 0) return null;
+                                    return;
+                                }).catch(error => console.warn('No se pudo limpiar un nodo de presencia vacío:', error));
+                            }
                         };
                         ipConnectionListeners.set(ipKey, { ref: connectionsRef, handler: onConnectionsChanged });
                         connectionsRef.on('value', onConnectionsChanged, error => {
@@ -1982,8 +2476,8 @@
                         renderOnlineCount();
                     });
 
-                    connectedRef.on('value', async snapshot => {
-                        if (snapshot.val() !== true || !registeredUid || registrationInProgress) return;
+                    async function registerPresenceIfConnected() {
+                        if (!firebaseConnected || !registeredUid || registrationInProgress || presenceConnectionRegistered) return;
                         registrationInProgress = true;
                         try {
                             const ipHash = await (ipHashPromise || (ipHashPromise = getPublicIpHash().catch(error => { ipHashPromise = null; throw error; })));
@@ -1998,6 +2492,7 @@
                                 page: 'DarkOmens'
                             });
                             lastConnectionRef = connectionRef;
+                            presenceConnectionRegistered = firebaseConnected;
                             counter.title = 'Presencia agrupada por IP pública: otras pestañas, navegadores o dispositivos con la misma IP no aumentan el contador.';
                         } catch (error) {
                             counter.title = 'No se pudo registrar la IP. Comprueba la conexión y las reglas de Firebase.';
@@ -2005,6 +2500,16 @@
                         } finally {
                             registrationInProgress = false;
                         }
+                    }
+
+                    connectedRef.on('value', snapshot => {
+                        firebaseConnected = snapshot.val() === true;
+                        if (!firebaseConnected) {
+                            presenceConnectionRegistered = false;
+                            lastConnectionRef = null;
+                            return;
+                        }
+                        registerPresenceIfConnected();
                     });
 
                     // Remove this connection when the page closes; onDisconnect is the fallback.
