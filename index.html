@@ -825,6 +825,39 @@
           #about-view .about-shell { border-radius:1.25rem; }
         }
         @media (prefers-reduced-motion: reduce) { #about-view .about-feature-card, #about-view .about-cta { transition:none; } #about-view .about-feature-card:hover, #about-view .about-cta:hover { transform:none; } }
+        /* Professional, responsive active-alert card. */
+        #alarm-toast {
+            position: fixed; left: auto; right: clamp(.75rem, 2.5vw, 1.5rem);
+            bottom: clamp(.75rem, 2.5vw, 1.5rem); z-index: 1000;
+            display: flex; align-items: center; gap: .9rem;
+            width: min(25rem, calc(100vw - 1.5rem)); max-width: calc(100vw - 1.5rem);
+            padding: 1rem; border: 1px solid rgba(251,191,36,.42);
+            border-radius: 1rem; color: #f8fafc;
+            background: linear-gradient(145deg, rgba(17,24,39,.98), rgba(8,13,24,.98));
+            box-shadow: 0 18px 55px rgba(0,0,0,.5), 0 0 0 1px rgba(251,191,36,.07), 0 0 28px rgba(245,158,11,.1);
+            backdrop-filter: blur(16px); font-family: 'Inter','Segoe UI',sans-serif;
+            animation: alarm-toast-in .24s cubic-bezier(.2,.8,.2,1) both;
+        }
+        #alarm-toast.hidden { display: none !important; }
+        #alarm-toast > i { display:grid; place-items:center; flex:0 0 2.75rem; width:2.75rem; height:2.75rem; border:1px solid rgba(251,191,36,.22); border-radius:.85rem; background:rgba(245,158,11,.12); color:#fbbf24; font-size:1.05rem; }
+        #alarm-toast > div { flex:1 1 auto; min-width:0; }
+        #toast-title { color:#fef3c7; font-size:.76rem; font-weight:850; letter-spacing:.075em; line-height:1.4; }
+        #toast-sub { margin-top:.25rem; color:#aebbd0; font-size:.72rem; font-weight:500; line-height:1.5; overflow-wrap:anywhere; }
+        #alarm-toast button { flex:0 0 auto; min-height:2.5rem; padding:.65rem .85rem; border:1px solid rgba(251,191,36,.38); border-radius:.7rem; background:rgba(245,158,11,.12); color:#fcd34d; font-size:.68rem; font-weight:850; letter-spacing:.04em; transition:background .15s ease,border-color .15s ease; }
+        #alarm-toast button:hover, #alarm-toast button:focus-visible { outline:2px solid rgba(251,191,36,.3); outline-offset:2px; background:rgba(245,158,11,.22); border-color:rgba(251,191,36,.7); }
+        @keyframes alarm-toast-in { from { opacity:0; transform:translateY(10px) scale(.985); } to { opacity:1; transform:translateY(0) scale(1); } }
+        @media (max-width: 480px) {
+            #alarm-toast { left:.65rem; right:.65rem; bottom:calc(.65rem + env(safe-area-inset-bottom, 0px)); width:auto; max-width:none; gap:.65rem; padding:.75rem; border-radius:.9rem; }
+            #alarm-toast > i { flex-basis:2.35rem; width:2.35rem; height:2.35rem; }
+            #toast-title { font-size:.68rem; }
+            #toast-sub { font-size:.66rem; }
+            #alarm-toast button { min-height:2.35rem; padding:.55rem .65rem; font-size:.62rem; }
+        }
+        @media (max-width: 350px) {
+            #alarm-toast { display:grid; grid-template-columns:2.35rem minmax(0,1fr); }
+            #alarm-toast button { grid-column:1 / -1; width:100%; }
+        }
+        @media (prefers-reduced-motion: reduce) { #alarm-toast { animation:none; } }
     </style>
 </head>
 <body class="p-3 sm:p-6 select-none custom-scrollbar">
@@ -1037,15 +1070,13 @@
     </main>
 
     <!-- STOP SOUND OVERLAY FLOATING TOAST -->
-    <div id="alarm-toast" class="fixed bottom-6 right-6 hidden bg-amber-500 text-slate-950 font-orbitron font-extrabold px-5 py-3 rounded-2xl shadow-2xl z-50 flex items-center gap-3 border-2 border-yellow-300 animate-bounce">
-        <i class="fa-solid fa-bell text-xl animate-spin"></i>
+    <div id="alarm-toast" class="hidden" role="status" aria-live="polite" aria-atomic="true">
+        <i class="fa-solid fa-bell" aria-hidden="true"></i>
         <div>
-            <div class="text-xs tracking-wider" id="toast-title">¡EVENTO EN CURSO!</div>
-            <div class="text-[10px] font-bold opacity-80" id="toast-sub">Sonando alerta...</div>
+            <div id="toast-title">¡EVENTO ACTIVADO!</div>
+            <div id="toast-sub">Alerta sonora de TIMERS | Mir4VE</div>
         </div>
-        <button onclick="stopChimeSound()" class="ml-2 bg-slate-950 text-amber-400 text-xs px-3 py-1.5 rounded-xl font-black hover:bg-slate-900 transition-colors">
-            DETENER
-        </button>
+        <button type="button" onclick="stopChimeSound()">DETENER</button>
     </div>
 
     <script>
@@ -1187,7 +1218,16 @@
         // Load saved preferences once per setting; fall back safely when storage is unavailable.
         const savedLang = appStorage.getItem(STORAGE_LANG);
         const savedTab = appStorage.getItem(STORAGE_ACTIVE_TAB);
-        let currentLang = ['es', 'pt', 'en'].includes(savedLang) ? savedLang : 'es';
+        // First visit only: Spanish browsers use general Spanish, Portuguese browsers use Portuguese,
+        // and all other locales default to English. A saved manual choice always wins.
+        function detectInitialLanguage() {
+            const locales = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || 'en'])
+                .map(value => String(value).toLowerCase());
+            if (locales.some(value => value === 'es' || value.startsWith('es-'))) return 'es';
+            if (locales.some(value => value === 'pt' || value.startsWith('pt-'))) return 'pt';
+            return 'en';
+        }
+        let currentLang = ['es', 'pt', 'en'].includes(savedLang) ? savedLang : detectInitialLanguage();
         const VALID_TABS = ['ALL', 'FRENESI', 'FURIA', 'LIDERES', 'CIMA', 'WB_VALLES', 'WB_LABERINTOS', 'PURGATORIO', 'ORATORIO'];
         let currentTab = VALID_TABS.includes(savedTab) ? savedTab : 'ALL';
         const SERVER_CONFIG = {
@@ -1510,16 +1550,18 @@
             };
             playStep();
             let ticks = 1;
-            // Repeat the gentle warning for up to 10 seconds (20 half-second chimes).
+            // Repeat the gentle warning for up to 15 seconds (30 half-second chimes).
             // The existing Stop button cancels the queue immediately.
             chimeQueueTimer = setInterval(() => {
-                if (ticks >= 20) {
+                if (ticks >= 30) {
                     clearInterval(chimeQueueTimer);
                     chimeQueueTimer = null;
                     chimeQueueRunning = false;
                     if (queuedChimes.length === 0) {
                         const toast = document.getElementById('alarm-toast');
+                        const wasVisible = toast && !toast.classList.contains('hidden');
                         if (toast) toast.classList.add('hidden');
+                        if (wasVisible) playAutoDismissSound();
                     }
                     runNextQueuedChime();
                     return;
@@ -1529,7 +1571,48 @@
             }, 500);
         }
 
+        // A gentle, resolved two-note sound when the user stops the alert manually.
+        function playManualStopSound() {
+            initAudioContext();
+            if (!audioCtx) return;
+            try {
+                const now = audioCtx.currentTime;
+                [[784, 0, 0.045, 0.14], [1174.66, 0.07, 0.035, 0.2]].forEach(([freq, delay, volume, duration]) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + delay);
+                    gain.gain.setValueAtTime(0.0001, now + delay);
+                    gain.gain.exponentialRampToValueAtTime(volume, now + delay + 0.012);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + delay + duration);
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.start(now + delay); osc.stop(now + delay + duration + 0.02);
+                });
+            } catch (e) {}
+        }
+
+        // A soft descending "welp, I'm done" cue when the alert times out by itself.
+        function playAutoDismissSound() {
+            initAudioContext();
+            if (!audioCtx || audioCtx.state !== 'running') return;
+            try {
+                const now = audioCtx.currentTime;
+                [[659.25, 0, 0.035, 0.13], [523.25, 0.11, 0.028, 0.16], [392, 0.23, 0.018, 0.22]].forEach(([freq, delay, volume, duration]) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + delay);
+                    gain.gain.setValueAtTime(0.0001, now + delay);
+                    gain.gain.exponentialRampToValueAtTime(volume, now + delay + 0.012);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + delay + duration);
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.start(now + delay); osc.stop(now + delay + duration + 0.02);
+                });
+            } catch (e) {}
+        }
+
         function stopChimeSound() {
+            const wasVisible = !document.getElementById('alarm-toast')?.classList.contains('hidden');
             if (chimeQueueTimer) {
                 clearInterval(chimeQueueTimer);
                 chimeQueueTimer = null;
@@ -1538,6 +1621,7 @@
             chimeQueueRunning = false;
             const toast = document.getElementById('alarm-toast');
             if (toast) toast.classList.add('hidden');
+            if (wasVisible) playManualStopSound();
         }
 
         // Soft, short UI click cue, intentionally distinct from event alerts.
@@ -1738,7 +1822,22 @@
 
         // 24-hour format is the default; this changes presentation only, never schedule calculations.
         const savedTimeFormat = appStorage.getItem(STORAGE_TIME_FORMAT);
-        let timeFormat = savedTimeFormat === '12h' ? '12h' : '24h';
+        function detectInitialTimeFormat() {
+            try {
+                const locale = navigator.languages && navigator.languages[0] ? navigator.languages[0] : navigator.language;
+                const options = new Intl.DateTimeFormat(locale || undefined, { hour: 'numeric' }).resolvedOptions();
+                const cycle = options.hourCycle;
+                if (cycle) return cycle === 'h11' || cycle === 'h12' ? '12h' : '24h';
+                return /AM|PM/i.test(new Date().toLocaleTimeString(locale || undefined, { hour: 'numeric' })) ? '12h' : '24h';
+            } catch (e) {
+                return '24h';
+            }
+        }
+        let timeFormat = savedTimeFormat === '12h' || savedTimeFormat === '24h'
+            ? savedTimeFormat
+            : detectInitialTimeFormat();
+        if (!savedTimeFormat) appStorage.setItem(STORAGE_TIME_FORMAT, timeFormat);
+        if (!savedLang) appStorage.setItem(STORAGE_LANG, currentLang);
 
         function renderTimeFormatToggle() {
             const toggle = document.getElementById('time-format-toggle');
