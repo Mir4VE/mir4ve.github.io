@@ -109,6 +109,18 @@
             transform: rotate(-12deg);
         }
         .event-card > .event-card-content { position: relative; z-index: 1; }
+        /* Iluminación suave en la tarjeta cuya alerta está sonando. El overlay no bloquea clics. */
+        .event-card.alert-glow-active::after {
+            content: ""; position: absolute; inset: 1px; z-index: 0; pointer-events: none;
+            border: 1px solid rgba(250, 204, 21, .68); border-radius: inherit;
+            box-shadow: inset 0 0 18px rgba(250, 204, 21, .12), 0 0 22px rgba(250, 204, 21, .13);
+            animation: alert-card-glow 1.4s ease-in-out infinite;
+            animation-delay: var(--alert-loop-offset, 0s);
+        }
+        @keyframes alert-card-glow {
+            0%, 100% { opacity: .35; box-shadow: inset 0 0 8px rgba(250, 204, 21, .07), 0 0 8px rgba(250, 204, 21, .06); }
+            50% { opacity: 1; box-shadow: inset 0 0 24px rgba(250, 204, 21, .2), 0 0 25px rgba(250, 204, 21, .2); }
+        }
         /* Server clock: clean white instead of yellow. */
         /* Hover estable: updateDashboard reconstruye las tarjetas cada segundo.
            Sin transición de sombra/fondo, el reemplazo del DOM no reinicia una animación
@@ -141,6 +153,33 @@
             transform: none !important;
         }
         .countdown-number { animation: none !important; }
+        /* Cabecera en dos columnas: título a la izquierda y controles a la derecha.
+           Al reservar columnas reales, la campana/estado nunca se superponen al título,
+           incluso en móviles muy estrechos o con zoom alto. */
+        .event-card-header { position: relative; display: grid !important; grid-template-columns: minmax(0, 1fr) max-content; align-items: start; column-gap: .45rem; min-height: 2rem; }
+        .event-card-header .event-title { display: flex !important; align-items: center; flex-wrap: wrap; width: fit-content; max-width: 100%; min-width: 0; white-space: normal; overflow-wrap: anywhere; word-break: normal; }
+        .event-card-status-controls { position: static; grid-column: 2; grid-row: 1; min-width: max-content; display: inline-flex; align-items: center; justify-content: flex-end; gap: .35rem; white-space: nowrap; }
+        .event-card-status-controls > span:last-child { white-space: nowrap; }
+        .active-duration-label, .active-duration-value { text-transform: uppercase; }
+        .active-duration-label { letter-spacing: .09em; }
+        .active-duration-value { letter-spacing: .04em; }
+        @media (max-width: 420px) {
+            .event-card-header { column-gap: .3rem; }
+            .event-card-status-controls { gap: .2rem; }
+            .event-card-status-controls .alert-bell-button,
+            .event-card-status-controls .bell-locked { padding: .22rem !important; }
+            .event-card-status-controls > span:last-child { padding: .22rem .3rem !important; font-size: 9px !important; }
+            .event-card-header .event-title { padding: .25rem .35rem !important; font-size: 10px !important; gap: .25rem !important; }
+        }
+        @media (max-width: 340px) {
+            .event-card { padding: .8rem !important; }
+            .event-card-header { column-gap: .2rem; }
+            .event-card-status-controls { gap: .15rem; }
+            .event-card-status-controls .alert-bell-button,
+            .event-card-status-controls .bell-locked { padding: .18rem !important; }
+            .event-card-status-controls > span:last-child { padding: .18rem .22rem !important; font-size: 8px !important; }
+            .event-card-header .event-title { padding: .2rem .25rem !important; font-size: 9px !important; }
+        }
         /* Indicador de espera: ciclo continuo de 5 s, sincronizado para evitar reinicios al actualizar las tarjetas. */
         .waiting-dots::after {
             content: "";
@@ -825,39 +864,63 @@
           #about-view .about-shell { border-radius:1.25rem; }
         }
         @media (prefers-reduced-motion: reduce) { #about-view .about-feature-card, #about-view .about-cta { transition:none; } #about-view .about-feature-card:hover, #about-view .about-cta:hover { transform:none; } }
-        /* Professional, responsive active-alert card. */
+        /* Alerta protagonista: entra desde abajo y queda centrada en la parte inferior. */
         #alarm-toast {
-            position: fixed; left: auto; right: clamp(.75rem, 2.5vw, 1.5rem);
-            bottom: clamp(.75rem, 2.5vw, 1.5rem); z-index: 1000;
+            position: fixed; left: 50%; right: auto;
+            bottom: calc(1.15rem + env(safe-area-inset-bottom, 0px)); z-index: 1000;
             display: flex; align-items: center; gap: .9rem;
-            width: min(25rem, calc(100vw - 1.5rem)); max-width: calc(100vw - 1.5rem);
-            padding: 1rem; border: 1px solid rgba(251,191,36,.42);
-            border-radius: 1rem; color: #f8fafc;
-            background: linear-gradient(145deg, rgba(17,24,39,.98), rgba(8,13,24,.98));
-            box-shadow: 0 18px 55px rgba(0,0,0,.5), 0 0 0 1px rgba(251,191,36,.07), 0 0 28px rgba(245,158,11,.1);
-            backdrop-filter: blur(16px); font-family: 'Inter','Segoe UI',sans-serif;
-            animation: alarm-toast-in .24s cubic-bezier(.2,.8,.2,1) both;
+            width: min(32rem, calc(100vw - 1.5rem)); max-width: calc(100vw - 1.5rem);
+            padding: 1rem 1.05rem; border: 1px solid rgba(251,191,36,.72);
+            border-radius: 1.1rem; color: #f8fafc;
+            background: linear-gradient(125deg, rgba(35,24,7,.98), rgba(12,18,31,.985) 52%, rgba(27,16,7,.98));
+            box-shadow: 0 20px 65px rgba(0,0,0,.58), 0 0 0 1px rgba(251,191,36,.13), 0 0 34px rgba(245,158,11,.25);
+            backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+            font-family: 'Inter','Segoe UI',sans-serif; overflow: hidden;
+            transform: translateX(-50%);
+            animation: alarm-toast-rise .48s cubic-bezier(.16,1,.3,1) both, alarm-toast-attention 1.5s ease-in-out .48s infinite;
+        }
+        #alarm-toast::before {
+            content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+            background: linear-gradient(90deg, #f59e0b, #fef08a, #fb923c, #fef08a, #f59e0b);
+            background-size: 220% 100%; animation: alarm-light-sweep 1.8s linear infinite;
         }
         #alarm-toast.hidden { display: none !important; }
-        #alarm-toast > i { display:grid; place-items:center; flex:0 0 2.75rem; width:2.75rem; height:2.75rem; border:1px solid rgba(251,191,36,.22); border-radius:.85rem; background:rgba(245,158,11,.12); color:#fbbf24; font-size:1.05rem; }
+        #alarm-toast > i {
+            display:grid; place-items:center; flex:0 0 3.15rem; width:3.15rem; height:3.15rem;
+            border:1px solid rgba(253,224,71,.58); border-radius:1rem;
+            background:radial-gradient(circle at 35% 25%, rgba(254,240,138,.3), rgba(245,158,11,.13) 68%);
+            color:#fde047; font-size:1.35rem; filter:drop-shadow(0 0 10px rgba(250,204,21,.4));
+            transform-origin:50% 12%; animation: alert-bell-ring .82s ease-in-out infinite;
+        }
         #alarm-toast > div { flex:1 1 auto; min-width:0; }
-        #toast-title { color:#fef3c7; font-size:.76rem; font-weight:850; letter-spacing:.075em; line-height:1.4; }
-        #toast-sub { margin-top:.25rem; color:#aebbd0; font-size:.72rem; font-weight:500; line-height:1.5; overflow-wrap:anywhere; }
-        #alarm-toast button { flex:0 0 auto; min-height:2.5rem; padding:.65rem .85rem; border:1px solid rgba(251,191,36,.38); border-radius:.7rem; background:rgba(245,158,11,.12); color:#fcd34d; font-size:.68rem; font-weight:850; letter-spacing:.04em; transition:background .15s ease,border-color .15s ease; }
-        #alarm-toast button:hover, #alarm-toast button:focus-visible { outline:2px solid rgba(251,191,36,.3); outline-offset:2px; background:rgba(245,158,11,.22); border-color:rgba(251,191,36,.7); }
-        @keyframes alarm-toast-in { from { opacity:0; transform:translateY(10px) scale(.985); } to { opacity:1; transform:translateY(0) scale(1); } }
-        @media (max-width: 480px) {
-            #alarm-toast { left:.65rem; right:.65rem; bottom:calc(.65rem + env(safe-area-inset-bottom, 0px)); width:auto; max-width:none; gap:.65rem; padding:.75rem; border-radius:.9rem; }
-            #alarm-toast > i { flex-basis:2.35rem; width:2.35rem; height:2.35rem; }
-            #toast-title { font-size:.68rem; }
-            #toast-sub { font-size:.66rem; }
-            #alarm-toast button { min-height:2.35rem; padding:.55rem .65rem; font-size:.62rem; }
+        #toast-title { color:#fef3c7; font-size:.83rem; font-weight:900; letter-spacing:.065em; line-height:1.4; text-shadow:0 0 16px rgba(251,191,36,.18); }
+        #toast-sub { margin-top:.28rem; color:#d2d9e6; font-size:.75rem; font-weight:550; line-height:1.5; overflow-wrap:anywhere; }
+        #alarm-toast button {
+            flex:0 0 auto; min-height:2.65rem; padding:.7rem .9rem; border:1px solid rgba(253,224,71,.7);
+            border-radius:.75rem; background:linear-gradient(135deg,rgba(245,158,11,.25),rgba(234,88,12,.18));
+            color:#fef08a; font-size:.7rem; font-weight:900; letter-spacing:.055em;
+            box-shadow:inset 0 1px rgba(255,255,255,.08),0 0 16px rgba(245,158,11,.1);
+            transition:background .15s ease,border-color .15s ease,transform .15s ease;
         }
-        @media (max-width: 350px) {
-            #alarm-toast { display:grid; grid-template-columns:2.35rem minmax(0,1fr); }
-            #alarm-toast button { grid-column:1 / -1; width:100%; }
+        #alarm-toast button:hover, #alarm-toast button:focus-visible { outline:2px solid rgba(251,191,36,.4); outline-offset:2px; background:rgba(245,158,11,.32); border-color:#fde68a; transform:translateY(-1px); }
+        @keyframes alarm-toast-rise { from { opacity:0; transform:translate(-50%, 48px) scale(.94); filter:blur(3px); } 72% { opacity:1; transform:translate(-50%, -4px) scale(1.012); filter:blur(0); } to { opacity:1; transform:translate(-50%, 0) scale(1); filter:blur(0); } }
+        @keyframes alarm-toast-attention { 0%,100% { box-shadow:0 20px 65px rgba(0,0,0,.58),0 0 0 1px rgba(251,191,36,.13),0 0 24px rgba(245,158,11,.18); } 50% { box-shadow:0 20px 65px rgba(0,0,0,.58),0 0 0 1px rgba(251,191,36,.24),0 0 38px rgba(245,158,11,.36); } }
+        @keyframes alarm-light-sweep { to { background-position:220% 0; } }
+        @keyframes alert-bell-ring { 0%,100% { transform:rotate(0) scale(1); } 12%,36%,60% { transform:rotate(16deg) scale(1.04); } 24%,48%,72% { transform:rotate(-16deg) scale(1.04); } 84% { transform:rotate(5deg) scale(1); } }
+        @media (max-width: 540px) {
+            #alarm-toast { bottom:calc(.7rem + env(safe-area-inset-bottom, 0px)); width:calc(100vw - 1.1rem); max-width:calc(100vw - 1.1rem); gap:.65rem; padding:.85rem .8rem; border-radius:1rem; }
+            #alarm-toast > i { flex-basis:2.65rem; width:2.65rem; height:2.65rem; font-size:1.15rem; }
+            #toast-title { font-size:.72rem; }
+            #toast-sub { font-size:.67rem; }
+            #alarm-toast button { min-height:2.45rem; padding:.6rem .65rem; font-size:.62rem; }
         }
-        @media (prefers-reduced-motion: reduce) { #alarm-toast { animation:none; } }
+        @media (max-width: 360px) {
+            #alarm-toast { display:grid; grid-template-columns:2.45rem minmax(0,1fr); gap:.55rem; }
+            #alarm-toast > i { grid-row:1; grid-column:1; }
+            #alarm-toast > div { grid-row:1; grid-column:2; }
+            #alarm-toast button { grid-row:2; grid-column:1 / -1; width:100%; }
+        }
+        @media (prefers-reduced-motion: reduce) { #alarm-toast, #alarm-toast::before, #alarm-toast > i { animation:none !important; } }
     </style>
 </head>
 <body class="p-3 sm:p-6 select-none custom-scrollbar">
@@ -966,8 +1029,15 @@
         <div class="flex flex-wrap items-center gap-2 pb-2 text-xs font-orbitron font-bold" id="main-event-nav">
             <button onclick="setTab('ALL')" id="tab-ALL" class="tab-btn inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500 text-black shadow-lg shadow-amber-500/20 transition-all duration-200 whitespace-nowrap"><i class="fa-solid fa-layer-group" aria-hidden="true"></i><span class="tab-label">TODAS</span></button>
 
+            <div class="nav-group" id="nav-group-domination">
+                <button type="button" id="nav-trigger-domination" class="nav-group-trigger" onclick="toggleNavMenu('nav-menu-domination')" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-dragon"></i><span data-nav-label="domination">DOMINACIÓN</span><i class="fa-solid fa-chevron-down text-[9px]"></i></button>
+                <div id="nav-menu-domination" class="nav-submenu hidden" role="menu">
+                    <button type="button" role="menuitem" data-tab="TORRE" onclick="chooseNavTab('TORRE','nav-menu-domination')" class="nav-submenu-option"><i class="fa-solid fa-door-open w-4 text-center"></i><span class="submenu-label" data-tab-label="TORRE">TORRE</span></button>
+                </div>
+            </div>
+
             <div class="nav-group" id="nav-group-ms-p11p12">
-                <button type="button" id="nav-trigger-ms-p11p12" class="nav-group-trigger" onclick="toggleNavMenu('nav-menu-ms-p11p12')" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-shield-halved"></i><span>𝐏𝟏𝟏 &amp; 𝐏𝟏𝟐</span><i class="fa-solid fa-chevron-down text-[9px]"></i></button>
+                <button type="button" id="nav-trigger-ms-p11p12" class="nav-group-trigger" onclick="toggleNavMenu('nav-menu-ms-p11p12')" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-shield-halved"></i><span data-nav-label="msP11P12">𝐏𝟏𝟏 &amp; 𝐏𝟏𝟐</span><i class="fa-solid fa-chevron-down text-[9px]"></i></button>
                 <div id="nav-menu-ms-p11p12" class="nav-submenu hidden" role="menu">
                     <button type="button" role="menuitem" data-tab="FRENESI" onclick="chooseNavTab('FRENESI','nav-menu-ms-p11p12')" class="nav-submenu-option"><i class="fa-solid fa-bolt w-4 text-center"></i><span class="submenu-label" data-tab-label="FRENESI">FRENESÍ</span></button>
                     <button type="button" role="menuitem" data-tab="FURIA" onclick="chooseNavTab('FURIA','nav-menu-ms-p11p12')" class="nav-submenu-option"><i class="fa-solid fa-fire w-4 text-center"></i><span class="submenu-label" data-tab-label="FURIA">FURIA</span></button>
@@ -975,7 +1045,7 @@
             </div>
 
             <div class="nav-group" id="nav-group-ms-sp">
-                <button type="button" id="nav-trigger-ms-sp" class="nav-group-trigger" onclick="toggleNavMenu('nav-menu-ms-sp')" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-crown"></i><span>MS &amp; SP</span><i class="fa-solid fa-chevron-down text-[9px]"></i></button>
+                <button type="button" id="nav-trigger-ms-sp" class="nav-group-trigger" onclick="toggleNavMenu('nav-menu-ms-sp')" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-feather-pointed"></i><span data-nav-label="msSp">MS &amp; SP</span><i class="fa-solid fa-chevron-down text-[9px]"></i></button>
                 <div id="nav-menu-ms-sp" class="nav-submenu hidden" role="menu">
                     <button type="button" role="menuitem" data-tab="LIDERES" onclick="chooseNavTab('LIDERES','nav-menu-ms-sp')" class="nav-submenu-option"><i class="fa-solid fa-crown w-4 text-center"></i><span class="submenu-label" data-tab-label="LIDERES">LIDER III</span></button>
                     <button type="button" role="menuitem" data-tab="CIMA" onclick="chooseNavTab('CIMA','nav-menu-ms-sp')" class="nav-submenu-option"><i class="fa-solid fa-mountain w-4 text-center"></i><span class="submenu-label" data-tab-label="CIMA">CIMA</span></button>
@@ -983,15 +1053,20 @@
             </div>
 
             <div class="nav-group" id="nav-group-world-boss">
-                <button type="button" id="nav-trigger-world-boss" class="nav-group-trigger" onclick="toggleNavMenu('nav-menu-world-boss')" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-dragon"></i><span>WORLD BOSS</span><i class="fa-solid fa-chevron-down text-[9px]"></i></button>
+                <button type="button" id="nav-trigger-world-boss" class="nav-group-trigger" onclick="toggleNavMenu('nav-menu-world-boss')" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-tower-observation"></i><span data-nav-label="worldBoss">WORLD BOSS</span><i class="fa-solid fa-chevron-down text-[9px]"></i></button>
                 <div id="nav-menu-world-boss" class="nav-submenu hidden" role="menu">
-                    <button type="button" role="menuitem" data-tab="WB_VALLES" onclick="chooseNavTab('WB_VALLES','nav-menu-world-boss')" class="nav-submenu-option"><i class="fa-solid fa-tree w-4 text-center"></i><span class="submenu-label" data-tab-label="WB_VALLES">VALLES</span></button>
-                    <button type="button" role="menuitem" data-tab="WB_LABERINTOS" onclick="chooseNavTab('WB_LABERINTOS','nav-menu-world-boss')" class="nav-submenu-option"><i class="fa-solid fa-draw-polygon w-4 text-center"></i><span class="submenu-label" data-tab-label="WB_LABERINTOS">LABERINTOS</span></button>
+                    <button type="button" role="menuitem" data-tab="WB_VALLES" onclick="chooseNavTab('WB_VALLES','nav-menu-world-boss')" class="nav-submenu-option"><i class="fa-solid fa-skull w-4 text-center"></i><span class="submenu-label" data-tab-label="WB_VALLES">VALLES</span></button>
+                    <button type="button" role="menuitem" data-tab="WB_LABERINTOS" onclick="chooseNavTab('WB_LABERINTOS','nav-menu-world-boss')" class="nav-submenu-option"><i class="fa-solid fa-khanda w-4 text-center"></i><span class="submenu-label" data-tab-label="WB_LABERINTOS">LABERINTOS</span></button>
                 </div>
             </div>
 
-            <button onclick="setTab('PURGATORIO')" id="tab-PURGATORIO" class="tab-btn inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-card/80 border border-brand-border/80 text-slate-400 hover:text-white hover:border-slate-600 transition-all duration-200 whitespace-nowrap"><i class="fa-solid fa-dungeon" aria-hidden="true"></i><span class="tab-label">PURGATORIO</span></button>
-            <button onclick="setTab('ORATORIO')" id="tab-ORATORIO" class="tab-btn inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-card/80 border border-brand-border/80 text-slate-400 hover:text-white hover:border-slate-600 transition-all duration-200 whitespace-nowrap"><i class="fa-solid fa-ghost" aria-hidden="true"></i><span class="tab-label">ORATORIO CRÍPTICO</span></button>
+            <div class="nav-group" id="nav-group-other-content">
+                <button type="button" id="nav-trigger-other-content" class="nav-group-trigger" onclick="toggleNavMenu('nav-menu-other-content')" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-compass-drafting"></i><span data-nav-label="otherContent">OTROS CONTENIDOS</span><i class="fa-solid fa-chevron-down text-[9px]"></i></button>
+                <div id="nav-menu-other-content" class="nav-submenu hidden" role="menu">
+                    <button type="button" role="menuitem" data-tab="PURGATORIO" onclick="chooseNavTab('PURGATORIO','nav-menu-other-content')" class="nav-submenu-option"><i class="fa-solid fa-dungeon w-4 text-center"></i><span class="submenu-label" data-tab-label="PURGATORIO">PURGATORIO</span></button>
+                    <button type="button" role="menuitem" data-tab="ORATORIO" onclick="chooseNavTab('ORATORIO','nav-menu-other-content')" class="nav-submenu-option"><i class="fa-solid fa-ghost w-4 text-center"></i><span class="submenu-label" data-tab-label="ORATORIO">ORATORIO CRÍPTICO</span></button>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -1157,9 +1232,9 @@
         window.addEventListener('pagehide', () => {
             try {
                 appStorage.setItem(STORAGE_LANG, currentLang);
-                appStorage.setItem(STORAGE_MASTER_ALERT, String(globalAudioEnabled));
-                appStorage.setItem(STORAGE_BELLS, JSON.stringify(cardBellStates));
-                appStorage.setItem(STORAGE_SERVER, currentServer);
+                appStorage.setItem(serverPreferenceKey(STORAGE_MASTER_ALERT), String(globalAudioEnabled));
+                appStorage.setItem(serverPreferenceKey(STORAGE_BELLS), JSON.stringify(cardBellStates));
+                try { sessionStorage.setItem(STORAGE_SERVER, currentServer); } catch (error) {}
                 appStorage.setItem(STORAGE_TIME_FORMAT, timeFormat);
                 appStorage.setItem(STORAGE_ACTIVE_TAB, currentTab);
                 const about = document.getElementById('about-view');
@@ -1189,28 +1264,31 @@
             es: {
                 serverTime: "HORA SERVIDOR", localTime: "HORA LOCAL", weekReset: "REINICIO SEMANAL", online: "en línea", alertsOn: "Alertas activadas", alertsOff: "Alertas desactivadas", sponsor: "SPONSOR",
                 introCommunity: "COMUNIDAD DARKOMENS", introDescription: "Consulta los horarios de todos los eventos de MIR4 Global en tiempo real.", introLive: "HORARIOS EN VIVO",
-                tabs: { ALL: "TODAS", FRENESI: "FRENESÍ", FURIA: "FURIA", LIDERES: "LIDER III", CIMA: "CIMA", WB_VALLES: "VALLES", WB_LABERINTOS: "LABERINTOS", PURGATORIO: "PURGATORIO", ORATORIO: "ORATORIO CRÍPTICO" },
-                statusActive: "En curso", statusWaiting: "En espera", nextOpening: "Próxima apertura:", durationActive: "Duración activa:", opensIn: "Abre en:", closesIn: "Cierra en:",
+                navGroups: { domination: "DOMINACIÓN", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OTROS CONTENIDOS" },
+                tabs: { ALL: "TODAS", FRENESI: "FRENESÍ", FURIA: "FURIA", LIDERES: "LIDER III", CIMA: "CIMA", WB_VALLES: "VALLES", WB_LABERINTOS: "LABERINTOS", PURGATORIO: "PURGATORIO", ORATORIO: "ORATORIO CRÍPTICO", TORRE: "TORRE" },
+                statusActive: "En curso", activeNow: "Evento en curso", statusWaiting: "En espera", nextOpening: "Próxima apertura:", durationActive: "Duración activa:", opensIn: "Abre en:", closesIn: "Cierra en:",
                 toastTitle: "¡EVENTO ACTIVADO!", toastSub: "Alerta de TIMERS | Mir4VE", nextQueueTitle: "Próximos ciclos en espera:", durationMin: "min", durationHour: "1 hora", timePrefix: "en ", unitHour: "h", unitMinute: "m", unitSecond: "s",
-                eventTitles: { frenesi: "MS ◂FRENESÍ▸", furia: "MS ◂FURIA▸", lideres: "MS ◂LIDER 3▸", oratorio: "◂Oratorio Críptico▸", cima_inferior: "SP ◂JEFE SUR▸", cima_superior: "SP ◂JEFE NORTE▸", purgatorio: "◂Purgatorio▸", wb_valles: "WB ◂VALLES▸", wb_laberintos: "WB ◂LABERINTOS▸" },
+                eventTitles: { frenesi: "MS ◂FRENESÍ▸", furia: "MS ◂FURIA▸", lideres: "MS ◂LIDER 3▸", oratorio: "◂Oratorio Críptico▸", cima_inferior: "SP ◂JEFE SUR▸", cima_superior: "SP ◂JEFE NORTE▸", purgatorio: "◂Purgatorio▸", wb_valles: "WB ◂VALLES▸", wb_laberintos: "WB ◂LABERINTOS▸", domination_tower: "◂TORRE DEL DRAGÓN▸" },
                 bellTitle: "Alertas para este evento", stop: "DETENER"
             },
             pt: {
                 serverTime: "HORA DO SERVIDOR", localTime: "HORA LOCAL", weekReset: "REINÍCIO SEMANAL", online: "online", alertsOn: "Alertas ativados", alertsOff: "Alertas desativados", sponsor: "PATROCÍNIO",
                 introCommunity: "COMUNIDADE DARKOMENS", introDescription: "Consulte os horários de todos os eventos de MIR4 Global em tempo real.", introLive: "AGENDA AO VIVO",
-                tabs: { ALL: "TODOS", FRENESI: "FRENESI", FURIA: "FÚRIA", LIDERES: "LÍDER III", CIMA: "PICO SECRETO", WB_VALLES: "VALES", WB_LABERINTOS: "LABIRINTOS", PURGATORIO: "PURGATÓRIO", ORATORIO: "SANTUÁRIO SECRETO" },
-                statusActive: "Em andamento", statusWaiting: "Aguardando", nextOpening: "Próxima abertura:", durationActive: "Duração ativa:", opensIn: "Abre em:", closesIn: "Fecha em:",
+                navGroups: { domination: "DOMINAÇÃO", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OUTROS CONTEÚDOS" },
+                tabs: { ALL: "TODOS", FRENESI: "FRENESI", FURIA: "FÚRIA", LIDERES: "LÍDER III", CIMA: "PICO SECRETO", WB_VALLES: "VALES", WB_LABERINTOS: "LABIRINTOS", PURGATORIO: "PURGATÓRIO", ORATORIO: "SANTUÁRIO SECRETO", TORRE: "TORRE" },
+                statusActive: "Em andamento", activeNow: "Evento em andamento", statusWaiting: "Aguardando", nextOpening: "Próxima abertura:", durationActive: "Duração ativa:", opensIn: "Abre em:", closesIn: "Fecha em:",
                 toastTitle: "EVENTO INICIADO!", toastSub: "Alerta do TIMERS | Mir4VE", nextQueueTitle: "Próximos ciclos aguardando:", durationMin: "min", durationHour: "1 hora", timePrefix: "em ", unitHour: "h", unitMinute: "min", unitSecond: "s",
-                eventTitles: { frenesi: "MS ◂FRENESI▸", furia: "MS ◂FÚRIA▸", lideres: "MS ◂LÍDER 3▸", oratorio: "◂Santuário Secreto▸", cima_inferior: "SP ◂BOSS SUL▸", cima_superior: "SP ◂BOSS NORTE▸", purgatorio: "◂Purgatório▸", wb_valles: "WB ◂VALES▸", wb_laberintos: "WB ◂LABIRINTOS▸" },
+                eventTitles: { frenesi: "MS ◂FRENESI▸", furia: "MS ◂FÚRIA▸", lideres: "MS ◂LÍDER 3▸", oratorio: "◂Santuário Secreto▸", cima_inferior: "SP ◂BOSS SUL▸", cima_superior: "SP ◂BOSS NORTE▸", purgatorio: "◂Purgatório▸", wb_valles: "WB ◂VALES▸", wb_laberintos: "WB ◂LABIRINTOS▸", domination_tower: "◂TORRE DO DRAGÃO▸" },
                 bellTitle: "Alertas para este evento", stop: "PARAR"
             },
             en: {
                 serverTime: "SERVER TIME", localTime: "LOCAL TIME", weekReset: "WEEKLY RESET", online: "online", alertsOn: "Alerts On", alertsOff: "Alerts Off", sponsor: "SPONSOR",
                 introCommunity: "DARKOMENS COMMUNITY", introDescription: "Check the schedules for all MIR4 Global events in real time.", introLive: "LIVE SCHEDULE",
-                tabs: { ALL: "ALL", FRENESI: "FRENZY", FURIA: "FURY", LIDERES: "LEADER III", CIMA: "SECRET PEAK", WB_VALLES: "VALLEYS", WB_LABERINTOS: "LABYRINTHS", PURGATORIO: "PURGATORY", ORATORIO: "CRYPTIC SANCTUARY" },
-                statusActive: "Active", statusWaiting: "Waiting", nextOpening: "Next opening:", durationActive: "Active duration:", opensIn: "Opens in:", closesIn: "Closes in:",
+                navGroups: { domination: "DOMINATION", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OTHER CONTENT" },
+                tabs: { ALL: "ALL", FRENESI: "FRENZY", FURIA: "FURY", LIDERES: "LEADER III", CIMA: "SECRET PEAK", WB_VALLES: "VALLEYS", WB_LABERINTOS: "LABYRINTHS", PURGATORIO: "PURGATORY", ORATORIO: "CRYPTIC SANCTUARY", TORRE: "TOWER" },
+                statusActive: "Active", activeNow: "Event in progress", statusWaiting: "Waiting", nextOpening: "Next opening:", durationActive: "Active duration:", opensIn: "Opens in:", closesIn: "Closes in:",
                 toastTitle: "EVENT STARTED!", toastSub: "TIMERS | Mir4VE alert", nextQueueTitle: "Upcoming waiting cycles:", durationMin: "min", durationHour: "1 hour", timePrefix: "in ", unitHour: "h", unitMinute: "m", unitSecond: "s",
-                eventTitles: { frenesi: "MS ◂FRENZY▸", furia: "MS ◂FURY▸", lideres: "MS ◂LEADER 3▸", oratorio: "◂Cryptic Sanctuary▸", cima_inferior: "SP ◂SOUTH BOSS▸", cima_superior: "SP ◂NORTH BOSS▸", purgatorio: "◂Purgatory▸", wb_valles: "World Boss ◂VALLEYS▸", wb_laberintos: "World Boss ◂LABYRINTHS▸" },
+                eventTitles: { frenesi: "MS ◂FRENZY▸", furia: "MS ◂FURY▸", lideres: "MS ◂LEADER 3▸", oratorio: "◂Cryptic Sanctuary▸", cima_inferior: "SP ◂SOUTH BOSS▸", cima_superior: "SP ◂NORTH BOSS▸", purgatorio: "◂Purgatory▸", wb_valles: "World Boss ◂VALLEYS▸", wb_laberintos: "World Boss ◂LABYRINTHS▸", domination_tower: "◂DRAGON TOWER▸" },
                 bellTitle: "Alerts for this event", stop: "STOP"
             }
         };
@@ -1228,7 +1306,7 @@
             return 'en';
         }
         let currentLang = ['es', 'pt', 'en'].includes(savedLang) ? savedLang : detectInitialLanguage();
-        const VALID_TABS = ['ALL', 'FRENESI', 'FURIA', 'LIDERES', 'CIMA', 'WB_VALLES', 'WB_LABERINTOS', 'PURGATORIO', 'ORATORIO'];
+        const VALID_TABS = ['ALL', 'FRENESI', 'FURIA', 'LIDERES', 'CIMA', 'WB_VALLES', 'WB_LABERINTOS', 'PURGATORIO', 'ORATORIO', 'TORRE'];
         let currentTab = VALID_TABS.includes(savedTab) ? savedTab : 'ALL';
         const SERVER_CONFIG = {
             NA: { offset: -4, label: 'NA', utc: 'UTC-4' },
@@ -1237,10 +1315,20 @@
             EU: { offset: 2, label: 'EU', utc: 'UTC+2' },
             SA: { offset: -3, label: 'SA', utc: 'UTC-3' }
         };
-        const savedServer = appStorage.getItem(STORAGE_SERVER);
+        let savedServer = null;
+        try { savedServer = sessionStorage.getItem(STORAGE_SERVER); } catch (error) {}
+        if (!Object.prototype.hasOwnProperty.call(SERVER_CONFIG, savedServer)) savedServer = appStorage.getItem(STORAGE_SERVER);
         let currentServer = Object.prototype.hasOwnProperty.call(SERVER_CONFIG, savedServer) ? savedServer : 'NA';
+        // Timestamp of entry into the currently selected Global. An alert window that
+        // began before this timestamp is considered missed; it must never catch up later.
+        let currentServerEnteredAt = Date.now();
         let suppressTransitionSounds = false;
-        let globalAudioEnabled = appStorage.getItem(STORAGE_MASTER_ALERT) === 'true';
+        function serverPreferenceKey(baseKey, server = currentServer) { return `${baseKey}_${server}`; }
+        function getServerPreference(baseKey, legacyFallback = null) {
+            const serverValue = appStorage.getItem(serverPreferenceKey(baseKey));
+            return serverValue !== null ? serverValue : (legacyFallback === null ? appStorage.getItem(baseKey) : legacyFallback);
+        }
+        let globalAudioEnabled = getServerPreference(STORAGE_MASTER_ALERT) === 'true';
 
         // MASTER SCHEDULE DEFINITIONS (NA SERVER UTC-4)
         const EVENT_DEFINITIONS = [
@@ -1311,7 +1399,7 @@
                 id: "wb_valles",
                 cat: "WB_VALLES",
                 title: "WB (VALLES)",
-                icon: "fa-tree",
+                icon: "fa-skull",
                 color: "green",
                 durationMin: 15,
                 schedule: [[12,0], [22,0]]
@@ -1320,17 +1408,26 @@
                 id: "wb_laberintos",
                 cat: "WB_LABERINTOS",
                 title: "WB (LABERINTOS)",
-                icon: "fa-draw-polygon",
+                icon: "fa-khanda",
                 color: "cyan",
                 durationMin: 15,
                 schedule: [[10,0], [20,0]]
+            },
+            {
+                id: "domination_tower",
+                cat: "TORRE",
+                title: "Torre del Dragón",
+                icon: "fa-door-open",
+                color: "purple",
+                durationMin: 240,
+                schedule: [[9,0], [15,0], [21,0]]
             }
         ];
 
         // Restore individual bell states from LocalStorage
         let cardBellStates = {};
         try {
-            const savedBells = JSON.parse(appStorage.getItem(STORAGE_BELLS));
+            const savedBells = JSON.parse(getServerPreference(STORAGE_BELLS));
             if (savedBells && typeof savedBells === 'object') {
                 cardBellStates = savedBells;
             }
@@ -1363,8 +1460,8 @@
 
         function persistBellPreferences() {
             globalAudioEnabled = hasAnyEnabledBell();
-            appStorage.setItem(STORAGE_MASTER_ALERT, String(globalAudioEnabled));
-            appStorage.setItem(STORAGE_BELLS, JSON.stringify(cardBellStates));
+            appStorage.setItem(serverPreferenceKey(STORAGE_MASTER_ALERT), String(globalAudioEnabled));
+            appStorage.setItem(serverPreferenceKey(STORAGE_BELLS), JSON.stringify(cardBellStates));
         }
 
         function getOccurrenceDateKey(serverNow, startH, startM) {
@@ -1377,6 +1474,8 @@
 
         // Track fired alerts to avoid repeated ringing in same minute
         const triggeredAlerts = {};
+        // Event cards glow for the duration of the scheduled warning sound.
+        const alertGlowUntil = Object.create(null);
         const previousActiveState = {};
         // Agrupa avisos de transición cercanos para evitar sonidos simultáneos.
         const completionWarningsFired = new Set();
@@ -1449,9 +1548,18 @@
 
 
 
+        // Alert playback is governed by the selected MIR4 Global server inside this page,
+        // not by browser-tab visibility, window focus, or whether the browser is minimized.
+        // updateDashboard calculates events only for currentServer, so other Global regions
+        // are never evaluated or played by this page instance.
+        function isAlertPlaybackAllowed() {
+            return true;
+        }
+
         // General event-start cue: short, soft two-note signal, independent of bell settings.
         // It is intentionally distinct from the longer 59-second warning.
         async function playEventStartSound() {
+            if (!isAlertPlaybackAllowed()) return;
             initAudioContext();
             if (!audioCtx) return;
             try {
@@ -1475,6 +1583,7 @@
         // Completion cue: a soft descending, lower-pitched three-note chime.
         // Its falling contour and warmer timbre make it clearly different from the ascending start cue.
         async function playCompletionSound() {
+            if (!isAlertPlaybackAllowed()) return;
             initAudioContext();
             if (!audioCtx) return;
             try {
@@ -1499,7 +1608,8 @@
 
         // Sound 3: queued event alarm. Each event is queued independently; simultaneous alerts
         // are played one after another so their tones do not collide or cancel each other.
-        async function triggerChimeSound(eventId = 'general') {
+        async function triggerChimeSound(eventId = 'general', cardEventId = null, serverId = currentServer) {
+            if (!isAlertPlaybackAllowed() || serverId !== currentServer) return;
             initAudioContext();
             if (!audioCtx) return;
             try {
@@ -1508,49 +1618,68 @@
                 console.warn('El navegador no permitió activar el audio todavía:', error);
                 return;
             }
+            // AudioContext.resume() is asynchronous. If the user switched Global while
+            // it was pending, discard the old server's alert instead of playing it late.
+            if (serverId !== currentServer) return;
 
-            queuedChimes.push({ eventId, queuedAt: Date.now() });
+            queuedChimes.push({ eventId, cardEventId, serverId, queuedAt: Date.now() });
             const toast = document.getElementById('alarm-toast');
             if (toast) {
+                // Restart the entrance animation for every newly triggered event.
+                toast.classList.add('hidden');
+                void toast.offsetWidth;
                 toast.classList.remove('hidden');
-                const readingAbout = !document.getElementById('about-view').classList.contains('hidden');
-                if (readingAbout) {
-                    const reminder = {
-                        es: ['¡EVENTO PRÓXIMO!', 'La alerta sonó. Vuelve a INICIO para ver los temporizadores.'],
-                        pt: ['EVENTO SE APROXIMANDO!', 'O alerta tocou. Volte para INÍCIO para ver os temporizadores.'],
-                        en: ['EVENT COMING UP!', 'Your alert sounded. Return HOME to view the timers.']
-                    }[currentLang] || ['¡EVENTO PRÓXIMO!', 'La alerta sonó. Vuelve a INICIO para ver los temporizadores.'];
-                    document.getElementById('toast-title').textContent = reminder[0];
-                    document.getElementById('toast-sub').textContent = reminder[1];
-                }
+                const eventDef = EVENT_DEFINITIONS.find(def => def.id === cardEventId);
+                const eventName = (I18N[currentLang] && I18N[currentLang].eventTitles && I18N[currentLang].eventTitles[cardEventId]) || (eventDef && eventDef.title) || 'MIR4';
+                const serverName = (SERVER_CONFIG[currentServer] && (SERVER_CONFIG[currentServer].label || SERVER_CONFIG[currentServer].name)) || currentServer;
+                const toastCopy = {
+                    es: ['🔔 ¡ALERTA DE EVENTO!', `${eventName} · Global ${serverName} · Pulsa DETENER para silenciar`],
+                    pt: ['🔔 ALERTA DE EVENTO!', `${eventName} · Global ${serverName} · Toque em PARAR para silenciar`],
+                    en: ['🔔 EVENT ALERT!', `${eventName} · Global ${serverName} · Press STOP to silence`]
+                }[currentLang] || ['🔔 ¡ALERTA DE EVENTO!', `${eventName} · Global ${serverName} · Pulsa DETENER para silenciar`];
+                document.getElementById('toast-title').textContent = toastCopy[0];
+                document.getElementById('toast-sub').textContent = toastCopy[1];
             }
             runNextQueuedChime();
         }
 
         function runNextQueuedChime() {
+            if (!isAlertPlaybackAllowed()) { queuedChimes.length = 0; chimeQueueRunning = false; return; }
             if (chimeQueueRunning || queuedChimes.length === 0 || !audioCtx) return;
-            chimeQueueRunning = true;
             const item = queuedChimes.shift();
+            if (item.serverId && item.serverId !== currentServer) {
+                runNextQueuedChime();
+                return;
+            }
+            chimeQueueRunning = true;
+            if (item.cardEventId) alertGlowUntil[item.cardEventId] = Date.now() + 15000;
             let step = 0;
             const playStep = () => {
-                if (!audioCtx) return;
+                if (!audioCtx || !isAlertPlaybackAllowed() || (item.serverId && item.serverId !== currentServer)) return;
                 try {
+                    // Distinct, attention-grabbing three-note alarm (not the soft UI chime).
+                    // A bright upper tone and a warm lower harmonic make it noticeable without harsh clipping.
                     const now = audioCtx.currentTime;
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.type = step % 2 === 0 ? 'sine' : 'triangle';
-                    osc.frequency.setValueAtTime(step % 2 === 0 ? 880 : 1046.50, now);
-                    gain.gain.setValueAtTime(0.0001, now);
-                    gain.gain.exponentialRampToValueAtTime(0.18, now + 0.015);
-                    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.30);
-                    osc.connect(gain); gain.connect(audioCtx.destination);
-                    osc.start(now); osc.stop(now + 0.32);
+                    const patterns = [[988, 659], [1244.5, 830.6], [1480, 987.8], [1244.5, 830.6]];
+                    const pair = patterns[step % patterns.length];
+                    pair.forEach((frequency, index) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        const start = now + (index ? 0.025 : 0);
+                        osc.type = index === 0 ? 'triangle' : 'sine';
+                        osc.frequency.setValueAtTime(frequency, start);
+                        gain.gain.setValueAtTime(0.0001, start);
+                        gain.gain.exponentialRampToValueAtTime(index === 0 ? 0.24 : 0.105, start + 0.012);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.34);
+                        osc.connect(gain); gain.connect(audioCtx.destination);
+                        osc.start(start); osc.stop(start + 0.36);
+                    });
                 } catch (e) {}
                 step++;
             };
             playStep();
             let ticks = 1;
-            // Repeat the gentle warning for up to 15 seconds (30 half-second chimes).
+            // Repeat the prominent warning for up to 15 seconds; Stop cancels it immediately.
             // The existing Stop button cancels the queue immediately.
             chimeQueueTimer = setInterval(() => {
                 if (ticks >= 30) {
@@ -1611,7 +1740,7 @@
             } catch (e) {}
         }
 
-        function stopChimeSound() {
+        function stopChimeSound(playStopCue = true) {
             const wasVisible = !document.getElementById('alarm-toast')?.classList.contains('hidden');
             if (chimeQueueTimer) {
                 clearInterval(chimeQueueTimer);
@@ -1621,7 +1750,7 @@
             chimeQueueRunning = false;
             const toast = document.getElementById('alarm-toast');
             if (toast) toast.classList.add('hidden');
-            if (wasVisible) playManualStopSound();
+            if (wasVisible && playStopCue && isAlertPlaybackAllowed()) playManualStopSound();
         }
 
         // Soft, short UI click cue, intentionally distinct from event alerts.
@@ -1698,8 +1827,8 @@
                 });
             });
             globalAudioEnabled = nextValue;
-            appStorage.setItem(STORAGE_MASTER_ALERT, String(nextValue));
-            appStorage.setItem(STORAGE_BELLS, JSON.stringify(cardBellStates));
+            appStorage.setItem(serverPreferenceKey(STORAGE_MASTER_ALERT), String(nextValue));
+            appStorage.setItem(serverPreferenceKey(STORAGE_BELLS), JSON.stringify(cardBellStates));
 
             if (nextValue) {
                 playActivationSound();
@@ -1742,7 +1871,7 @@
             const icon = document.getElementById('global-alert-icon');
             const txt = document.getElementById('global-alert-txt');
             globalAudioEnabled = hasAnyEnabledBell();
-            appStorage.setItem(STORAGE_MASTER_ALERT, String(globalAudioEnabled));
+            appStorage.setItem(serverPreferenceKey(STORAGE_MASTER_ALERT), String(globalAudioEnabled));
 
             if (globalAudioEnabled) {
                 btn.className = "alerts-enabled transition-all duration-200";
@@ -1796,14 +1925,39 @@
             button.setAttribute('aria-expanded', String(willOpen));
         }
 
+        // A warning is eligible only while its own Global is selected. Returning to a
+        // server inside the 60-second window may still play it, except at exactly 60s
+        // (the boundary is deliberately skipped to avoid timing-edge double behavior).
+        function markAlertsAtExactThresholdAsMissed(server) {
+            const serverNow = new Date(Date.now() + SERVER_CONFIG[server].offset * 3600000);
+            EVENT_DEFINITIONS.forEach(eventDef => {
+                const state = calculateEventState(eventDef, serverNow);
+                (state.upcomingInstances || []).forEach(instance => {
+                    if (instance.remainingSec === 60) {
+                        const alertKey = `${server}_${eventDef.id}_${instance.startH}_${instance.startM}_${getOccurrenceDateKey(serverNow, instance.startH, instance.startM)}`;
+                        triggeredAlerts[alertKey] = true;
+                    }
+                });
+            });
+        }
+
         function selectServer(server) {
             if (!Object.prototype.hasOwnProperty.call(SERVER_CONFIG, server) || server === currentServer) {
                 document.getElementById('server-menu').classList.add('hidden');
                 document.getElementById('server-select').setAttribute('aria-expanded', 'false');
                 return;
             }
+            // Do not evaluate alerts for other Globals while they are unselected.
+            // On entry, only the exact 60-second boundary is skipped; if the alert is
+            // already under 60 seconds it may still play. Expired events never catch up.
+            markAlertsAtExactThresholdAsMissed(server);
+            // Switching Global ends any warning from the server being left; it is never
+            // resumed later. This keeps sound strictly tied to the currently selected Global.
+            stopChimeSound(false);
+            Object.keys(alertGlowUntil).forEach(eventId => { delete alertGlowUntil[eventId]; });
             currentServer = server;
-            appStorage.setItem(STORAGE_SERVER, currentServer);
+            currentServerEnteredAt = Date.now();
+            try { sessionStorage.setItem(STORAGE_SERVER, currentServer); } catch (error) {}
             // Avoid false start/end sounds caused by switching the clock's reference region.
             suppressTransitionSounds = true;
             renderServerSelection();
@@ -2091,15 +2245,27 @@
             let bellStateChanged = false;
             calculatedEvents.forEach(evt => {
                 (evt.state.upcomingInstances || []).forEach(instance => {
-                    if (instance.remainingSec <= 60 && instance.remainingSec > 0) {
+                    if (instance.remainingSec < 60 && instance.remainingSec > 0) {
                         const bellKey = getOccurrenceBellKey(evt.id, instance.startH, instance.startM);
                         const alertKey = `${currentServer}_${evt.id}_${instance.startH}_${instance.startM}_${getOccurrenceDateKey(serverNow, instance.startH, instance.startM)}`;
-                        if (!triggeredAlerts[alertKey] && isOccurrenceBellOn(evt.id, instance.startH, instance.startM)) {
-                            triggeredAlerts[alertKey] = true;
-                            triggerChimeSound(alertKey);
-                            // Disable only this exact scheduled time after it has alerted.
-                            cardBellStates[bellKey] = false;
-                            bellStateChanged = true;
+                        if (isAlertPlaybackAllowed() && !triggeredAlerts[alertKey] && isOccurrenceBellOn(evt.id, instance.startH, instance.startM)) {
+                            // The warning window starts 60 seconds before the scheduled event.
+                            // If this Global was selected after that window began, the alert was
+                            // missed while another Global was active: consume it silently, with no
+                            // sound, toast, tab switch, or delayed playback on returning later.
+                            const alertWindowStartedAt = nowMs + ((instance.remainingSec || 0) - 60) * 1000;
+                            if (currentServerEnteredAt >= alertWindowStartedAt) {
+                                // Consume this occurrence silently; do not catch it up later.
+                                triggeredAlerts[alertKey] = true;
+                            } else {
+                                triggeredAlerts[alertKey] = true;
+                                // Every eligible alert brings the user to ALL so its card is visible.
+                                if (currentTab !== 'ALL') setTab('ALL', false);
+                                triggerChimeSound(alertKey, evt.id, currentServer);
+                                // Disable only this exact scheduled time after it has alerted.
+                                cardBellStates[bellKey] = false;
+                                bellStateChanged = true;
+                            }
                         }
                     }
                 });
@@ -2159,18 +2325,18 @@
                 if (evt.color === 'cyan') colorClass = "bg-cyan-500/10 text-cyan-300 border-cyan-500/30";
 
                 return `
-                <div class="event-card bg-brand-card/90 border border-brand-border/80 rounded-2xl p-5 shadow-xl relative flex flex-col justify-between ${isActive ? 'glow-active bg-emerald-950/20' : 'cursor-pointer'}" ${!isActive ? `onclick="toggleCardBell('${evt.id}', ${evt.state.startH}, ${evt.state.startM}, event)" title="${langDict.bellTitle}"` : ''}>
+                <div data-event-id="${evt.id}" style="--alert-loop-offset: -${(Date.now() % 1400) / 1000}s" class="event-card bg-brand-card/90 border border-brand-border/80 rounded-2xl p-5 shadow-xl relative flex flex-col justify-between ${isActive ? 'glow-active bg-emerald-950/20' : 'cursor-pointer'} ${alertGlowUntil[evt.id] > Date.now() ? 'alert-glow-active' : ''}" ${!isActive ? `onclick="toggleCardBell('${evt.id}', ${evt.state.startH}, ${evt.state.startM}, event)" title="${langDict.bellTitle}"` : ''}>
                     
                     <i class="event-watermark fa-solid ${evt.icon}" aria-hidden="true"></i>
                     <div class="event-card-content">
                         <!-- TOP BADGE & BELL -->
-                        <div class="flex items-center justify-between gap-2 mb-3">
+                        <div class="event-card-header flex items-center justify-between gap-2 mb-3">
                             <span class="event-title inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold border ${colorClass}">
                                 <i class="fa-solid ${evt.icon}"></i>
                                 ${localizedTitle}
                             </span>
 
-                            <div class="flex items-center gap-2">
+                            <div class="event-card-status-controls flex items-center gap-2">
                                 ${isActive
                                     ? `<span title="${langDict.statusActive}" aria-label="${langDict.statusActive}" class="p-1.5 rounded-lg border border-emerald-500/20 bg-emerald-500/5 bell-locked"><i class="fa-solid fa-circle-check text-sm"></i></span>`
                                     : `<button type="button" onclick="toggleCardBell('${evt.id}', ${evt.state.startH}, ${evt.state.startM}, event)" title="${langDict.bellTitle}" aria-label="${langDict.bellTitle}" class="alert-bell-button p-1.5 rounded-lg border border-brand-border/60 bg-brand-dark/60 text-slate-400"><i style="--loop-offset: ${loopOffset}" class="fa-solid fa-bell text-sm ${isBellOn ? 'bell-active bell-waiting-pulse' : 'bell-off opacity-40'}"></i></button>`}
@@ -2183,11 +2349,19 @@
 
                         <!-- OPENING TIME & DURATION -->
                         <div class="mt-4 mb-2">
-                            <div class="text-xs text-slate-400 font-medium">${langDict.nextOpening}</div>
-                            <div class="timer-number text-2xl font-black text-white tracking-wide mt-0.5">${evt.state.displayTime}</div>
-                            <div class="text-xs text-slate-400 mt-1">
-                                ${langDict.durationActive} <span class="text-slate-200 font-bold">${evt.durationMin < 60 ? evt.durationMin + ' ' + langDict.durationMin : langDict.durationHour}</span>
-                            </div>
+                            ${isActive && currentTab !== 'ALL'
+                                ? `<div class="flex w-full items-center justify-between gap-3 rounded-xl border border-emerald-400/25 bg-gradient-to-r from-emerald-500/10 via-emerald-400/5 to-transparent px-4 py-3 shadow-sm shadow-emerald-950/20">
+                                        <div class="flex min-w-0 items-center gap-2.5">
+                                            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-emerald-400/20 bg-emerald-400/10 text-emerald-300"><i class="fa-solid fa-hourglass-half" aria-hidden="true"></i></span>
+                                            <span class="active-duration-label text-xs sm:text-sm font-semibold tracking-wide text-emerald-100/80">${langDict.durationActive}</span>
+                                        </div>
+                                        <span class="active-duration-value shrink-0 text-base sm:text-lg font-black tracking-wide text-emerald-200">${evt.durationMin < 60 ? evt.durationMin + ' ' + langDict.durationMin : langDict.durationHour}</span>
+                                   </div>`
+                                : `<div class="text-xs text-slate-400 font-medium">${langDict.nextOpening}</div>
+                                   <div class="timer-number text-2xl font-black text-white tracking-wide mt-0.5">${evt.state.displayTime}</div>
+                                   <div class="text-xs text-slate-400 mt-2">
+                                      ${langDict.durationActive} <span class="text-slate-200 font-bold">${evt.durationMin < 60 ? evt.durationMin + ' ' + langDict.durationMin : langDict.durationHour}</span>
+                                   </div>`}
                         </div>
 
 
@@ -2247,14 +2421,14 @@
         }
 
         // NAVIGATION AND REUSABLE OUTSIDE-CLICK CLOSING
-        const NAV_MENU_IDS = ['nav-menu-ms-p11p12', 'nav-menu-ms-sp', 'nav-menu-world-boss'];
+        const NAV_MENU_IDS = ['nav-menu-domination', 'nav-menu-ms-p11p12', 'nav-menu-ms-sp', 'nav-menu-world-boss', 'nav-menu-other-content'];
         function closeDropdownMenus(exceptId = null) {
             ['lang-menu', 'server-menu', ...NAV_MENU_IDS].forEach(id => {
                 if (id === exceptId) return;
                 const menu = document.getElementById(id);
                 if (menu) menu.classList.add('hidden');
             });
-            ['lang-select', 'server-select', 'nav-trigger-ms-p11p12', 'nav-trigger-ms-sp', 'nav-trigger-world-boss'].forEach(id => {
+            ['lang-select', 'server-select', 'nav-trigger-domination', 'nav-trigger-ms-p11p12', 'nav-trigger-ms-sp', 'nav-trigger-world-boss', 'nav-trigger-other-content'].forEach(id => {
                 const button = document.getElementById(id);
                 if (!button) return;
                 const menuId = id === 'lang-select' ? 'lang-menu' : id === 'server-select' ? 'server-menu' : id.replace('nav-trigger-', 'nav-menu-');
@@ -2284,7 +2458,7 @@
             if (event.key === 'Escape') closeDropdownMenus();
         });
 
-        function setTab(tabName) {
+        function setTab(tabName, refreshDashboard = true) {
             currentTab = VALID_TABS.includes(tabName) ? tabName : 'ALL';
             appStorage.setItem(STORAGE_ACTIVE_TAB, currentTab);
             tabName = currentTab;
@@ -2297,10 +2471,12 @@
             const groupMap = {
                 FRENESI: 'nav-trigger-ms-p11p12', FURIA: 'nav-trigger-ms-p11p12',
                 LIDERES: 'nav-trigger-ms-sp', CIMA: 'nav-trigger-ms-sp',
-                WB_VALLES: 'nav-trigger-world-boss', WB_LABERINTOS: 'nav-trigger-world-boss'
+                WB_VALLES: 'nav-trigger-world-boss', WB_LABERINTOS: 'nav-trigger-world-boss',
+                PURGATORIO: 'nav-trigger-other-content', ORATORIO: 'nav-trigger-other-content',
+                TORRE: 'nav-trigger-domination'
             };
             document.querySelectorAll('.nav-group-trigger').forEach(btn => btn.classList.toggle('group-active', btn.id === groupMap[tabName]));
-            updateDashboard();
+            if (refreshDashboard) updateDashboard();
         }
 
         // Custom language picker uses real flag images (avoids emoji flag letters on Windows).
@@ -2429,6 +2605,10 @@
             document.getElementById('intro-community').textContent = langDict.introCommunity;
             document.getElementById('intro-description').textContent = langDict.introDescription;
             document.getElementById('intro-live-label').textContent = langDict.introLive;
+            document.querySelectorAll('[data-nav-label]').forEach(label => {
+                const key = label.dataset.navLabel;
+                if (langDict.navGroups && langDict.navGroups[key]) label.textContent = langDict.navGroups[key];
+            });
 
             renderMasterAlertUI();
 
@@ -2637,6 +2817,10 @@
                 document.getElementById('server-select').setAttribute('aria-expanded', 'false');
             }
         });
+
+        // Deliberately do not stop or suppress event alerts when the browser is minimized,
+        // loses focus, or another browser tab is selected. The selected Global server is
+        // the only scope that determines which event alerts this page instance can play.
 
         // INITIALIZATION ON LOAD
         window.onload = function() {
