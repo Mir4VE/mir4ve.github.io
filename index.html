@@ -1330,6 +1330,19 @@
         }
         let globalAudioEnabled = getServerPreference(STORAGE_MASTER_ALERT) === 'true';
 
+        // Format each event's configured duration independently (minutes are defined per event).
+        function formatActiveDuration(durationMin) {
+            const lang = currentLang || 'es';
+            const hours = Math.floor(durationMin / 60);
+            const minutes = durationMin % 60;
+            const hourWord = lang === 'en' ? (hours === 1 ? 'hour' : 'hours')
+                : (hours === 1 ? 'hora' : 'horas');
+            const minuteWord = lang === 'en' ? 'min' : (lang === 'pt' ? 'min' : 'min');
+            if (hours && minutes) return `${hours} ${hourWord} ${minutes} ${minuteWord}`;
+            if (hours) return `${hours} ${hourWord}`;
+            return `${durationMin} ${minuteWord}`;
+        }
+
         // MASTER SCHEDULE DEFINITIONS (NA SERVER UTC-4)
         const EVENT_DEFINITIONS = [
             {
@@ -1657,22 +1670,21 @@
             const playStep = () => {
                 if (!audioCtx || !isAlertPlaybackAllowed() || (item.serverId && item.serverId !== currentServer)) return;
                 try {
-                    // Distinct, attention-grabbing three-note alarm (not the soft UI chime).
-                    // A bright upper tone and a warm lower harmonic make it noticeable without harsh clipping.
+                    // New warning sound: a softer, warm three-note descending chime.
+                    // Lower frequencies and a gentler envelope avoid the previous sharp, piercing tone.
                     const now = audioCtx.currentTime;
-                    const patterns = [[988, 659], [1244.5, 830.6], [1480, 987.8], [1244.5, 830.6]];
-                    const pair = patterns[step % patterns.length];
-                    pair.forEach((frequency, index) => {
+                    const notes = [[659.25, 0, 0.12], [523.25, 0.13, 0.10], [392.00, 0.26, 0.085]];
+                    notes.forEach(([frequency, delay, volume]) => {
                         const osc = audioCtx.createOscillator();
                         const gain = audioCtx.createGain();
-                        const start = now + (index ? 0.025 : 0);
-                        osc.type = index === 0 ? 'triangle' : 'sine';
+                        const start = now + delay;
+                        osc.type = 'sine';
                         osc.frequency.setValueAtTime(frequency, start);
                         gain.gain.setValueAtTime(0.0001, start);
-                        gain.gain.exponentialRampToValueAtTime(index === 0 ? 0.24 : 0.105, start + 0.012);
-                        gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.34);
+                        gain.gain.exponentialRampToValueAtTime(volume, start + 0.025);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.28);
                         osc.connect(gain); gain.connect(audioCtx.destination);
-                        osc.start(start); osc.stop(start + 0.36);
+                        osc.start(start); osc.stop(start + 0.30);
                     });
                 } catch (e) {}
                 step++;
@@ -2355,12 +2367,12 @@
                                             <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-emerald-400/20 bg-emerald-400/10 text-emerald-300"><i class="fa-solid fa-hourglass-half" aria-hidden="true"></i></span>
                                             <span class="active-duration-label text-xs sm:text-sm font-semibold tracking-wide text-emerald-100/80">${langDict.durationActive}</span>
                                         </div>
-                                        <span class="active-duration-value shrink-0 text-base sm:text-lg font-black tracking-wide text-emerald-200">${evt.durationMin < 60 ? evt.durationMin + ' ' + langDict.durationMin : langDict.durationHour}</span>
+                                        <span class="active-duration-value shrink-0 text-base sm:text-lg font-black tracking-wide text-emerald-200">${formatActiveDuration(evt.durationMin)}</span>
                                    </div>`
                                 : `<div class="text-xs text-slate-400 font-medium">${langDict.nextOpening}</div>
                                    <div class="timer-number text-2xl font-black text-white tracking-wide mt-0.5">${evt.state.displayTime}</div>
                                    <div class="text-xs text-slate-400 mt-2">
-                                      ${langDict.durationActive} <span class="text-slate-200 font-bold">${evt.durationMin < 60 ? evt.durationMin + ' ' + langDict.durationMin : langDict.durationHour}</span>
+                                      ${langDict.durationActive} <span class="text-slate-200 font-bold">${formatActiveDuration(evt.durationMin)}</span>
                                    </div>`}
                         </div>
 
@@ -2401,7 +2413,7 @@
                                 <div class="mt-4 mb-2">
                                     <div class="text-xs text-slate-400 font-medium">${langDict.nextOpening}</div>
                                     <div class="timer-number text-2xl font-black text-white tracking-wide mt-0.5">${instance.displayTime}</div>
-                                    <div class="text-xs text-slate-400 mt-1">${langDict.durationActive} <span class="text-slate-200 font-bold">${evt.durationMin < 60 ? evt.durationMin + ' ' + langDict.durationMin : langDict.durationHour}</span></div>
+                                    <div class="text-xs text-slate-400 mt-1">${langDict.durationActive} <span class="text-slate-200 font-bold">${formatActiveDuration(evt.durationMin)}</span></div>
                                 </div>
                             </div>
                             <div class="event-card-content mt-4 pt-3 border-t border-brand-border/50">
