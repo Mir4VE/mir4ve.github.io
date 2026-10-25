@@ -1650,6 +1650,16 @@
         let chimeQueueRunning = false;
         let chimeQueueTimer = null;
 
+        // Arbitration global: si varias tarjetas generan una señal prácticamente a la vez,
+        // solo la primera obtiene permiso para sonar. No altera los sonidos de interfaz.
+        let lastCoordinatedEventCueAt = -Infinity;
+        function claimCoordinatedEventCue() {
+            const now = performance.now();
+            if (now - lastCoordinatedEventCueAt < 350) return false;
+            lastCoordinatedEventCueAt = now;
+            return true;
+        }
+
         function initAudioContext() {
             if (!audioCtx) {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -1724,6 +1734,7 @@
             if (!audioCtx) return;
             try {
                 if (audioCtx.state === 'suspended') await audioCtx.resume();
+                if (!claimCoordinatedEventCue()) return;
                 const now = audioCtx.currentTime;
                 [[587.33, 0, 0.085, 0.22], [783.99, 0.16, 0.075, 0.30]].forEach(([frequency, delay, volume, duration]) => {
                     const osc = audioCtx.createOscillator();
@@ -1748,6 +1759,7 @@
             if (!audioCtx) return;
             try {
                 if (audioCtx.state === 'suspended') await audioCtx.resume();
+                if (!claimCoordinatedEventCue()) return;
                 const now = audioCtx.currentTime;
                 [[493.88, 0, 0.095], [392.00, 0.17, 0.075], [293.66, 0.34, 0.055]].forEach(([frequency, delay, volume]) => {
                     const osc = audioCtx.createOscillator();
@@ -1780,7 +1792,7 @@
             }
             // AudioContext.resume() is asynchronous. If the user switched Global while
             // it was pending, discard the old server's alert instead of playing it late.
-            if (serverId !== currentServer) return;
+            if (serverId !== currentServer || !claimCoordinatedEventCue()) return;
 
             queuedChimes.push({ eventId, cardEventId, serverId, queuedAt: Date.now() });
             const toast = document.getElementById('alarm-toast');
