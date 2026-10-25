@@ -540,6 +540,36 @@
         .event-card .event-title i {
             flex: 0 0 auto;
         }
+        /* Unique palettes apply ONLY to the boss-name header badge, never the full card. */
+        .event-card .event-title.boss-name-jihwa {
+            color: #ffe4f1 !important; background: linear-gradient(110deg, rgba(190, 24, 93, .30), rgba(124, 58, 237, .20)) !important;
+            border-color: rgba(244, 114, 182, .62) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+        }
+        .event-card .event-title.boss-name-yaksha {
+            color: #e0f2fe !important; background: linear-gradient(110deg, rgba(14, 116, 144, .32), rgba(30, 64, 175, .22)) !important;
+            border-color: rgba(103, 232, 249, .58) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+        }
+        .event-card .event-title.boss-name-carapace {
+            color: #fef3c7 !important; background: linear-gradient(110deg, rgba(120, 53, 15, .34), rgba(87, 83, 20, .24)) !important;
+            border-color: rgba(253, 224, 71, .55) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+        }
+        .event-card .event-title.boss-name-bulhu {
+            color: #ede9fe !important; background: linear-gradient(110deg, rgba(91, 33, 182, .32), rgba(112, 26, 117, .24)) !important;
+            border-color: rgba(196, 181, 253, .62) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+        }
+
+        /* Distinct palettes for every existing event name badge only; card backgrounds remain unchanged. */
+        .event-card .event-title.palette-frenesi { color:#ffedd5!important; background:linear-gradient(110deg,rgba(154,52,18,.34),rgba(180,83,9,.20))!important; border-color:rgba(251,146,60,.62)!important; }
+        .event-card .event-title.palette-furia { color:#ffe4e6!important; background:linear-gradient(110deg,rgba(159,18,57,.34),rgba(127,29,29,.22))!important; border-color:rgba(251,113,133,.60)!important; }
+        .event-card .event-title.palette-lideres { color:#fef9c3!important; background:linear-gradient(110deg,rgba(113,63,18,.34),rgba(133,77,14,.22))!important; border-color:rgba(250,204,21,.60)!important; }
+        .event-card .event-title.palette-oratorio { color:#e0e7ff!important; background:linear-gradient(110deg,rgba(49,46,129,.36),rgba(67,56,202,.20))!important; border-color:rgba(129,140,248,.62)!important; }
+        .event-card .event-title.palette-cima-sur { color:#fee2e2!important; background:linear-gradient(110deg,rgba(127,29,29,.34),rgba(153,27,27,.20))!important; border-color:rgba(248,113,113,.62)!important; }
+        .event-card .event-title.palette-cima-norte { color:#f3e8ff!important; background:linear-gradient(110deg,rgba(88,28,135,.34),rgba(76,29,149,.22))!important; border-color:rgba(192,132,252,.62)!important; }
+        .event-card .event-title.palette-purgatorio { color:#fae8ff!important; background:linear-gradient(110deg,rgba(112,26,117,.34),rgba(88,28,135,.22))!important; border-color:rgba(232,121,249,.60)!important; }
+        .event-card .event-title.palette-wb-valles { color:#dcfce7!important; background:linear-gradient(110deg,rgba(20,83,45,.34),rgba(6,95,70,.22))!important; border-color:rgba(74,222,128,.60)!important; }
+        .event-card .event-title.palette-wb-laberintos { color:#cffafe!important; background:linear-gradient(110deg,rgba(21,94,117,.34),rgba(8,145,178,.20))!important; border-color:rgba(34,211,238,.60)!important; }
+        .event-card .event-title.palette-torre { color:#fce7f3!important; background:linear-gradient(110deg,rgba(131,24,67,.32),rgba(157,23,77,.20))!important; border-color:rgba(244,114,182,.60)!important; }
+
         .event-card .event-card-content > .flex.items-center.justify-between.gap-2.mb-3 > .flex.items-center.gap-2 {
             flex: 0 1 auto;
             min-width: 0;
@@ -564,7 +594,20 @@
                 width: fit-content;
                 max-width: 100%;
             }
-            .event-card .event-card-content > .flex.items-center.justify-between.gap-2.mb-3 > .flex.items-center.gap-2 {
+    
+        /* Distinct palettes for every existing event name badge only; card backgrounds remain unchanged. */
+        .event-card .event-title.palette-frenesi { color:#ffedd5!important; background:linear-gradient(110deg,rgba(154,52,18,.34),rgba(180,83,9,.20))!important; border-color:rgba(251,146,60,.62)!important; }
+        .event-card .event-title.palette-furia { color:#ffe4e6!important; background:linear-gradient(110deg,rgba(159,18,57,.34),rgba(127,29,29,.22))!important; border-color:rgba(251,113,133,.60)!important; }
+        .event-card .event-title.palette-lideres { color:#fef9c3!important; background:linear-gradient(110deg,rgba(113,63,18,.34),rgba(133,77,14,.22))!important; border-color:rgba(250,204,21,.60)!important; }
+        .event-card .event-title.palette-oratorio { color:#e0e7ff!important; background:linear-gradient(110deg,rgba(49,46,129,.36),rgba(67,56,202,.20))!important; border-color:rgba(129,140,248,.62)!important; }
+        .event-card .event-title.palette-cima-sur { color:#fee2e2!important; background:linear-gradient(110deg,rgba(127,29,29,.34),rgba(153,27,27,.20))!important; border-color:rgba(248,113,113,.62)!important; }
+        .event-card .event-title.palette-cima-norte { color:#f3e8ff!important; background:linear-gradient(110deg,rgba(88,28,135,.34),rgba(76,29,149,.22))!important; border-color:rgba(192,132,252,.62)!important; }
+        .event-card .event-title.palette-purgatorio { color:#fae8ff!important; background:linear-gradient(110deg,rgba(112,26,117,.34),rgba(88,28,135,.22))!important; border-color:rgba(232,121,249,.60)!important; }
+        .event-card .event-title.palette-wb-valles { color:#dcfce7!important; background:linear-gradient(110deg,rgba(20,83,45,.34),rgba(6,95,70,.22))!important; border-color:rgba(74,222,128,.60)!important; }
+        .event-card .event-title.palette-wb-laberintos { color:#cffafe!important; background:linear-gradient(110deg,rgba(21,94,117,.34),rgba(8,145,178,.20))!important; border-color:rgba(34,211,238,.60)!important; }
+        .event-card .event-title.palette-torre { color:#fce7f3!important; background:linear-gradient(110deg,rgba(131,24,67,.32),rgba(157,23,77,.20))!important; border-color:rgba(244,114,182,.60)!important; }
+
+        .event-card .event-card-content > .flex.items-center.justify-between.gap-2.mb-3 > .flex.items-center.gap-2 {
                 width: 100%;
                 justify-content: flex-start;
             }
@@ -921,7 +964,34 @@
             #alarm-toast button { grid-row:2; grid-column:1 / -1; width:100%; }
         }
         @media (prefers-reduced-motion: reduce) { #alarm-toast, #alarm-toast::before, #alarm-toast > i { animation:none !important; } }
-    </style>
+    
+        /* Mirage Ship: polished in-panel accordion, preserving the original dropdown geometry. */
+        #nav-menu-mirage-ship { min-width: 190px; padding: .4rem; }
+        #nav-menu-mirage-ship .mirage-plano-trigger { display: flex !important; grid-template-columns: none; justify-content: flex-start !important; gap: .65rem; min-height: 2.55rem; padding: .65rem .75rem; border: 1px solid transparent; border-radius: .6rem; font-weight: 700; }
+        #nav-menu-mirage-ship .mirage-plano-trigger .submenu-label { flex: 1; text-align: left !important; }
+        #nav-menu-mirage-ship .mirage-plano-trigger[aria-expanded="true"] { color: #fcd34d; background: rgba(245,158,11,.08); border-color: rgba(245,158,11,.16); }
+        #nav-menu-mirage-ship .nav-nested-menu { position: static !important; inset: auto !important; transform: none !important; width: auto !important; min-width: 0 !important; max-width: none !important; margin: .2rem .15rem .25rem .7rem; padding: .25rem 0 .25rem .55rem; border: 0; border-left: 1px solid rgba(148,163,184,.25); border-radius: 0; background: transparent; box-shadow: none; z-index: auto; }
+        #nav-menu-mirage-ship .nav-nested-menu .nav-submenu-option { min-height: 2.25rem; padding: .55rem .65rem; border-radius: .5rem; font-size: .7rem; }
+        #nav-menu-mirage-ship .nav-nested-menu .nav-submenu-option[aria-current="page"] { border: 1px solid rgba(245,158,11,.22); background: rgba(245,158,11,.12); }
+        @media (max-width: 640px) { #nav-menu-mirage-ship { max-width: min(88vw, 240px); } #nav-menu-mirage-ship .nav-nested-menu { margin-left: .5rem; padding-left: .4rem; } }
+        /* Mirage W1 boss cards: one compact, responsive card per boss with embedded cycle list. */
+        /* Mirage W1 individual cards: compact schedule chips matching the supplied reference. */
+        .mirage-cycle-panel { margin-top: 1rem; padding-top: .05rem; }
+        .mirage-cycle-heading { margin-bottom: .55rem; color: #94a3b8; font-size: .62rem; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+        .mirage-cycle-grid { display: flex; flex-wrap: wrap; align-items: center; gap: .32rem; min-width: 0; }
+        .mirage-cycle-row { display: inline-flex; align-items: center; justify-content: center; min-width: 0; padding: .28rem .48rem; border: 1px solid rgba(148,163,184,.13); border-radius: .38rem; background: rgba(148,163,184,.08); }
+        .mirage-cycle-row.is-next { border-color: rgba(245,158,11,.75); background: rgba(245,158,11,.16); box-shadow: 0 0 12px rgba(245,158,11,.12); }
+        .mirage-cycle-time { color: #94a3b8; font-size: .7rem; font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+        .mirage-cycle-row.is-next .mirage-cycle-time { color: #fcd34d; }
+        .mirage-next-spawn { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: .6rem; margin-top: .8rem; padding: .72rem .8rem; border: 1px solid rgba(148,163,184,.12); border-radius: .8rem; background: rgba(2,6,23,.58); }
+        .mirage-next-spawn-cell { display: flex; flex-direction: column; gap: .22rem; min-width: 0; }
+        .mirage-next-spawn-label { color: #94a3b8; font-size: .62rem; font-weight: 700; letter-spacing: .04em; }
+        .mirage-next-spawn-value { color: #fcd34d; font-size: .9rem; font-weight: 900; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+        .mirage-next-spawn-cell:last-child { text-align: right; align-items: flex-end; }
+        .mirage-next-spawn-cell:last-child .mirage-next-spawn-value { color: #22d3ee; }
+        .mirage-w1-individual .mirage-w1-footer { margin-top: .8rem; padding-top: .65rem; border-top: 1px solid rgba(148,163,184,.1); }
+        @media (max-width: 420px) { .mirage-cycle-grid { gap: .28rem; } .mirage-cycle-row { padding: .28rem .4rem; } .mirage-next-spawn { padding: .65rem; gap: .4rem; } .mirage-next-spawn-value { font-size: .82rem; } }
+</style>
 </head>
 <body class="p-3 sm:p-6 select-none custom-scrollbar">
 
@@ -1028,6 +1098,18 @@
     <nav class="max-w-7xl mx-auto mb-6" aria-label="Categorías de eventos">
         <div class="flex flex-wrap items-center gap-2 pb-2 text-xs font-orbitron font-bold" id="main-event-nav">
             <button onclick="setTab('ALL')" id="tab-ALL" class="tab-btn inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500 text-black shadow-lg shadow-amber-500/20 transition-all duration-200 whitespace-nowrap"><i class="fa-solid fa-layer-group" aria-hidden="true"></i><span class="tab-label">TODAS</span></button>
+
+            <div class="nav-group" id="nav-group-mirage-ship">
+                <button type="button" id="nav-trigger-mirage-ship" class="nav-group-trigger" onclick="toggleNavMenu('nav-menu-mirage-ship')" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-ship"></i><span>MIRAGE SHIP</span><i class="fa-solid fa-chevron-down text-[9px]"></i></button>
+                <div id="nav-menu-mirage-ship" class="nav-submenu hidden" role="menu">
+                    <button type="button" id="nav-trigger-mirage-plano1" class="nav-submenu-option mirage-plano-trigger" onclick="toggleNavMenu('nav-menu-mirage-plano1')" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-map"></i><span class="submenu-label" data-i18n="mirageLayer1">PLANO 1</span><i class="fa-solid fa-chevron-down text-[9px]"></i></button>
+                    <div id="nav-menu-mirage-plano1" class="nav-submenu nav-nested-menu hidden" role="menu">
+                        <button type="button" role="menuitem" data-tab="W1" onclick="chooseNavTab('W1','nav-menu-mirage-plano1')" class="nav-submenu-option"><i class="fa-solid fa-crosshairs"></i><span class="submenu-label">W1</span></button>
+                        <button type="button" role="menuitem" data-tab="W2" onclick="chooseNavTab('W2','nav-menu-mirage-plano1')" class="nav-submenu-option"><i class="fa-solid fa-crosshairs"></i><span class="submenu-label">W2</span></button>
+                        <button type="button" role="menuitem" data-tab="W3" onclick="chooseNavTab('W3','nav-menu-mirage-plano1')" class="nav-submenu-option"><i class="fa-solid fa-crosshairs"></i><span class="submenu-label">W3</span></button>
+                    </div>
+                </div>
+            </div>
 
             <div class="nav-group" id="nav-group-domination">
                 <button type="button" id="nav-trigger-domination" class="nav-group-trigger" onclick="toggleNavMenu('nav-menu-domination')" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-dragon"></i><span data-nav-label="domination">DOMINACIÓN</span><i class="fa-solid fa-chevron-down text-[9px]"></i></button>
@@ -1264,31 +1346,31 @@
             es: {
                 serverTime: "HORA SERVIDOR", localTime: "HORA LOCAL", weekReset: "REINICIO SEMANAL", online: "en línea", alertsOn: "Alertas activadas", alertsOff: "Alertas desactivadas", sponsor: "SPONSOR",
                 introCommunity: "COMUNIDAD DARKOMENS", introDescription: "Consulta los horarios de todos los eventos de MIR4 Global en tiempo real.", introLive: "HORARIOS EN VIVO",
-                navGroups: { domination: "DOMINACIÓN", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OTROS CONTENIDOS" },
-                tabs: { ALL: "TODAS", FRENESI: "FRENESÍ", FURIA: "FURIA", LIDERES: "LIDER III", CIMA: "CIMA", WB_VALLES: "VALLES", WB_LABERINTOS: "LABERINTOS", PURGATORIO: "PURGATORIO", ORATORIO: "ORATORIO CRÍPTICO", TORRE: "TORRE" },
-                statusActive: "En curso", activeNow: "Evento en curso", statusWaiting: "En espera", nextOpening: "Próxima apertura:", durationActive: "Duración activa:", opensIn: "Abre en:", closesIn: "Cierra en:",
+                navGroups: { domination: "DOMINACIÓN", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OTROS CONTENIDOS" }, mirageLayer1: "PLANO 1", reappearsEvery: "REAPARECE CADA:", bossAppearsIn: "APARECE EN:",
+                tabs: { ALL: "TODAS", FRENESI: "FRENESÍ", FURIA: "FURIA", LIDERES: "LIDER III", CIMA: "CIMA", WB_VALLES: "VALLES", WB_LABERINTOS: "LABERINTOS", PURGATORIO: "PURGATORIO", ORATORIO: "ORATORIO CRÍPTICO", TORRE: "TORRE", W1: "W1", W2: "W2", W3: "W3" },
+                statusActive: "En curso", activeNow: "Evento en curso", statusWaiting: "En espera", nextOpening: "Próxima apertura:", mirageSchedule: "CICLO DE APARICIONES", nextSpawn: "Próxima aparición", timeRemaining: "Tiempo restante", durationActive: "Duración activa:", opensIn: "Abre en:", closesIn: "Cierra en:",
                 toastTitle: "¡EVENTO ACTIVADO!", toastSub: "Alerta de TIMERS | Mir4VE", nextQueueTitle: "Próximos ciclos en espera:", durationMin: "min", durationHour: "1 hora", timePrefix: "en ", unitHour: "h", unitMinute: "m", unitSecond: "s",
-                eventTitles: { frenesi: "MS ◂FRENESÍ▸", furia: "MS ◂FURIA▸", lideres: "MS ◂LIDER 3▸", oratorio: "◂Oratorio Críptico▸", cima_inferior: "SP ◂JEFE SUR▸", cima_superior: "SP ◂JEFE NORTE▸", purgatorio: "◂Purgatorio▸", wb_valles: "WB ◂VALLES▸", wb_laberintos: "WB ◂LABERINTOS▸", domination_tower: "◂TORRE DEL DRAGÓN▸" },
+                eventTitles: { frenesi: "MS ◂ FRENESÍ ▸", furia: "MS ◂ FURIA ▸", lideres: "MS ◂ LIDER 3 ▸", oratorio: "◂ Oratorio Críptico ▸", cima_inferior: "SP ◂ JEFE SUR ▸", cima_superior: "SP ◂ JEFE NORTE ▸", purgatorio: "◂ Purgatorio ▸", wb_valles: "WB ◂ VALLES ▸", wb_laberintos: "WB ◂ LABERINTOS ▸", domination_tower: "◂ TORRE DEL DRAGÓN ▸", mirage_jihwa: "P1 · W1 ◂ Jihwa ▸", mirage_yaksha: "P1 · W1 ◂ Yaksha ▸", mirage_black_carapace: "P1 · W1 ◂ Black Carapace ▸", mirage_bulhu: "P1 · W1 ◂ Bulhu ▸" },
                 bellTitle: "Alertas para este evento", stop: "DETENER"
             },
             pt: {
                 serverTime: "HORA DO SERVIDOR", localTime: "HORA LOCAL", weekReset: "REINÍCIO SEMANAL", online: "online", alertsOn: "Alertas ativados", alertsOff: "Alertas desativados", sponsor: "PATROCÍNIO",
                 introCommunity: "COMUNIDADE DARKOMENS", introDescription: "Consulte os horários de todos os eventos de MIR4 Global em tempo real.", introLive: "AGENDA AO VIVO",
-                navGroups: { domination: "DOMINAÇÃO", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OUTROS CONTEÚDOS" },
-                tabs: { ALL: "TODOS", FRENESI: "FRENESI", FURIA: "FÚRIA", LIDERES: "LÍDER III", CIMA: "PICO SECRETO", WB_VALLES: "VALES", WB_LABERINTOS: "LABIRINTOS", PURGATORIO: "PURGATÓRIO", ORATORIO: "SANTUÁRIO SECRETO", TORRE: "TORRE" },
-                statusActive: "Em andamento", activeNow: "Evento em andamento", statusWaiting: "Aguardando", nextOpening: "Próxima abertura:", durationActive: "Duração ativa:", opensIn: "Abre em:", closesIn: "Fecha em:",
+                navGroups: { domination: "DOMINAÇÃO", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OUTROS CONTEÚDOS" }, mirageLayer1: "CAMADA 1", reappearsEvery: "REAPARECE A CADA:", bossAppearsIn: "SURGE EM:",
+                tabs: { ALL: "TODOS", FRENESI: "FRENESI", FURIA: "FÚRIA", LIDERES: "LÍDER III", CIMA: "PICO SECRETO", WB_VALLES: "VALES", WB_LABERINTOS: "LABIRINTOS", PURGATORIO: "PURGATÓRIO", ORATORIO: "SANTUÁRIO SECRETO", TORRE: "TORRE", W1: "W1", W2: "W2", W3: "W3" },
+                statusActive: "Em andamento", activeNow: "Evento em andamento", statusWaiting: "Aguardando", nextOpening: "Próxima abertura:", mirageSchedule: "CICLO DE APARIÇÕES", nextSpawn: "Próxima aparição", timeRemaining: "Tempo restante", durationActive: "Duração ativa:", opensIn: "Abre em:", closesIn: "Fecha em:",
                 toastTitle: "EVENTO INICIADO!", toastSub: "Alerta do TIMERS | Mir4VE", nextQueueTitle: "Próximos ciclos aguardando:", durationMin: "min", durationHour: "1 hora", timePrefix: "em ", unitHour: "h", unitMinute: "min", unitSecond: "s",
-                eventTitles: { frenesi: "MS ◂FRENESI▸", furia: "MS ◂FÚRIA▸", lideres: "MS ◂LÍDER 3▸", oratorio: "◂Santuário Secreto▸", cima_inferior: "SP ◂BOSS SUL▸", cima_superior: "SP ◂BOSS NORTE▸", purgatorio: "◂Purgatório▸", wb_valles: "WB ◂VALES▸", wb_laberintos: "WB ◂LABIRINTOS▸", domination_tower: "◂TORRE DO DRAGÃO▸" },
+                eventTitles: { frenesi: "MS ◂ FRENESI ▸", furia: "MS ◂ FÚRIA ▸", lideres: "MS ◂ LÍDER 3 ▸", oratorio: "◂ Santuário Secreto ▸", cima_inferior: "SP ◂ BOSS SUL ▸", cima_superior: "SP ◂ BOSS NORTE ▸", purgatorio: "◂ Purgatório ▸", wb_valles: "WB ◂ VALES ▸", wb_laberintos: "WB ◂ LABIRINTOS ▸", domination_tower: "◂ TORRE DO DRAGÃO ▸", mirage_jihwa: "C1 · W1 ◂ Jihwa ▸", mirage_yaksha: "C1 · W1 ◂ Yaksha ▸", mirage_black_carapace: "C1 · W1 ◂ Black Carapace ▸", mirage_bulhu: "C1 · W1 ◂ Bulhu ▸" },
                 bellTitle: "Alertas para este evento", stop: "PARAR"
             },
             en: {
                 serverTime: "SERVER TIME", localTime: "LOCAL TIME", weekReset: "WEEKLY RESET", online: "online", alertsOn: "Alerts On", alertsOff: "Alerts Off", sponsor: "SPONSOR",
                 introCommunity: "DARKOMENS COMMUNITY", introDescription: "Check the schedules for all MIR4 Global events in real time.", introLive: "LIVE SCHEDULE",
-                navGroups: { domination: "DOMINATION", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OTHER CONTENT" },
-                tabs: { ALL: "ALL", FRENESI: "FRENZY", FURIA: "FURY", LIDERES: "LEADER III", CIMA: "SECRET PEAK", WB_VALLES: "VALLEYS", WB_LABERINTOS: "LABYRINTHS", PURGATORIO: "PURGATORY", ORATORIO: "CRYPTIC SANCTUARY", TORRE: "TOWER" },
-                statusActive: "Active", activeNow: "Event in progress", statusWaiting: "Waiting", nextOpening: "Next opening:", durationActive: "Active duration:", opensIn: "Opens in:", closesIn: "Closes in:",
+                navGroups: { domination: "DOMINATION", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OTHER CONTENT" }, mirageLayer1: "LAYER 1", reappearsEvery: "REAPPEARS EVERY:", bossAppearsIn: "SPAWNS IN:",
+                tabs: { ALL: "ALL", FRENESI: "FRENZY", FURIA: "FURY", LIDERES: "LEADER III", CIMA: "SECRET PEAK", WB_VALLES: "VALLEYS", WB_LABERINTOS: "LABYRINTHS", PURGATORIO: "PURGATORY", ORATORIO: "CRYPTIC SANCTUARY", TORRE: "TOWER", W1: "W1", W2: "W2", W3: "W3" },
+                statusActive: "Active", activeNow: "Event in progress", statusWaiting: "Waiting", nextOpening: "Next spawn:", mirageSchedule: "SPAWN CYCLE", nextSpawn: "Next spawn", timeRemaining: "Time remaining", durationActive: "Active duration:", opensIn: "Opens in:", closesIn: "Closes in:",
                 toastTitle: "EVENT STARTED!", toastSub: "TIMERS | Mir4VE alert", nextQueueTitle: "Upcoming waiting cycles:", durationMin: "min", durationHour: "1 hour", timePrefix: "in ", unitHour: "h", unitMinute: "m", unitSecond: "s",
-                eventTitles: { frenesi: "MS ◂FRENZY▸", furia: "MS ◂FURY▸", lideres: "MS ◂LEADER 3▸", oratorio: "◂Cryptic Sanctuary▸", cima_inferior: "SP ◂SOUTH BOSS▸", cima_superior: "SP ◂NORTH BOSS▸", purgatorio: "◂Purgatory▸", wb_valles: "World Boss ◂VALLEYS▸", wb_laberintos: "World Boss ◂LABYRINTHS▸", domination_tower: "◂DRAGON TOWER▸" },
+                eventTitles: { frenesi: "MS ◂ FRENZY ▸", furia: "MS ◂ FURY ▸", lideres: "MS ◂ LEADER 3 ▸", oratorio: "◂ Cryptic Sanctuary ▸", cima_inferior: "SP ◂ SOUTH BOSS ▸", cima_superior: "SP ◂ NORTH BOSS ▸", purgatorio: "◂ Purgatory ▸", wb_valles: "World Boss ◂ VALLEYS ▸", wb_laberintos: "World Boss ◂ LABYRINTHS ▸", domination_tower: "◂ DRAGON TOWER ▸", mirage_jihwa: "L1 · W1 ◂ Jihwa ▸", mirage_yaksha: "L1 · W1 ◂ Yaksha ▸", mirage_black_carapace: "L1 · W1 ◂ Black Carapace ▸", mirage_bulhu: "L1 · W1 ◂ Bulhu ▸" },
                 bellTitle: "Alerts for this event", stop: "STOP"
             }
         };
@@ -1306,7 +1388,7 @@
             return 'en';
         }
         let currentLang = ['es', 'pt', 'en'].includes(savedLang) ? savedLang : detectInitialLanguage();
-        const VALID_TABS = ['ALL', 'FRENESI', 'FURIA', 'LIDERES', 'CIMA', 'WB_VALLES', 'WB_LABERINTOS', 'PURGATORIO', 'ORATORIO', 'TORRE'];
+        const VALID_TABS = ['ALL', 'FRENESI', 'FURIA', 'LIDERES', 'CIMA', 'WB_VALLES', 'WB_LABERINTOS', 'PURGATORIO', 'ORATORIO', 'TORRE', 'W1', 'W2', 'W3'];
         let currentTab = VALID_TABS.includes(savedTab) ? savedTab : 'ALL';
         const SERVER_CONFIG = {
             NA: { offset: -4, label: 'NA', utc: 'UTC-4' },
@@ -1348,7 +1430,7 @@
             {
                 id: "frenesi",
                 cat: "FRENESI",
-                title: "MS ◂FRENESÍ▸",
+                title: "MS ◂ FRENESÍ ▸",
                 icon: "fa-bolt",
                 color: "orange",
                 durationMin: 60,
@@ -1357,7 +1439,7 @@
             {
                 id: "furia",
                 cat: "FURIA",
-                title: "MS ◂FURIA▸",
+                title: "MS ◂ FURIA ▸",
                 icon: "fa-fire",
                 color: "red",
                 durationMin: 60,
@@ -1366,7 +1448,7 @@
             {
                 id: "lideres",
                 cat: "LIDERES",
-                title: "MS ◂LIDER 3▸",
+                title: "MS ◂ LIDER 3 ▸",
                 icon: "fa-crown",
                 color: "yellow",
                 durationMin: 5,
@@ -1384,7 +1466,7 @@
             {
                 id: "cima_inferior",
                 cat: "CIMA",
-                title: "SP ◂JEFE SUR▸",
+                title: "SP ◂ JEFE SUR ▸",
                 icon: "fa-person-hiking",
                 color: "red",
                 durationMin: 5,
@@ -1393,7 +1475,7 @@
             {
                 id: "cima_superior",
                 cat: "CIMA",
-                title: "SP ◂JEFE NORTE▸",
+                title: "SP ◂ JEFE NORTE ▸",
                 icon: "fa-skull",
                 color: "purple",
                 durationMin: 5,
@@ -1412,7 +1494,7 @@
                 id: "wb_valles",
                 cat: "WB_VALLES",
                 title: "WB (VALLES)",
-                icon: "fa-skull",
+                icon: "fa-dragon",
                 color: "green",
                 durationMin: 15,
                 schedule: [[12,0], [22,0]]
@@ -1434,7 +1516,12 @@
                 color: "purple",
                 durationMin: 240,
                 schedule: [[9,0], [15,0], [21,0]]
-            }
+            },
+            // MIRAGE SHIP / PLANO 1 / W1. Respawns diarios cada 3 o 6 horas.
+            { id: "mirage_jihwa", cat: "W1", title: "Jihwa", icon: "fa-eye", color: "cyan", durationMin: 5, schedule: [[2,30],[5,30],[8,30],[11,30],[14,30],[17,30],[20,30],[23,30]] },
+            { id: "mirage_yaksha", cat: "W1", title: "Yaksha", icon: "fa-wand-sparkles", color: "purple", durationMin: 5, schedule: [[3,30],[9,30],[15,30],[21,30]] },
+            { id: "mirage_black_carapace", cat: "W1", title: "Black Carapace", icon: "fa-bug", color: "green", durationMin: 5, schedule: [[0,30],[3,30],[6,30],[9,30],[12,30],[15,30],[18,30],[21,30]] },
+            { id: "mirage_bulhu", cat: "W1", title: "Bulhu", icon: "fa-meteor", color: "orange", durationMin: 5, schedule: [[4,30],[10,30],[16,30],[22,30]] }
         ];
 
         // Restore individual bell states from LocalStorage
@@ -1983,7 +2070,7 @@
         }
 
         function formatDecoratedLabel(text) {
-            return String(text).replace(/\s*\(([^)]*)\)/g, (_, inside) => ` ◂${inside.toLocaleUpperCase(currentLang)}▸`);
+            return String(text).replace(/\s*\(([^)]*)\)/g, (_, inside) => ` ◂ ${inside.toLocaleUpperCase(currentLang)} ▸`);
         }
 
         // 24-hour format is the default; this changes presentation only, never schedule calculations.
@@ -2308,13 +2395,18 @@
                 const isActive = evt.state.isActive;
                 const isBellOn = isOccurrenceBellOn(evt.id, evt.state.startH, evt.state.startM);
                 let localizedTitle = formatDecoratedLabel(langDict.eventTitles[evt.id] || evt.title);
+                // Consistent spacing around decorative name markers across ALL and individual views.
+                localizedTitle = localizedTitle.replace(/◂ \s*/g, "◂ ").replace(/\s* ▸/g, " ▸");
                 const formattedCardTitles = {
-                    es: { frenesi: 'MS <strong>◂FRENESÍ▸</strong>', furia: 'MS <strong>◂FURIA▸</strong>', lideres: 'MS <strong>◂LIDER 3▸</strong>', wb_valles: 'WB <strong>◂VALLES▸</strong>', wb_laberintos: 'WB <strong>◂LABERINTOS▸</strong>' },
-                    pt: { frenesi: 'MS <strong>◂FRENESI▸</strong>', furia: 'MS <strong>◂FÚRIA▸</strong>', lideres: 'MS <strong>◂LÍDER 3▸</strong>', wb_valles: 'WB <strong>◂VALES▸</strong>', wb_laberintos: 'WB <strong>◂LABIRINTOS▸</strong>' },
-                    en: { frenesi: 'MS <strong>◂FRENZY▸</strong>', furia: 'MS <strong>◂FURY▸</strong>', lideres: 'MS <strong>◂LEADER 3▸</strong>', wb_valles: 'WB <strong>◂VALLEYS▸</strong>', wb_laberintos: 'WB <strong>◂LABYRINTHS▸</strong>' }
+                    es: { frenesi: 'MS <strong>◂ FRENESÍ ▸</strong>', furia: 'MS <strong>◂ FURIA ▸</strong>', lideres: 'MS <strong>◂ LIDER 3 ▸</strong>', wb_valles: 'WB <strong>◂ VALLES ▸</strong>', wb_laberintos: 'WB <strong>◂ LABERINTOS ▸</strong>' },
+                    pt: { frenesi: 'MS <strong>◂ FRENESI ▸</strong>', furia: 'MS <strong>◂ FÚRIA ▸</strong>', lideres: 'MS <strong>◂ LÍDER 3 ▸</strong>', wb_valles: 'WB <strong>◂ VALES ▸</strong>', wb_laberintos: 'WB <strong>◂ LABIRINTOS ▸</strong>' },
+                    en: { frenesi: 'MS <strong>◂ FRENZY ▸</strong>', furia: 'MS <strong>◂ FURY ▸</strong>', lideres: 'MS <strong>◂ LEADER 3 ▸</strong>', wb_valles: 'WB <strong>◂ VALLEYS ▸</strong>', wb_laberintos: 'WB <strong>◂ LABYRINTHS ▸</strong>' }
                 };
                 const languageCardTitles = formattedCardTitles[currentLang] || formattedCardTitles.es;
                 if (languageCardTitles[evt.id]) localizedTitle = languageCardTitles[evt.id];
+                // Apply the same spaced name markers to every card, including titles that previously had none.
+                if (!localizedTitle.includes('◂')) localizedTitle = `◂ ${localizedTitle} ▸`;
+                localizedTitle = localizedTitle.replace(/◂\s*/g, '◂ ').replace(/\s*▸/g, ' ▸');
                 const elapsedRatio = isActive ? Math.max(0, Math.min(1, 1 - (evt.state.remainingSec / (evt.durationMin * 60)))) : 0;
                 // Active events show elapsed event duration; waiting events subtly fill the gap until their next start.
                 const waitingProgress = !isActive ? (evt.state.waitingProgress || 0) : 0;
@@ -2337,13 +2429,13 @@
                 if (evt.color === 'cyan') colorClass = "bg-cyan-500/10 text-cyan-300 border-cyan-500/30";
 
                 return `
-                <div data-event-id="${evt.id}" style="--alert-loop-offset: -${(Date.now() % 1400) / 1000}s" class="event-card bg-brand-card/90 border border-brand-border/80 rounded-2xl p-5 shadow-xl relative flex flex-col justify-between ${isActive ? 'glow-active bg-emerald-950/20' : 'cursor-pointer'} ${alertGlowUntil[evt.id] > Date.now() ? 'alert-glow-active' : ''}" ${!isActive ? `onclick="toggleCardBell('${evt.id}', ${evt.state.startH}, ${evt.state.startM}, event)" title="${langDict.bellTitle}"` : ''}>
+                <div data-event-id="${evt.id}" style="--alert-loop-offset: -${(Date.now() % 1400) / 1000}s" class="event-card ${evt.cat === 'W1' && currentTab !== 'ALL' ? 'mirage-w1-individual' : ''} bg-brand-card/90 border border-brand-border/80 rounded-2xl p-5 shadow-xl relative flex flex-col justify-between ${isActive ? 'glow-active bg-emerald-950/20' : 'cursor-pointer'} ${alertGlowUntil[evt.id] > Date.now() ? 'alert-glow-active' : ''}" ${!isActive ? `onclick="toggleCardBell('${evt.id}', ${evt.state.startH}, ${evt.state.startM}, event)" title="${langDict.bellTitle}"` : ''}>
                     
                     <i class="event-watermark fa-solid ${evt.icon}" aria-hidden="true"></i>
                     <div class="event-card-content">
                         <!-- TOP BADGE & BELL -->
                         <div class="event-card-header flex items-center justify-between gap-2 mb-3">
-                            <span class="event-title inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold border ${colorClass}">
+                            <span class="event-title inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold border ${colorClass} ${({'frenesi':'palette-frenesi','furia':'palette-furia','lideres':'palette-lideres','oratorio':'palette-oratorio','cima_inferior':'palette-cima-sur','cima_superior':'palette-cima-norte','purgatorio':'palette-purgatorio','wb_valles':'palette-wb-valles','wb_laberintos':'palette-wb-laberintos','domination_tower':'palette-torre','mirage_jihwa':'boss-name-jihwa','mirage_yaksha':'boss-name-yaksha','mirage_black_carapace':'boss-name-carapace','mirage_bulhu':'boss-name-bulhu'})[evt.id] || ''}">
                                 <i class="fa-solid ${evt.icon}"></i>
                                 ${localizedTitle}
                             </span>
@@ -2361,38 +2453,71 @@
 
                         <!-- OPENING TIME & DURATION -->
                         <div class="mt-4 mb-2">
-                            ${isActive && currentTab !== 'ALL'
-                                ? `<div class="flex w-full items-center justify-between gap-3 rounded-xl border border-emerald-400/25 bg-gradient-to-r from-emerald-500/10 via-emerald-400/5 to-transparent px-4 py-3 shadow-sm shadow-emerald-950/20">
-                                        <div class="flex min-w-0 items-center gap-2.5">
-                                            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-emerald-400/20 bg-emerald-400/10 text-emerald-300"><i class="fa-solid fa-hourglass-half" aria-hidden="true"></i></span>
-                                            <span class="active-duration-label text-xs sm:text-sm font-semibold tracking-wide text-emerald-100/80">${langDict.durationActive}</span>
-                                        </div>
-                                        <span class="active-duration-value shrink-0 text-base sm:text-lg font-black tracking-wide text-emerald-200">${formatActiveDuration(evt.durationMin)}</span>
-                                   </div>`
-                                : `<div class="text-xs text-slate-400 font-medium">${langDict.nextOpening}</div>
-                                   <div class="timer-number text-2xl font-black text-white tracking-wide mt-0.5">${evt.state.displayTime}</div>
-                                   <div class="text-xs text-slate-400 mt-2">
-                                      ${langDict.durationActive} <span class="text-slate-200 font-bold">${formatActiveDuration(evt.durationMin)}</span>
-                                   </div>`}
+                            ${evt.cat === 'W1' && currentTab !== 'ALL'
+                                ? (isActive
+                                    ? `<div class="flex w-full items-center justify-between gap-3 rounded-xl border border-emerald-400/25 bg-gradient-to-r from-emerald-500/10 via-emerald-400/5 to-transparent px-4 py-3 shadow-sm shadow-emerald-950/20">
+                                            <div class="flex min-w-0 items-center gap-2.5">
+                                                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-emerald-400/20 bg-emerald-400/10 text-emerald-300"><i class="fa-solid fa-hourglass-half" aria-hidden="true"></i></span>
+                                                <span class="active-duration-label text-xs sm:text-sm font-semibold tracking-wide text-emerald-100/80">${langDict.durationActive}</span>
+                                            </div>
+                                            <span class="active-duration-value shrink-0 text-base sm:text-lg font-black tracking-wide text-emerald-200">${formatActiveDuration(evt.durationMin)}</span>
+                                       </div>`
+                                    : (currentTab === 'ALL'
+                                        ? `<div class="text-xs text-slate-400 font-medium">${langDict.nextSpawn}</div>
+                                           <div class="timer-number text-2xl font-black text-white tracking-wide mt-0.5">${evt.state.displayTime}</div>
+                                           <div class="text-xs text-slate-400 mt-2">${langDict.durationActive} <span class="text-slate-200 font-bold">${formatActiveDuration(evt.durationMin)}</span></div>`
+                                        : '') )
+                                : (isActive && currentTab !== 'ALL'
+                                    ? `<div class="flex w-full items-center justify-between gap-3 rounded-xl border border-emerald-400/25 bg-gradient-to-r from-emerald-500/10 via-emerald-400/5 to-transparent px-4 py-3 shadow-sm shadow-emerald-950/20">
+                                            <div class="flex min-w-0 items-center gap-2.5">
+                                                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-emerald-400/20 bg-emerald-400/10 text-emerald-300"><i class="fa-solid fa-hourglass-half" aria-hidden="true"></i></span>
+                                                <span class="active-duration-label text-xs sm:text-sm font-semibold tracking-wide text-emerald-100/80">${langDict.durationActive}</span>
+                                            </div>
+                                            <span class="active-duration-value shrink-0 text-base sm:text-lg font-black tracking-wide text-emerald-200">${formatActiveDuration(evt.durationMin)}</span>
+                                       </div>`
+                                    : `<div class="text-xs text-slate-400 font-medium">${langDict.nextOpening}</div>
+                                       <div class="timer-number text-2xl font-black text-white tracking-wide mt-0.5">${evt.state.displayTime}</div>
+                                       <div class="text-xs text-slate-400 mt-2">${langDict.durationActive} <span class="text-slate-200 font-bold">${formatActiveDuration(evt.durationMin)}</span></div>`)}
                         </div>
-
-
+                        ${evt.cat === 'W1' && currentTab !== 'ALL' ? `
+                            <section class="mirage-cycle-panel" aria-label="${langDict.mirageSchedule}">
+                                <div class="mirage-cycle-grid" aria-label="${langDict.mirageSchedule}">
+                                    ${[...evt.schedule].sort((a,b) => (a[0]*60+a[1])-(b[0]*60+b[1])).map(([hour, minute]) => {
+                                        const upcoming = evt.state.upcomingInstances[0];
+                                        // En tarjetas W1 individuales, resaltar la aparición en curso;
+                                        // al terminar, volver a resaltar la siguiente aparición. TODAS no cambia.
+                                        const isNext = isActive
+                                            ? evt.state.startH === hour && evt.state.startM === minute
+                                            : upcoming && upcoming.startH === hour && upcoming.startM === minute;
+                                        return `<div class="mirage-cycle-row ${isNext ? 'is-next' : ''}"><span class="mirage-cycle-time">${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}</span></div>`;
+                                    }).join('')}
+                                </div>
+                            </section>
+                            <div class="mirage-next-spawn" aria-label="${langDict.nextSpawn}">
+                                <div class="mirage-next-spawn-cell">
+                                    <span class="mirage-next-spawn-label">${langDict.reappearsEvery}</span>
+                                    <span class="mirage-next-spawn-value">${(evt.id === 'mirage_jihwa' || evt.id === 'mirage_black_carapace') ? '3H' : '6H'}</span>
+                                </div>
+                                <div class="mirage-next-spawn-cell">
+                                    <span class="mirage-next-spawn-label">${isActive ? langDict.closesIn : langDict.bossAppearsIn}</span>
+                                    <span class="mirage-next-spawn-value">${formatDurationDHMS(evt.state.remainingSec)}</span>
+                                </div>
+                            </div>` : ''}
                     </div>
 
-                    <!-- COUNTDOWN FOOTER -->
+                    <!-- Existing cards keep their original footer. W1 individual cards show their only countdown in the boss appearance panel. -->
+                    ${evt.cat === 'W1' && currentTab !== 'ALL' ? '' : `
                     <div class="event-card-content mt-4 pt-3 border-t border-brand-border/50">
                         <div class="flex items-center justify-between text-xs font-orbitron">
                             <span class="text-slate-400 font-bold">${isActive ? langDict.closesIn : langDict.opensIn}</span>
-                            <span class="countdown-number font-black text-sm ${isActive ? 'text-emerald-400' : 'text-amber-400'}">
-                                ${formatDurationDHMS(evt.state.remainingSec)}
-                            </span>
+                            <span class="countdown-number font-black text-sm ${isActive ? 'text-emerald-400' : 'text-amber-400'}">${formatDurationDHMS(evt.state.remainingSec)}</span>
                         </div>
                         <div class="timer-progress-track ${!isActive ? 'waiting-track' : ''} mt-3 h-2 w-full overflow-hidden rounded-full ${isActive ? 'bg-slate-800/90 border border-slate-700/60' : 'border'}" role="progressbar" aria-label="Progreso del temporizador" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(progressPercent)}">
                             <div class="timer-progress-fill h-full rounded-full ${!isActive ? 'waiting-fill' : ''}" style="width: ${progressPercent}%; ${isActive ? `background: linear-gradient(90deg, ${previousProgressColor} 0%, ${progressColor} 100%); box-shadow: 0 0 9px ${progressColor.replace('rgb(', 'rgba(').replace(')', ', .30)')};` : ''}"></div>
                         </div>
-                    </div>
+                    </div>`}
                 </div>
-                ${currentTab !== 'ALL' ? `
+                ${currentTab !== 'ALL' && evt.cat !== 'W1' ? `
                     ${evt.state.upcomingInstances.filter(instance => isActive || instance.displayTime !== evt.state.displayTime).map((instance, instanceIndex) => {
                         const upcomingProgress = Math.round((instance.waitingProgress || 0) * 100);
                         const instanceBellOn = isOccurrenceBellOn(evt.id, instance.startH, instance.startM);
@@ -2402,7 +2527,7 @@
                             <i class="event-watermark fa-solid ${evt.icon}" aria-hidden="true"></i>
                             <div class="event-card-content">
                                 <div class="flex items-center justify-between gap-2 mb-3">
-                                    <span class="event-title inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold border ${colorClass}">
+                                    <span class="event-title inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold border ${colorClass} ${({'frenesi':'palette-frenesi','furia':'palette-furia','lideres':'palette-lideres','oratorio':'palette-oratorio','cima_inferior':'palette-cima-sur','cima_superior':'palette-cima-norte','purgatorio':'palette-purgatorio','wb_valles':'palette-wb-valles','wb_laberintos':'palette-wb-laberintos','domination_tower':'palette-torre','mirage_jihwa':'boss-name-jihwa','mirage_yaksha':'boss-name-yaksha','mirage_black_carapace':'boss-name-carapace','mirage_bulhu':'boss-name-bulhu'})[evt.id] || ''}">
                                         <i class="fa-solid ${evt.icon}" aria-hidden="true"></i>${localizedTitle}
                                     </span>
                                     <div class="flex items-center gap-2">
@@ -2433,14 +2558,14 @@
         }
 
         // NAVIGATION AND REUSABLE OUTSIDE-CLICK CLOSING
-        const NAV_MENU_IDS = ['nav-menu-domination', 'nav-menu-ms-p11p12', 'nav-menu-ms-sp', 'nav-menu-world-boss', 'nav-menu-other-content'];
+        const NAV_MENU_IDS = ['nav-menu-mirage-ship', 'nav-menu-mirage-plano1', 'nav-menu-domination', 'nav-menu-ms-p11p12', 'nav-menu-ms-sp', 'nav-menu-world-boss', 'nav-menu-other-content'];
         function closeDropdownMenus(exceptId = null) {
             ['lang-menu', 'server-menu', ...NAV_MENU_IDS].forEach(id => {
                 if (id === exceptId) return;
                 const menu = document.getElementById(id);
                 if (menu) menu.classList.add('hidden');
             });
-            ['lang-select', 'server-select', 'nav-trigger-domination', 'nav-trigger-ms-p11p12', 'nav-trigger-ms-sp', 'nav-trigger-world-boss', 'nav-trigger-other-content'].forEach(id => {
+            ['lang-select', 'server-select', 'nav-trigger-mirage-ship', 'nav-trigger-mirage-plano1', 'nav-trigger-domination', 'nav-trigger-ms-p11p12', 'nav-trigger-ms-sp', 'nav-trigger-world-boss', 'nav-trigger-other-content'].forEach(id => {
                 const button = document.getElementById(id);
                 if (!button) return;
                 const menuId = id === 'lang-select' ? 'lang-menu' : id === 'server-select' ? 'server-menu' : id.replace('nav-trigger-', 'nav-menu-');
@@ -2452,10 +2577,16 @@
             const menu = document.getElementById(menuId);
             if (!menu) return;
             const willOpen = menu.classList.contains('hidden');
-            closeDropdownMenus(willOpen ? menuId : null);
-            menu.classList.toggle('hidden', !willOpen);
-            const triggerId = menuId.replace('nav-menu-', 'nav-trigger-');
-            const trigger = document.getElementById(triggerId);
+            const isNested = menuId === 'nav-menu-mirage-plano1';
+            if (isNested) {
+                // Keep MIRAGE SHIP open while its PLANO 1 submenu is expanded.
+                document.getElementById('nav-menu-mirage-plano1').classList.toggle('hidden', !willOpen);
+            } else {
+                closeDropdownMenus(willOpen ? menuId : null);
+                menu.classList.toggle('hidden', !willOpen);
+            }
+            const triggerId = menuId === 'nav-menu-mirage-plano1' ? null : menuId.replace('nav-menu-', 'nav-trigger-');
+            const trigger = triggerId ? document.getElementById(triggerId) : menu.previousElementSibling;
             if (trigger) trigger.setAttribute('aria-expanded', String(willOpen));
         }
         function chooseNavTab(tabName, menuId) {
@@ -2485,7 +2616,7 @@
                 LIDERES: 'nav-trigger-ms-sp', CIMA: 'nav-trigger-ms-sp',
                 WB_VALLES: 'nav-trigger-world-boss', WB_LABERINTOS: 'nav-trigger-world-boss',
                 PURGATORIO: 'nav-trigger-other-content', ORATORIO: 'nav-trigger-other-content',
-                TORRE: 'nav-trigger-domination'
+                TORRE: 'nav-trigger-domination', W1: 'nav-trigger-mirage-ship', W2: 'nav-trigger-mirage-ship', W3: 'nav-trigger-mirage-ship'
             };
             document.querySelectorAll('.nav-group-trigger').forEach(btn => btn.classList.toggle('group-active', btn.id === groupMap[tabName]));
             if (refreshDashboard) updateDashboard();
@@ -2621,6 +2752,8 @@
                 const key = label.dataset.navLabel;
                 if (langDict.navGroups && langDict.navGroups[key]) label.textContent = langDict.navGroups[key];
             });
+            const mirageLayerLabel = document.querySelector('[data-i18n="mirageLayer1"]');
+            if (mirageLayerLabel && langDict.mirageLayer1) mirageLayerLabel.textContent = langDict.mirageLayer1;
 
             renderMasterAlertUI();
 
