@@ -913,10 +913,10 @@
             bottom: calc(1.15rem + env(safe-area-inset-bottom, 0px)); z-index: 1000;
             display: flex; align-items: center; gap: .9rem;
             width: min(32rem, calc(100vw - 1.5rem)); max-width: calc(100vw - 1.5rem);
-            padding: 1rem 1.05rem; border: 1px solid rgba(251,191,36,.72);
+            padding: 1rem 1.05rem; border: 1px solid rgba(248,113,113,.82);
             border-radius: 1.1rem; color: #f8fafc;
-            background: linear-gradient(125deg, rgba(35,24,7,.98), rgba(12,18,31,.985) 52%, rgba(27,16,7,.98));
-            box-shadow: 0 20px 65px rgba(0,0,0,.58), 0 0 0 1px rgba(251,191,36,.13), 0 0 34px rgba(245,158,11,.25);
+            background: radial-gradient(120% 150% at 0% 0%, rgba(127,29,29,.42), transparent 58%), linear-gradient(125deg, rgba(31,12,19,.99), rgba(10,17,31,.99) 54%, rgba(35,12,18,.99));
+            box-shadow: 0 22px 70px rgba(0,0,0,.64), 0 0 0 1px rgba(248,113,113,.2), 0 0 36px rgba(239,68,68,.28);
             backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
             font-family: 'Inter','Segoe UI',sans-serif; overflow: hidden;
             transform: translateX(-50%);
@@ -924,30 +924,30 @@
         }
         #alarm-toast::before {
             content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px;
-            background: linear-gradient(90deg, #f59e0b, #fef08a, #fb923c, #fef08a, #f59e0b);
+            background: linear-gradient(90deg, #ef4444, #fca5a5, #fef2f2, #fb7185, #ef4444);
             background-size: 220% 100%; animation: alarm-light-sweep 1.8s linear infinite;
         }
         #alarm-toast.hidden { display: none !important; }
         #alarm-toast > i {
             display:grid; place-items:center; flex:0 0 3.15rem; width:3.15rem; height:3.15rem;
-            border:1px solid rgba(253,224,71,.58); border-radius:1rem;
-            background:radial-gradient(circle at 35% 25%, rgba(254,240,138,.3), rgba(245,158,11,.13) 68%);
-            color:#fde047; font-size:1.35rem; filter:drop-shadow(0 0 10px rgba(250,204,21,.4));
+            border:1px solid rgba(252,165,165,.72); border-radius:1rem;
+            background:radial-gradient(circle at 35% 25%, rgba(254,202,202,.34), rgba(239,68,68,.17) 68%);
+            color:#fecaca; font-size:1.35rem; filter:drop-shadow(0 0 12px rgba(248,113,113,.56));
             transform-origin:50% 12%; animation: alert-bell-ring .82s ease-in-out infinite;
         }
         #alarm-toast > div { flex:1 1 auto; min-width:0; }
-        #toast-title { color:#fef3c7; font-size:.83rem; font-weight:900; letter-spacing:.065em; line-height:1.4; text-shadow:0 0 16px rgba(251,191,36,.18); }
+        #toast-title { color:#fee2e2; font-size:.83rem; font-weight:900; letter-spacing:.065em; line-height:1.4; text-shadow:0 0 16px rgba(251,191,36,.18); }
         #toast-sub { margin-top:.28rem; color:#d2d9e6; font-size:.75rem; font-weight:550; line-height:1.5; overflow-wrap:anywhere; }
         #alarm-toast button {
-            flex:0 0 auto; min-height:2.65rem; padding:.7rem .9rem; border:1px solid rgba(253,224,71,.7);
-            border-radius:.75rem; background:linear-gradient(135deg,rgba(245,158,11,.25),rgba(234,88,12,.18));
-            color:#fef08a; font-size:.7rem; font-weight:900; letter-spacing:.055em;
-            box-shadow:inset 0 1px rgba(255,255,255,.08),0 0 16px rgba(245,158,11,.1);
+            flex:0 0 auto; min-height:2.65rem; padding:.7rem .9rem; border:1px solid rgba(252,165,165,.78);
+            border-radius:.75rem; background:linear-gradient(135deg,rgba(239,68,68,.32),rgba(190,24,93,.22));
+            color:#fee2e2; font-size:.7rem; font-weight:900; letter-spacing:.055em;
+            box-shadow:inset 0 1px rgba(255,255,255,.08),0 0 18px rgba(239,68,68,.18);
             transition:background .15s ease,border-color .15s ease,transform .15s ease;
         }
         #alarm-toast button:hover, #alarm-toast button:focus-visible { outline:2px solid rgba(251,191,36,.4); outline-offset:2px; background:rgba(245,158,11,.32); border-color:#fde68a; transform:translateY(-1px); }
         @keyframes alarm-toast-rise { from { opacity:0; transform:translate(-50%, 48px) scale(.94); filter:blur(3px); } 72% { opacity:1; transform:translate(-50%, -4px) scale(1.012); filter:blur(0); } to { opacity:1; transform:translate(-50%, 0) scale(1); filter:blur(0); } }
-        @keyframes alarm-toast-attention { 0%,100% { box-shadow:0 20px 65px rgba(0,0,0,.58),0 0 0 1px rgba(251,191,36,.13),0 0 24px rgba(245,158,11,.18); } 50% { box-shadow:0 20px 65px rgba(0,0,0,.58),0 0 0 1px rgba(251,191,36,.24),0 0 38px rgba(245,158,11,.36); } }
+        @keyframes alarm-toast-attention { 0%,100% { box-shadow:0 22px 70px rgba(0,0,0,.62),0 0 0 1px rgba(248,113,113,.16),0 0 24px rgba(239,68,68,.2); } 50% { box-shadow:0 22px 70px rgba(0,0,0,.62),0 0 0 1px rgba(252,165,165,.34),0 0 42px rgba(239,68,68,.42); } }
         @keyframes alarm-light-sweep { to { background-position:220% 0; } }
         @keyframes alert-bell-ring { 0%,100% { transform:rotate(0) scale(1); } 12%,36%,60% { transform:rotate(16deg) scale(1.04); } 24%,48%,72% { transform:rotate(-16deg) scale(1.04); } 84% { transform:rotate(5deg) scale(1); } }
         @media (max-width: 540px) {
@@ -1649,6 +1649,8 @@
         const queuedChimes = [];
         let chimeQueueRunning = false;
         let chimeQueueTimer = null;
+        // Pre-scheduled Web Audio alerts keep their exact start time when the tab loses focus.
+        const scheduledChimeAlerts = new Map();
 
         // Arbitration global: si varias tarjetas generan una señal prácticamente a la vez,
         // solo la primera obtiene permiso para sonar. No altera los sonidos de interfaz.
@@ -1668,9 +1670,13 @@
                 }
             }
             if (audioCtx && audioCtx.state === 'suspended') {
-                // Browsers suspend Web Audio until a user gesture; resume whenever a control is used.
+                // Resume from the user gesture, then immediately arm future alerts before focus changes.
                 const resumeResult = audioCtx.resume();
-                if (resumeResult && typeof resumeResult.catch === 'function') resumeResult.catch(() => {});
+                if (resumeResult && typeof resumeResult.then === 'function') {
+                    resumeResult.then(() => {
+                        if (typeof updateDashboard === 'function') updateDashboard();
+                    }).catch(() => {});
+                }
             }
         }
 
@@ -1778,97 +1784,146 @@
             } catch (e) {}
         }
 
-        // Sound 3: queued event alarm. Each event is queued independently; simultaneous alerts
-        // are played one after another so their tones do not collide or cancel each other.
-        async function triggerChimeSound(eventId = 'general', cardEventId = null, serverId = currentServer) {
-            if (!isAlertPlaybackAllowed() || serverId !== currentServer) return;
-            initAudioContext();
-            if (!audioCtx) return;
+        // Sound 3: precise, pre-scheduled warning alarm. Web Audio schedules the whole
+        // 20-second pattern on its own clock, so background timer throttling cannot delay it.
+        function createScheduledAlarmSound(startAt) {
+            if (!audioCtx) return null;
             try {
-                if (audioCtx.state === 'suspended') await audioCtx.resume();
-            } catch (error) {
-                console.warn('El navegador no permitió activar el audio todavía:', error);
-                return;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                gain.gain.setValueAtTime(0.0001, startAt);
+                const pattern = [880, 1174.66, 988, 659.25];
+                // Distinctive urgent four-pulse motif, repeated for exactly 20 seconds.
+                for (let t = 0, i = 0; t < 19.92; t += 0.72, i++) {
+                    pattern.forEach((frequency, j) => {
+                        const at = startAt + t + j * 0.135;
+                        if (at >= startAt + 20) return;
+                        osc.frequency.setValueAtTime(frequency, at);
+                        gain.gain.setValueAtTime(0.0001, at);
+                        gain.gain.linearRampToValueAtTime(0.13, at + 0.012);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, Math.min(at + 0.115, startAt + 20));
+                    });
+                }
+                osc.start(startAt);
+                osc.stop(startAt + 20);
+                return osc;
+            } catch (e) {
+                return null;
             }
-            // AudioContext.resume() is asynchronous. If the user switched Global while
-            // it was pending, discard the old server's alert instead of playing it late.
-            if (serverId !== currentServer || !claimCoordinatedEventCue()) return;
+        }
 
-            queuedChimes.push({ eventId, cardEventId, serverId, queuedAt: Date.now() });
+        function showScheduledAlarmToast(entry) {
+            if (!entry || entry.serverId !== currentServer || !isAlertPlaybackAllowed()) return;
+            if (entry.visualStarted) return;
+            entry.visualStarted = true;
+            const bellKey = getOccurrenceBellKey(entry.cardEventId, entry.startH, entry.startM);
+            triggeredAlerts[entry.key] = true;
+            cardBellStates[bellKey] = false;
+            persistBellPreferences();
+            renderMasterAlertUI();
+            // Closely coincident cards share one sound and one toast, but each occurrence
+            // still consumes its own one-shot bell state at the scheduled instant.
+            if (entry.duplicateSoundSuppressed) return;
+            if (currentTab !== 'ALL') setTab('ALL', false);
             const toast = document.getElementById('alarm-toast');
             if (toast) {
-                // Restart the entrance animation for every newly triggered event.
                 toast.classList.add('hidden');
                 void toast.offsetWidth;
                 toast.classList.remove('hidden');
-                const eventDef = EVENT_DEFINITIONS.find(def => def.id === cardEventId);
-                const eventName = (I18N[currentLang] && I18N[currentLang].eventTitles && I18N[currentLang].eventTitles[cardEventId]) || (eventDef && eventDef.title) || 'MIR4';
+                const eventDef = EVENT_DEFINITIONS.find(def => def.id === entry.cardEventId);
+                const eventName = (I18N[currentLang] && I18N[currentLang].eventTitles && I18N[currentLang].eventTitles[entry.cardEventId]) || (eventDef && eventDef.title) || 'MIR4';
                 const serverName = (SERVER_CONFIG[currentServer] && (SERVER_CONFIG[currentServer].label || SERVER_CONFIG[currentServer].name)) || currentServer;
                 const toastCopy = {
-                    es: ['🔔 ¡ALERTA DE EVENTO!', `${eventName} · Global ${serverName} · Pulsa DETENER para silenciar`],
-                    pt: ['🔔 ALERTA DE EVENTO!', `${eventName} · Global ${serverName} · Toque em PARAR para silenciar`],
-                    en: ['🔔 EVENT ALERT!', `${eventName} · Global ${serverName} · Press STOP to silence`]
-                }[currentLang] || ['🔔 ¡ALERTA DE EVENTO!', `${eventName} · Global ${serverName} · Pulsa DETENER para silenciar`];
-                document.getElementById('toast-title').textContent = toastCopy[0];
-                document.getElementById('toast-sub').textContent = toastCopy[1];
+                    es: ['⚠ ALERTA INMINENTE', `${eventName} · Global ${serverName} · Sonido de 20 s · Pulsa DETENER`],
+                    pt: ['⚠ ALERTA IMINENTE', `${eventName} · Global ${serverName} · Som de 20 s · Toque em PARAR`],
+                    en: ['⚠ EVENT WARNING', `${eventName} · Global ${serverName} · 20-second alarm · Press STOP`]
+                }[currentLang] || ['⚠ ALERTA INMINENTE', `${eventName} · Global ${serverName} · Sonido de 20 s · Pulsa DETENER`];
+                const title = document.getElementById('toast-title');
+                const sub = document.getElementById('toast-sub');
+                if (title) title.textContent = toastCopy[0];
+                if (sub) sub.textContent = toastCopy[1];
             }
-            runNextQueuedChime();
+            if (entry.cardEventId) alertGlowUntil[entry.cardEventId] = Date.now() + 20000;
+            entry.autoHideTimer = setTimeout(() => {
+                const active = scheduledChimeAlerts.get(entry.key);
+                if (active === entry && audioCtx && audioCtx.currentTime >= entry.startAt + 20) {
+                    const currentToast = document.getElementById('alarm-toast');
+                    if (currentToast) currentToast.classList.add('hidden');
+                    scheduledChimeAlerts.delete(entry.key);
+                }
+            }, Math.max(0, (entry.startAt + 20 - audioCtx.currentTime) * 1000));
+        }
+
+        function cancelScheduledAlert(entry) {
+            if (!entry) return;
+            if (entry.startTimer) clearTimeout(entry.startTimer);
+            if (entry.autoHideTimer) clearTimeout(entry.autoHideTimer);
+            if (entry.source && audioCtx) {
+                try { entry.source.stop(audioCtx.currentTime); } catch (e) {}
+            }
+            scheduledChimeAlerts.delete(entry.key);
+        }
+
+        function cancelScheduledAlertsForServer(serverId) {
+            Array.from(scheduledChimeAlerts.values()).forEach(entry => {
+                if (entry.serverId === serverId) cancelScheduledAlert(entry);
+            });
+        }
+
+        function scheduleOccurrenceAlert(eventDef, instance, serverNow, nowMs) {
+            if (!audioCtx || audioCtx.state !== 'running' || !isAlertPlaybackAllowed()) return;
+            const key = `${currentServer}_${eventDef.id}_${instance.startH}_${instance.startM}_${getOccurrenceDateKey(serverNow, instance.startH, instance.startM)}`;
+            if (triggeredAlerts[key] || scheduledChimeAlerts.has(key)) return;
+            const remaining = instance.remainingSec;
+            if (!(remaining > 0)) return;
+
+            // Never play a late catch-up alarm. If the warning window already began before
+            // this page/server selection and no sound was pre-scheduled, consume it silently.
+            const millis = serverNow.getUTCMilliseconds() / 1000;
+            const untilWarning = remaining - 60 - millis;
+            const warningWallTime = nowMs + untilWarning * 1000;
+            if (remaining < 60 || (remaining === 60 && currentServerEnteredAt >= warningWallTime)) {
+                if (remaining < 60) triggeredAlerts[key] = true;
+                return;
+            }
+
+            const startAt = audioCtx.currentTime + Math.max(0, untilWarning);
+            // Preserve the single-alert behavior when different cards share a warning time.
+            const duplicate = Array.from(scheduledChimeAlerts.values()).some(other =>
+                other.serverId === currentServer && Math.abs(other.startAt - startAt) < 0.35
+            );
+            const entry = {
+                key, cardEventId: eventDef.id, startH: instance.startH, startM: instance.startM,
+                serverId: currentServer, startAt, source: null, visualStarted: false,
+                duplicateSoundSuppressed: duplicate, startTimer: null, autoHideTimer: null
+            };
+            if (!duplicate) entry.source = createScheduledAlarmSound(startAt);
+            if (!entry.source && !duplicate) return;
+            scheduledChimeAlerts.set(key, entry);
+            const delayMs = Math.max(0, (startAt - audioCtx.currentTime) * 1000);
+            entry.startTimer = setTimeout(() => showScheduledAlarmToast(entry), delayMs);
+        }
+
+        // Immediate path is used only at the exact 60-second boundary if a page update
+        // happens before a future schedule could be installed.
+        function triggerChimeSound(eventId = 'general', cardEventId = null, serverId = currentServer) {
+            if (!isAlertPlaybackAllowed() || serverId !== currentServer || !audioCtx || audioCtx.state !== 'running') return;
+            const now = audioCtx.currentTime;
+            const source = createScheduledAlarmSound(now);
+            if (!source) return;
+            const key = eventId;
+            const entry = { key, cardEventId, startH: 0, startM: 0, serverId, startAt: now, source, visualStarted: false };
+            scheduledChimeAlerts.set(key, entry);
+            showScheduledAlarmToast(entry);
         }
 
         function runNextQueuedChime() {
-            if (!isAlertPlaybackAllowed()) { queuedChimes.length = 0; chimeQueueRunning = false; return; }
-            if (chimeQueueRunning || queuedChimes.length === 0 || !audioCtx) return;
-            const item = queuedChimes.shift();
-            if (item.serverId && item.serverId !== currentServer) {
-                runNextQueuedChime();
-                return;
-            }
-            chimeQueueRunning = true;
-            if (item.cardEventId) alertGlowUntil[item.cardEventId] = Date.now() + 15000;
-            let step = 0;
-            const playStep = () => {
-                if (!audioCtx || !isAlertPlaybackAllowed() || (item.serverId && item.serverId !== currentServer)) return;
-                try {
-                    // New warning sound: a softer, warm three-note descending chime.
-                    // Lower frequencies and a gentler envelope avoid the previous sharp, piercing tone.
-                    const now = audioCtx.currentTime;
-                    const notes = [[659.25, 0, 0.12], [523.25, 0.13, 0.10], [392.00, 0.26, 0.085]];
-                    notes.forEach(([frequency, delay, volume]) => {
-                        const osc = audioCtx.createOscillator();
-                        const gain = audioCtx.createGain();
-                        const start = now + delay;
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(frequency, start);
-                        gain.gain.setValueAtTime(0.0001, start);
-                        gain.gain.exponentialRampToValueAtTime(volume, start + 0.025);
-                        gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.28);
-                        osc.connect(gain); gain.connect(audioCtx.destination);
-                        osc.start(start); osc.stop(start + 0.30);
-                    });
-                } catch (e) {}
-                step++;
-            };
-            playStep();
-            let ticks = 1;
-            // Repeat the prominent warning for up to 15 seconds; Stop cancels it immediately.
-            // The existing Stop button cancels the queue immediately.
-            chimeQueueTimer = setInterval(() => {
-                if (ticks >= 30) {
-                    clearInterval(chimeQueueTimer);
-                    chimeQueueTimer = null;
-                    chimeQueueRunning = false;
-                    if (queuedChimes.length === 0) {
-                        const toast = document.getElementById('alarm-toast');
-                        const wasVisible = toast && !toast.classList.contains('hidden');
-                        if (toast) toast.classList.add('hidden');
-                        if (wasVisible) playAutoDismissSound();
-                    }
-                    runNextQueuedChime();
-                    return;
-                }
-                playStep();
-                ticks++;
-            }, 500);
+            // Kept as a compatibility shim for any older call sites; alerts are pre-scheduled.
+            if (queuedChimes.length) queuedChimes.length = 0;
+            chimeQueueRunning = false;
         }
 
         // A gentle, resolved two-note sound when the user stops the alert manually.
@@ -1919,6 +1974,12 @@
             }
             queuedChimes.length = 0;
             chimeQueueRunning = false;
+            // Stop only alerts that have already reached their start time; future alarms remain armed.
+            if (audioCtx) {
+                Array.from(scheduledChimeAlerts.values()).forEach(entry => {
+                    if (entry.startAt <= audioCtx.currentTime + 0.05) cancelScheduledAlert(entry);
+                });
+            }
             const toast = document.getElementById('alarm-toast');
             if (toast) toast.classList.add('hidden');
             if (wasVisible && playStopCue && isAlertPlaybackAllowed()) playManualStopSound();
@@ -2125,6 +2186,7 @@
             // Switching Global ends any warning from the server being left; it is never
             // resumed later. This keeps sound strictly tied to the currently selected Global.
             stopChimeSound(false);
+            cancelScheduledAlertsForServer(currentServer);
             Object.keys(alertGlowUntil).forEach(eventId => { delete alertGlowUntil[eventId]; });
             currentServer = server;
             currentServerEnteredAt = Date.now();
@@ -2411,35 +2473,38 @@
             }
             suppressTransitionSounds = false;
 
-            // Every scheduled occurrence has its own 60-second alert and one-shot state.
-            // This includes the next opening while another occurrence of the same event is active.
+            // Pre-schedule every enabled occurrence on the Web Audio clock, not a 1-second
+            // page timer. The warning is therefore queued before the tab can be background-throttled.
             let bellStateChanged = false;
             calculatedEvents.forEach(evt => {
                 (evt.state.upcomingInstances || []).forEach(instance => {
-                    if (instance.remainingSec < 60 && instance.remainingSec > 0) {
-                        const bellKey = getOccurrenceBellKey(evt.id, instance.startH, instance.startM);
-                        const alertKey = `${currentServer}_${evt.id}_${instance.startH}_${instance.startM}_${getOccurrenceDateKey(serverNow, instance.startH, instance.startM)}`;
-                        if (isAlertPlaybackAllowed() && !triggeredAlerts[alertKey] && isOccurrenceBellOn(evt.id, instance.startH, instance.startM)) {
-                            // The warning window starts 60 seconds before the scheduled event.
-                            // If this Global was selected after that window began, the alert was
-                            // missed while another Global was active: consume it silently, with no
-                            // sound, toast, tab switch, or delayed playback on returning later.
-                            const alertWindowStartedAt = nowMs + ((instance.remainingSec || 0) - 60) * 1000;
-                            if (currentServerEnteredAt >= alertWindowStartedAt) {
-                                // Consume this occurrence silently; do not catch it up later.
-                                triggeredAlerts[alertKey] = true;
+                    const bellKey = getOccurrenceBellKey(evt.id, instance.startH, instance.startM);
+                    const alertKey = `${currentServer}_${evt.id}_${instance.startH}_${instance.startM}_${getOccurrenceDateKey(serverNow, instance.startH, instance.startM)}`;
+                    if (isAlertPlaybackAllowed() && isOccurrenceBellOn(evt.id, instance.startH, instance.startM)) {
+                        if (!scheduledChimeAlerts.has(alertKey) && !triggeredAlerts[alertKey] && instance.remainingSec > 0) {
+                            // A schedule installed after the 60-second boundary is never played late.
+                            if (instance.remainingSec > 60 || instance.remainingSec === 60) {
+                                scheduleOccurrenceAlert(evt, instance, serverNow, nowMs);
                             } else {
                                 triggeredAlerts[alertKey] = true;
-                                // Every eligible alert brings the user to ALL so its card is visible.
-                                if (currentTab !== 'ALL') setTab('ALL', false);
-                                triggerChimeSound(alertKey, evt.id, currentServer);
-                                // Disable only this exact scheduled time after it has alerted.
-                                cardBellStates[bellKey] = false;
-                                bellStateChanged = true;
                             }
                         }
                     }
                 });
+            });
+            // Reconcile entries if a user disabled a bell, changed Globals, or returned after an alert.
+            Array.from(scheduledChimeAlerts.values()).forEach(entry => {
+                const bellKey = getOccurrenceBellKey(entry.cardEventId, entry.startH, entry.startM);
+                if (entry.serverId !== currentServer || (!entry.visualStarted && !isOccurrenceBellOn(entry.cardEventId, entry.startH, entry.startM))) {
+                    cancelScheduledAlert(entry);
+                } else if (audioCtx && audioCtx.currentTime >= entry.startAt && !entry.visualStarted) {
+                    showScheduledAlarmToast(entry);
+                } else if (audioCtx && audioCtx.currentTime >= entry.startAt + 20) {
+                    if (entry.autoHideTimer) clearTimeout(entry.autoHideTimer);
+                    scheduledChimeAlerts.delete(entry.key);
+                    const toast = document.getElementById('alarm-toast');
+                    if (toast) toast.classList.add('hidden');
+                }
             });
             if (bellStateChanged) {
                 persistBellPreferences();
