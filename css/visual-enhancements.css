@@ -1,0 +1,550 @@
+/* ========================================================================== */
+/* VISUAL ENHANCEMENTS: responsive photographic background                    */
+/* This file is intentionally separate from styles.css to preserve the site. */
+/* ========================================================================== */
+html {
+    background-color: #05070c;
+    background-image:
+        radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.09) 0%, transparent 70%),
+        linear-gradient(180deg, rgba(5, 7, 12, 0.14) 0%, rgba(5, 7, 12, 0.22) 52%, rgba(5, 7, 12, 0.34) 100%),
+        url("../assets/bg/background.jpg");
+    background-repeat: no-repeat;
+    background-position: center top, center top, center center;
+    background-attachment: fixed;
+    background-size: auto, auto, cover;
+}
+
+/* Keep existing site layout/styles while allowing the root background to show through. */
+body {
+    background: transparent;
+}
+
+/* ========================================================================== */
+/* BALANCED GLASS PANELS: expose the photographic background without          */
+/* sacrificing contrast, text readability, or the existing layout.            */
+/* ========================================================================== */
+body {
+    color: #e5eaf4;
+    background: transparent !important;
+}
+
+/* Reading mode adds a 50% dark veil to the photographic page background only. */
+html.reading-mode {
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.09) 0%, transparent 70%),
+        linear-gradient(180deg, rgba(5, 7, 12, 0.14) 0%, rgba(5, 7, 12, 0.22) 52%, rgba(5, 7, 12, 0.34) 100%),
+        url("../assets/bg/background.jpg");
+    background-repeat: no-repeat;
+    background-position: center top, center top, center top, center center;
+    background-attachment: fixed;
+    background-size: auto, auto, auto, cover;
+}
+
+/* Main chrome: a restrained smoked-glass surface rather than opaque black. */
+body > header,
+#home-view > section > .relative.overflow-hidden.rounded-2xl {
+    background-color: rgba(12, 15, 29, 0.72) !important;
+    border-color: rgba(148, 163, 184, 0.24) !important;
+}
+
+/* The sponsor surface uses the same solid brand-card color as adjacent UI panels. */
+#sponsor-btn {
+    background-color: #0c0f1d !important;
+    background-image: none !important;
+    border-color: rgba(148, 163, 184, 0.24) !important;
+}
+
+#sponsor-btn:hover,
+#sponsor-btn:focus-visible {
+    background-color: #151b2b !important;
+}
+
+/* Compact moon control paired with the existing 12/24-hour switch. */
+#reading-mode-toggle {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 1.9rem;
+    min-width: 1.9rem;
+    height: 1.9rem;
+    padding: 0;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    border-radius: 0.45rem;
+    background: rgba(15, 23, 42, 0.86);
+    color: #cbd5e1;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+
+#reading-mode-toggle:hover,
+#reading-mode-toggle:focus-visible {
+    border-color: rgba(196, 181, 253, 0.7);
+    background: rgba(76, 29, 149, 0.36);
+    color: #ede9fe;
+    outline: 2px solid rgba(196, 181, 253, 0.2);
+    outline-offset: 1px;
+}
+
+#reading-mode-toggle[aria-pressed="true"] {
+    border-color: rgba(196, 181, 253, 0.75);
+    background: rgba(109, 40, 217, 0.25);
+    color: #ddd6fe;
+    box-shadow: inset 0 0 0 1px rgba(196, 181, 253, 0.08);
+}
+
+/* The intro and About page use opaque gradient utilities; soften only the
+   panel fills, not their geometry, so the image shows through without noise. */
+#home-view > section > .relative.overflow-hidden.rounded-2xl {
+    background-color: transparent !important;
+    background-image: linear-gradient(135deg,
+        rgba(15, 23, 42, 0.72),
+        rgba(11, 16, 32, 0.68) 52%,
+        rgba(17, 24, 39, 0.72)) !important;
+}
+
+.about-shell {
+    background-color: transparent !important;
+    background-image: linear-gradient(135deg,
+        rgba(2, 6, 23, 0.78),
+        rgba(16, 19, 38, 0.74) 52%,
+        rgba(23, 17, 38, 0.76)) !important;
+    border-color: rgba(196, 181, 253, 0.25) !important;
+}
+
+.live-schedule-tools {
+    background-color: rgba(2, 6, 23, 0.54) !important;
+    border-color: rgba(148, 163, 184, 0.26) !important;
+}
+
+/* Event cards retain a solid enough base for small timer text to stay legible. */
+.event-card,
+.event-card:hover,
+.event-card.upcoming-cycle-card {
+    background-color: rgba(12, 15, 29, 0.68) !important;
+    border-color: rgba(148, 163, 184, 0.22) !important;
+}
+
+.event-card.glow-active,
+.event-card.glow-active:hover,
+.event-card.glow-active:focus-within {
+    background-color: rgba(5, 48, 38, 0.56) !important;
+    border-color: rgba(74, 222, 128, 0.56) !important;
+}
+
+/* Nested controls stay distinct from the transparent surfaces behind them. */
+.header-time-chip {
+    background: rgba(15, 23, 42, 0.44) !important;
+    border-color: rgba(148, 163, 184, 0.22) !important;
+}
+
+.nav-group-trigger {
+    background: rgba(15, 23, 42, 0.66) !important;
+    border-color: rgba(148, 163, 184, 0.28) !important;
+}
+
+#server-menu,
+#lang-menu,
+.nav-submenu {
+    background-color: rgba(12, 17, 31, 0.95) !important;
+    border-color: rgba(148, 163, 184, 0.28) !important;
+}
+
+/* Keep the colorful event labels vivid, but soften their borders and glow. */
+.event-card .event-title {
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.16);
+}
+
+/* ========================================================================== */
+/* FLOATING EVENT PROMOTION: persistent, accessible Halloween tombstone       */
+/* ========================================================================== */
+#floating-event-promo {
+    position: fixed;
+    z-index: 9500;
+    right: clamp(0.65rem, 1.8vw, 1.5rem);
+    bottom: max(clamp(0.65rem, 1.8vw, 1.5rem), env(safe-area-inset-bottom));
+    width: clamp(104px, 14vw, 180px);
+    max-height: min(72vh, 28rem);
+    isolation: isolate;
+    animation: floating-event-levitation 4.2s ease-in-out infinite;
+    transform-origin: center center;
+    filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.42));
+    contain: layout style;
+}
+
+#floating-event-promo[hidden] {
+    display: none !important;
+}
+
+#floating-event-promo .floating-event-promo__link {
+    display: block;
+    width: 100%;
+    line-height: 0;
+    border-radius: 0.8rem;
+    outline-offset: 4px;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#floating-event-promo .floating-event-promo__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: min(72vh, 28rem);
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+#floating-event-promo .floating-event-promo__link:focus-visible,
+#floating-event-promo .floating-event-promo__close:focus-visible,
+#floating-event-promo .floating-event-promo__restore:focus-visible {
+    outline: 2px solid #fbbf24;
+    outline-offset: 4px;
+}
+
+#floating-event-promo .floating-event-promo__close {
+    position: absolute;
+    z-index: 3;
+    top: 0.6%;
+    right: 1.5%;
+    width: clamp(24px, 2.2vw, 30px);
+    height: clamp(24px, 2.2vw, 30px);
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    border-radius: 50%;
+    background: rgba(7, 10, 18, 0.62);
+    color: #fff;
+    font: 700 17px/1 system-ui, sans-serif;
+    cursor: pointer;
+    opacity: 0.96;
+    transition: background-color 160ms ease, opacity 160ms ease, transform 160ms ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#floating-event-promo .floating-event-promo__close:hover {
+    opacity: 1;
+    background: rgba(7, 10, 18, 0.94);
+    transform: scale(1.06);
+}
+
+/* Discrete tombstone tab shown when the artwork is minimized. */
+#floating-event-promo .floating-event-promo__restore {
+    display: none;
+    width: 76px;
+    min-height: 86px;
+    margin-left: auto;
+    padding: 13px 8px 9px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    border: 1px solid rgba(251, 191, 36, 0.52);
+    border-radius: 48% 48% 9px 9px / 27% 27% 9px 9px;
+    background:
+        radial-gradient(circle at 50% 8%, rgba(249, 115, 22, 0.18), transparent 46%),
+        linear-gradient(155deg, rgba(44, 35, 47, 0.97), rgba(12, 15, 29, 0.97) 65%, rgba(39, 22, 19, 0.98));
+    color: #fef3c7;
+    box-shadow:
+        inset 0 0 0 3px rgba(251, 191, 36, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        0 8px 24px rgba(0, 0, 0, 0.42),
+        0 0 18px rgba(249, 115, 22, 0.11);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    cursor: pointer;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+    transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+#floating-event-promo .floating-event-promo__restore:hover {
+    border-color: rgba(253, 224, 71, 0.88);
+    box-shadow:
+        inset 0 0 0 3px rgba(251, 191, 36, 0.1),
+        0 10px 26px rgba(0, 0, 0, 0.46),
+        0 0 22px rgba(249, 115, 22, 0.2);
+    transform: translateY(-2px);
+}
+
+.floating-event-promo__tombstone-icon {
+    color: #fdba74;
+    font-size: 21px;
+    line-height: 1;
+    filter: drop-shadow(0 0 5px rgba(249, 115, 22, 0.24));
+}
+
+.floating-event-promo__tombstone-rip {
+    color: #fef3c7;
+    font-family: Georgia, serif;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    line-height: 1.1;
+}
+
+.floating-event-promo__tombstone-label {
+    color: #fdba74;
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+}
+
+#floating-event-promo.is-minimized {
+    width: 76px;
+    max-height: none;
+}
+
+#floating-event-promo.is-minimized .floating-event-promo__link,
+#floating-event-promo.is-minimized .floating-event-promo__close {
+    display: none;
+}
+
+#floating-event-promo.is-minimized .floating-event-promo__restore {
+    display: flex;
+}
+
+@keyframes floating-event-levitation {
+    0%, 100% { transform: translate3d(0, 0, 0) rotate(-0.25deg); }
+    50% { transform: translate3d(0, -7px, 0) rotate(0.25deg); }
+}
+
+@media (max-width: 480px) {
+    #floating-event-promo {
+        width: clamp(100px, 29vw, 132px);
+        right: 0.65rem;
+        bottom: max(0.65rem, env(safe-area-inset-bottom));
+    }
+
+    #floating-event-promo.is-minimized {
+        width: 70px;
+    }
+
+    #floating-event-promo .floating-event-promo__restore {
+        width: 70px;
+        min-height: 80px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #floating-event-promo { animation: none; }
+    #floating-event-promo .floating-event-promo__close,
+    #floating-event-promo .floating-event-promo__restore { transition: none; }
+}
+
+/* ========================================================================== */
+/* NO-BLUR TRANSLUCENCY OVERRIDES: keep all surfaces sharp except timer cards. */
+/* These rules also override Tailwind utility filters on existing containers.  */
+/* ========================================================================== */
+*,
+*::before,
+*::after {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+/* Gaussian blur is intentionally retained only on the event countdown cards. */
+.event-card,
+.event-card:hover,
+.event-card.upcoming-cycle-card,
+.event-card.glow-active,
+.event-card.glow-active:hover,
+.event-card.glow-active:focus-within {
+    -webkit-backdrop-filter: blur(7px) saturate(112%) !important;
+    backdrop-filter: blur(7px) saturate(112%) !important;
+}
+
+/* ========================================================================== */
+/* SITE CREDITS FOOTER: restrained glow-glass styling without Gaussian blur.   */
+/* ========================================================================== */
+.site-credits-footer {
+    position: relative;
+    z-index: 1;
+    width: calc(100% - 0.25rem);
+    margin-top: clamp(2rem, 4.5vw, 3.5rem);
+    margin-bottom: max(1rem, env(safe-area-inset-bottom));
+    color: #dbe4f2;
+}
+
+.site-credits-footer__panel {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 1.35rem;
+    padding: clamp(1rem, 2.5vw, 1.8rem);
+    background:
+        radial-gradient(ellipse at 8% 0%, rgba(56, 189, 248, 0.075), transparent 36%),
+        radial-gradient(ellipse at 92% 100%, rgba(167, 139, 250, 0.075), transparent 38%),
+        linear-gradient(125deg, rgba(7, 12, 25, 0.86), rgba(15, 19, 35, 0.82) 56%, rgba(20, 16, 34, 0.84));
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+
+.site-credits-footer__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.site-credits-footer__identity {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    min-width: 0;
+    text-decoration: none;
+}
+
+.site-credits-footer__identity > img {
+    display: block;
+    flex: 0 0 auto;
+    width: clamp(94px, 10vw, 132px);
+    height: auto;
+}
+
+.site-credits-footer__identity-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+}
+
+.site-credits-footer__eyebrow,
+.site-credits-footer__section-label {
+    color: #a9b8ce;
+    font-size: 0.61rem;
+    font-weight: 850;
+    letter-spacing: 0.17em;
+    line-height: 1.55;
+}
+
+.site-credits-footer__heading {
+    color: #f4f6fb;
+    font-family: 'Manrope', 'Inter', sans-serif;
+    font-size: clamp(0.85rem, 1.8vw, 1rem);
+    font-weight: 900;
+    letter-spacing: 0.045em;
+}
+
+.site-credits-footer__heading span { color: #e7bd68; padding: 0 0.2rem; }
+
+.site-credits-footer__quality {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    flex: 0 0 auto;
+    max-width: 100%;
+    padding: 0.55rem 0.75rem;
+    border: 1px solid rgba(110, 231, 183, 0.24);
+    border-radius: 999px;
+    background: rgba(16, 185, 129, 0.075);
+    color: #b7f7d8;
+    font-size: 0.57rem;
+    font-weight: 850;
+    letter-spacing: 0.095em;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.site-credits-footer__divider {
+    height: 1px;
+    margin: 1.15rem 0 1rem;
+    background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.28) 12%, rgba(148, 163, 184, 0.2) 88%, transparent);
+}
+
+.site-credits-footer__recognition { text-align: center; }
+.site-credits-footer__section-label { margin: 0 0 0.75rem; }
+
+.site-credits-footer__logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.4rem, 1.2vw, 0.85rem);
+    flex-wrap: wrap;
+}
+
+.site-credits-footer__logo-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 8.1rem;
+    min-height: 3.2rem;
+    padding: 0.55rem 0.85rem;
+    border: 1px solid rgba(148, 163, 184, 0.13);
+    border-radius: 0.85rem;
+    background: rgba(255, 255, 255, 0.025);
+    text-decoration: none;
+    transition: background-color 170ms ease, border-color 170ms ease, transform 170ms ease, box-shadow 170ms ease;
+}
+
+.site-credits-footer__logo-link {
+    text-align: center;
+}
+
+.site-credits-footer__logo-link img {
+    display: block;
+    flex: 0 1 auto;
+    width: min(100%, 8.1rem);
+    max-width: 8.1rem;
+    height: auto;
+    max-height: 2.3rem;
+    margin-inline: auto;
+    object-fit: contain;
+    object-position: center center;
+}
+
+.site-credits-footer__logo-link:hover,
+.site-credits-footer__logo-link:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(186, 201, 226, 0.34);
+    background: rgba(255, 255, 255, 0.055);
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.16);
+    outline: none;
+}
+
+.site-credits-footer__logo-link--mir4:hover { border-color: rgba(231, 189, 104, 0.42); }
+.site-credits-footer__logo-link--github:hover { border-color: rgba(226, 232, 240, 0.35); }
+.site-credits-footer__logo-link--chatgpt:hover { border-color: rgba(153, 212, 200, 0.4); }
+.site-credits-footer__logo-link--gemini:hover { border-color: rgba(180, 164, 255, 0.42); }
+
+.site-credits-footer__bottom {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.8rem 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 1.1rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.13);
+    color: #9eabc0;
+    font-size: 0.67rem;
+    line-height: 1.65;
+}
+
+.site-credits-footer__bottom p { margin: 0; }
+.site-credits-footer__bottom strong { color: #dbe5f4; font-weight: 800; }
+.site-credits-footer__legal { max-width: 39rem; text-align: right; }
+
+@media (max-width: 620px) {
+    .site-credits-footer { width: 100%; }
+    .site-credits-footer__panel { border-radius: 1.05rem; padding: 1rem; }
+    .site-credits-footer__top { align-items: flex-start; flex-direction: column; }
+    .site-credits-footer__identity { gap: 0.55rem; }
+    .site-credits-footer__identity > img { width: 94px; }
+    .site-credits-footer__quality { align-self: flex-start; }
+    .site-credits-footer__logos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
+    .site-credits-footer__logo-link { min-width: 0; min-height: 3.1rem; padding: 0.5rem; }
+    .site-credits-footer__logo-link img { max-width: 7.9rem; max-height: 2rem; }
+    .site-credits-footer__bottom { flex-direction: column; gap: 0.35rem; }
+    .site-credits-footer__legal { text-align: left; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site-credits-footer__logo-link { transition: none; }
+    .site-credits-footer__logo-link:hover,
+    .site-credits-footer__logo-link:focus-visible { transform: none; }
+}
+

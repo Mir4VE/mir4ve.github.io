@@ -41,12 +41,14 @@
     
     <script src="js/tailwind-config.js"></script>
         <link rel="stylesheet" href="css/styles.css">
+        <!-- Visual enhancements: responsive background and floating event promotion. -->
+        <link rel="stylesheet" href="css/visual-enhancements.css">
 
 </head>
 <body class="p-3 sm:p-6 select-none custom-scrollbar">
 
     <!-- TOP HEADER BAR -->
-    <header class="relative z-50 max-w-7xl mx-auto mb-6 bg-brand-card/90 border border-brand-border/80 rounded-2xl p-4 backdrop-blur-md shadow-2xl flex flex-wrap items-center justify-between gap-4">
+    <header class="relative z-50 max-w-7xl mx-auto mb-6 bg-brand-card/90 border border-brand-border/80 rounded-2xl p-4 shadow-2xl flex flex-wrap items-center justify-between gap-4">
         
         <!-- LOGO & BRAND -->
         <div class="flex items-center gap-3">
@@ -70,6 +72,9 @@
                     </div>
                     
                     <button id="time-format-toggle" type="button" onclick="toggleTimeFormat()" aria-label="Cambiar formato horario" title="Cambiar entre formato de 24 y 12 horas">24H</button>
+                    <button id="reading-mode-toggle" type="button" aria-label="Oscurecer el fondo de la página" title="Oscurecer el fondo de la página" aria-pressed="false">
+                        <i class="fa-solid fa-moon" aria-hidden="true"></i>
+                    </button>
                     <span id="online-pill" class="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-400 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold border border-emerald-500/20" title="Usuarios con conexión activa a esta página">
                         <i class="fa-solid fa-eye text-[10px] animate-pulse" aria-hidden="true"></i>
                         <span id="online-counter" aria-live="polite" title="Contador de sesiones activas">—</span> <span id="lbl-online">online</span>
@@ -148,7 +153,6 @@
     <!-- DARKOMENS INTRO / PAGE SUMMARY -->
     <section aria-labelledby="site-intro-title" class="max-w-7xl mx-auto mb-6">
         <div class="relative overflow-hidden rounded-2xl border border-slate-700/70 bg-gradient-to-br from-slate-900/95 via-[#0b1020]/95 to-[#111827]/90 px-5 py-5 sm:px-7 sm:py-6 shadow-xl shadow-black/20">
-            <div aria-hidden="true" class="absolute -right-12 -top-16 h-44 w-44 rounded-full bg-amber-500/10 blur-3xl"></div>
             <div aria-hidden="true" class="absolute left-0 top-5 bottom-5 w-1 rounded-r-full bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700"></div>
             <div class="relative flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
                 <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-amber-400/25 bg-amber-400/10 text-amber-300 shadow-inner shadow-amber-500/5">
@@ -261,21 +265,11 @@
         </div>
     </main>
 
-    <!-- FOOTER AUTHOR CREDIT -->
-    <footer class="max-w-7xl mx-auto mt-10 pt-6 border-t border-brand-border/40 text-center pb-8">
-        <a href="https://www.instagram.com/shovi.oficial/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-orbitron font-bold text-slate-400 hover:text-amber-400 transition-colors py-1.5 px-4 rounded-full bg-brand-card/60 border border-brand-border/60">
-            <i class="fa-brands fa-instagram text-amber-500"></i>
-            <span>MADE BY « AKO »</span>
-        </a>
-    </footer>
-
-    </div>
+    </div> <!-- /#home-view -->
 
     <!-- ABOUT / PROJECT GUIDE: independent reading view; timer engine keeps running -->
     <main id="about-view" class="hidden max-w-7xl mx-auto mb-8 px-3 sm:px-5">
       <section class="about-shell relative overflow-hidden rounded-3xl border border-violet-400/20 bg-gradient-to-br from-slate-950 via-[#101326] to-[#171126] p-5 sm:p-8 lg:p-10 shadow-2xl">
-        <div aria-hidden="true" class="about-glow about-glow-one absolute -right-10 -top-10 h-64 w-64 rounded-full bg-violet-500/15 blur-3xl"></div>
-        <div aria-hidden="true" class="about-glow about-glow-two absolute -bottom-16 -left-12 h-56 w-56 rounded-full bg-emerald-500/10 blur-3xl"></div>
         <div class="relative z-10">
           <div class="flex flex-wrap items-center gap-2.5 mb-5">
             <span class="inline-flex items-center gap-2 rounded-full border border-violet-300/30 bg-violet-400/10 px-3.5 py-1.5 text-[11px] font-extrabold tracking-[.16em] text-violet-200"><i class="fa-solid fa-book-open"></i><span id="about-eyebrow">GUÍA DEL PROYECTO</span></span>
@@ -328,6 +322,94 @@
       </section>
     </main>
 
+
+    <!-- SITE CREDITS FOOTER: copyright, quality seal, and vector recognition marks. -->
+    <footer class="site-credits-footer max-w-7xl mx-auto" aria-label="Créditos, reconocimiento y derechos de autor">
+        <div class="site-credits-footer__panel">
+            <div class="site-credits-footer__top">
+                <a class="site-credits-footer__identity" href="https://www.instagram.com/shovi.oficial/" target="_blank" rel="noopener noreferrer" aria-label="Visitar el perfil de Sh0V1 en Instagram">
+                    <img src="assets/credits/logo-sh0v1.svg" alt="Sh0V1" width="150" height="48" loading="lazy" decoding="async">
+                    <span class="site-credits-footer__identity-copy">
+                        <span class="site-credits-footer__eyebrow">PROYECTO INDEPENDIENTE</span>
+                        <span class="site-credits-footer__heading">TIMERS <span aria-hidden="true">/</span> MIR4VE</span>
+                    </span>
+                </a>
+                <span class="site-credits-footer__quality" aria-label="Diseñado para la comunidad">
+                    <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true" focusable="false"><path d="M10 1.6 12.2 6l4.8.7-3.5 3.4.8 4.8-4.3-2.3-4.3 2.3.8-4.8L3 6.7 7.8 6 10 1.6Z" fill="currentColor"/><path d="m7.2 9.9 1.8 1.8 3.9-4" fill="none" stroke="#07111d" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span>HECHO PARA LA COMUNIDAD</span>
+                </span>
+            </div>
+
+            <div class="site-credits-footer__divider" role="presentation"></div>
+
+            <div class="site-credits-footer__recognition">
+                <p class="site-credits-footer__section-label">PLATAFORMAS Y HERRAMIENTAS RECONOCIDAS</p>
+                <nav class="site-credits-footer__logos" aria-label="Plataformas y herramientas reconocidas">
+                    <a class="site-credits-footer__logo-link site-credits-footer__logo-link--mir4" href="https://mir4global.com/" target="_blank" rel="noopener noreferrer" aria-label="Visitar MIR4 Global">
+                        <img src="assets/credits/logo-mir4.svg" alt="MIR4" width="142" height="42" loading="lazy" decoding="async">
+                    </a>
+                    <a class="site-credits-footer__logo-link site-credits-footer__logo-link--github" href="https://github.com/" target="_blank" rel="noopener noreferrer" aria-label="Visitar GitHub">
+                        <img src="assets/credits/logo-github.svg" alt="GitHub" width="142" height="42" loading="lazy" decoding="async">
+                    </a>
+                    <a class="site-credits-footer__logo-link site-credits-footer__logo-link--chatgpt" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" aria-label="Visitar ChatGPT">
+                        <img src="assets/credits/logo-chatgpt.svg" alt="ChatGPT" width="142" height="42" loading="lazy" decoding="async">
+                    </a>
+                    <a class="site-credits-footer__logo-link site-credits-footer__logo-link--gemini" href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer" aria-label="Visitar Gemini">
+                        <img src="assets/credits/logo-gemini.svg" alt="Gemini" width="142" height="42" loading="lazy" decoding="async">
+                    </a>
+                </nav>
+            </div>
+
+            <div class="site-credits-footer__bottom">
+                <p>© 2026 <strong>MIR4VE Timers</strong>. Proyecto comunitario independiente.</p>
+                <p class="site-credits-footer__legal">Las marcas se muestran con fines de reconocimiento; pertenecen a sus respectivos titulares.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FLOATING EVENT PROMOTION: fixed, levitating, minimizable; opens official details in a new tab. -->
+    <aside id="floating-event-promo" aria-label="Evento destacado Bicheon Phantom Night">
+        <a
+            class="floating-event-promo__link"
+            id="floating-event-promo__link"
+            href="https://forum.mir4global.com/post/2682"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Ver detalles del evento Bicheon Phantom Night (se abre en una pestaña nueva)"
+        >
+            <img
+                class="floating-event-promo__image"
+                src="assets/bg/event.png"
+                alt="Bicheon Phantom Night — evento MIR4 Global del 27 de octubre al 23 de noviembre de 2026"
+                width="380"
+                height="460"
+                decoding="async"
+                draggable="false"
+            >
+        </a>
+        <button
+            class="floating-event-promo__close"
+            type="button"
+            aria-label="Minimizar promoción del evento"
+            aria-expanded="true"
+            aria-controls="floating-event-promo__link"
+            title="Minimizar promoción"
+        >×</button>
+        <button
+            class="floating-event-promo__restore"
+            type="button"
+            aria-label="Mostrar promoción del evento"
+            aria-expanded="false"
+            aria-controls="floating-event-promo__link"
+            title="Mostrar evento"
+            tabindex="-1"
+        >
+            <span class="floating-event-promo__tombstone-icon" aria-hidden="true">☠</span>
+            <span class="floating-event-promo__tombstone-rip" aria-hidden="true">RIP</span>
+            <span class="floating-event-promo__tombstone-label">EVENTO</span>
+        </button>
+    </aside>
+
     <!-- Full-page lock used only during the main-alert volume preview. -->
     <div id="preview-page-overlay" class="hidden" aria-hidden="true"></div>
 
@@ -342,8 +424,13 @@
     </div>
 
     <script src="js/site-core.js"></script>
+    <!-- Isolated UI modules: reading-mode behavior and static interface localization. -->
+    <script src="js/reading-mode.js"></script>
+    <script src="js/ui-localization.js"></script>
     <script src="js/token-exdra.js"></script>
     <script src="js/token-wemix.js"></script>
   <script src="js/token-hydra-draco.js"></script>
+    <!-- Floating event promotion behavior (isolated module). -->
+    <script src="js/floating-event.js"></script>
 </body>
 </html>

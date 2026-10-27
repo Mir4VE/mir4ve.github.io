@@ -114,17 +114,17 @@
                 statusActive: "En curso", activeNow: "Evento en curso", statusWaiting: "En espera", nextOpening: "Próxima apertura:", mirageSchedule: "CICLO DE APARICIONES", nextSpawn: "Próxima aparición", timeRemaining: "Tiempo restante", durationActive: "Duración activa:", opensIn: "INICIA EN:", closesIn: "FINALIZA EN:",
                 toastTitle: "¡EVENTO ACTIVADO!", toastSub: "Alerta de TIMERS | Mir4VE", nextQueueTitle: "Próximos ciclos en espera:", durationMin: "min", durationHour: "1 hora", timePrefix: "en ", unitHour: "h", unitMinute: "m", unitSecond: "s",
                 eventTitles: { frenesi: "MS ◂ FRENESÍ ▸", furia: "MS ◂ FURIA ▸", lideres: "MS ◂ LIDER 3 ▸", oratorio: "◂ Oratorio Críptico ▸", cima_inferior: "SP ◂ JEFE SUR ▸", cima_superior: "SP ◂ JEFE NORTE ▸", purgatorio: "◂ Purgatorio ▸", wb_valles: "WB ◂ VALLES ▸", wb_laberintos: "WB ◂ LABERINTOS ▸", domination_tower: "◂ TORRE DEL DRAGÓN ▸", mirage_jihwa: "P1 · W1 ◂ Jihwa ▸", mirage_yaksha: "P1 · W1 ◂ Yaksha ▸", mirage_black_carapace: "P1 · W1 ◂ Black Carapace ▸", mirage_bulhu: "P1 · W1 ◂ Bulhu ▸" },
-                bellTitle: "Alertas para este evento", stop: "DETENER"
+                bellTitle: "Alertas para este evento", stop: "DETENER", switchTo12: "Cambiar a formato de 12 horas", switchTo24: "Cambiar a formato de 24 horas", triggerAvailable: "Disparador disponible", triggerAvailableIn: "Disponible en "
             },
             pt: {
                 serverTime: "HORA DO SERVIDOR", localTime: "HORA LOCAL", weekReset: "REINÍCIO SEMANAL", online: "online", alertsOn: "Alertas ativados", alertsOff: "Alertas desativados", sponsor: "PATROCÍNIO",
                 introCommunity: "COMUNIDADE DARKOMENS", introDescription: "Consulte os horários de todos os eventos de MIR4 Global em tempo real.", introLive: "PAINEL DE ALERTAS", alertVolumeLabel: "VOLUME DO ALERTA", alertTriggerLabel: "ACIONADOR DO ALERTA",
                 navGroups: { domination: "DOMINAÇÃO", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OUTROS CONTEÚDOS" }, mirageLayer1: "CAMADA 1", reappearsEvery: "REAPARECE A CADA:", bossAppearsIn: "SURGE EM:",
                 tabs: { ALL: "TODOS", FRENESI: "FRENESI", FURIA: "FÚRIA", LIDERES: "LÍDER III", CIMA: "PICO SECRETO", WB_VALLES: "VALES", WB_LABERINTOS: "LABIRINTOS", PURGATORIO: "PURGATÓRIO", ORATORIO: "SANTUÁRIO SECRETO", TORRE: "TORRE", W1: "W1", W2: "W2", W3: "W3" },
-                statusActive: "Em andamento", activeNow: "Evento em andamento", statusWaiting: "Aguardando", nextOpening: "Próxima abertura:", mirageSchedule: "CICLO DE APARIÇÕES", nextSpawn: "Próxima aparição", timeRemaining: "Tempo restante", durationActive: "Duração ativa:", opensIn: "INICIA EM:", closesIn: "FINALIZA EM:",
+                statusActive: "Em andamento", activeNow: "Evento em andamento", statusWaiting: "Aguardando", nextOpening: "Próxima aparição:", mirageSchedule: "CICLO DE APARIÇÕES", nextSpawn: "Próxima aparição", timeRemaining: "Tempo restante", durationActive: "Duração ativa:", opensIn: "INICIA EM:", closesIn: "FINALIZA EM:",
                 toastTitle: "EVENTO INICIADO!", toastSub: "Alerta do TIMERS | Mir4VE", nextQueueTitle: "Próximos ciclos aguardando:", durationMin: "min", durationHour: "1 hora", timePrefix: "em ", unitHour: "h", unitMinute: "min", unitSecond: "s",
                 eventTitles: { frenesi: "MS ◂ FRENESI ▸", furia: "MS ◂ FÚRIA ▸", lideres: "MS ◂ LÍDER 3 ▸", oratorio: "◂ Santuário Secreto ▸", cima_inferior: "SP ◂ BOSS SUL ▸", cima_superior: "SP ◂ BOSS NORTE ▸", purgatorio: "◂ Purgatório ▸", wb_valles: "WB ◂ VALES ▸", wb_laberintos: "WB ◂ LABIRINTOS ▸", domination_tower: "◂ TORRE DO DRAGÃO ▸", mirage_jihwa: "C1 · W1 ◂ Jihwa ▸", mirage_yaksha: "C1 · W1 ◂ Yaksha ▸", mirage_black_carapace: "C1 · W1 ◂ Black Carapace ▸", mirage_bulhu: "C1 · W1 ◂ Bulhu ▸" },
-                bellTitle: "Alertas para este evento", stop: "PARAR"
+                bellTitle: "Alertas para este evento", stop: "PARAR", switchTo12: "Mudar para o formato de 12 horas", switchTo24: "Mudar para o formato de 24 horas", triggerAvailable: "Alerta disponível", triggerAvailableIn: "Disponível em "
             },
             en: {
                 serverTime: "SERVER TIME", localTime: "LOCAL TIME", weekReset: "WEEKLY RESET", online: "online", alertsOn: "Alerts On", alertsOff: "Alerts Off", sponsor: "SPONSOR",
@@ -134,7 +134,7 @@
                 statusActive: "Active", activeNow: "Event in progress", statusWaiting: "Waiting", nextOpening: "Next spawn:", mirageSchedule: "SPAWN CYCLE", nextSpawn: "Next spawn", timeRemaining: "Time remaining", durationActive: "Active duration:", opensIn: "STARTS IN:", closesIn: "ENDS IN:",
                 toastTitle: "EVENT STARTED!", toastSub: "TIMERS | Mir4VE alert", nextQueueTitle: "Upcoming waiting cycles:", durationMin: "min", durationHour: "1 hour", timePrefix: "in ", unitHour: "h", unitMinute: "m", unitSecond: "s",
                 eventTitles: { frenesi: "MS ◂ FRENZY ▸", furia: "MS ◂ FURY ▸", lideres: "MS ◂ LEADER 3 ▸", oratorio: "◂ Cryptic Sanctuary ▸", cima_inferior: "SP ◂ SOUTH BOSS ▸", cima_superior: "SP ◂ NORTH BOSS ▸", purgatorio: "◂ Purgatory ▸", wb_valles: "World Boss ◂ VALLEYS ▸", wb_laberintos: "World Boss ◂ LABYRINTHS ▸", domination_tower: "◂ DRAGON TOWER ▸", mirage_jihwa: "L1 · W1 ◂ Jihwa ▸", mirage_yaksha: "L1 · W1 ◂ Yaksha ▸", mirage_black_carapace: "L1 · W1 ◂ Black Carapace ▸", mirage_bulhu: "L1 · W1 ◂ Bulhu ▸" },
-                bellTitle: "Alerts for this event", stop: "STOP"
+                bellTitle: "Alerts for this event", stop: "STOP", switchTo12: "Switch to 12-hour time", switchTo24: "Switch to 24-hour time", triggerAvailable: "Trigger available", triggerAvailableIn: "Available in "
             }
         };
 
@@ -676,10 +676,10 @@
             const remaining = Math.max(0, Math.ceil((until - Date.now()) / 1000));
             if (label) {
                 if (remaining > 0) {
-                    label.textContent = `Disponible en ${String(Math.floor(remaining / 60)).padStart(2, '0')}:${String(remaining % 60).padStart(2, '0')}`;
+                    label.textContent = `${I18N[currentLang].triggerAvailableIn}${String(Math.floor(remaining / 60)).padStart(2, '0')}:${String(remaining % 60).padStart(2, '0')}`;
                     label.classList.add('is-counting');
                 } else {
-                    label.textContent = 'Disparador disponible';
+                    label.textContent = I18N[currentLang].triggerAvailable;
                     label.classList.remove('is-counting');
                 }
             }
@@ -1281,8 +1281,8 @@
             const toggle = document.getElementById('time-format-toggle');
             if (!toggle) return;
             toggle.textContent = timeFormat === '24h' ? '24H' : '12H';
-            toggle.setAttribute('aria-label', timeFormat === '24h' ? 'Cambiar a formato de 12 horas' : 'Cambiar a formato de 24 horas');
-            toggle.setAttribute('title', timeFormat === '24h' ? 'Cambiar a formato de 12 horas' : 'Cambiar a formato de 24 horas');
+            toggle.setAttribute('aria-label', timeFormat === '24h' ? I18N[currentLang].switchTo12 : I18N[currentLang].switchTo24);
+            toggle.setAttribute('title', timeFormat === '24h' ? I18N[currentLang].switchTo12 : I18N[currentLang].switchTo24);
         }
 
         function toggleTimeFormat() {
@@ -2009,6 +2009,10 @@
             renderAboutLanguage();
 
             updateDashboard();
+            document.documentElement.lang = currentLang;
+            document.dispatchEvent(new CustomEvent('mir4ve:languagechange', {
+                detail: { language: currentLang }
+            }));
         }
 
         // LIVE PRESENCE COUNTER (Firebase Realtime Database)
