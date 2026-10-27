@@ -1,4 +1,4 @@
-# MIR4VE Timers — Modular Structure By: https://www.instagram.com/shovi.oficial/
+# MIR4VE Timers - Modular Structure - Update V1.5 By: [AKO](https://www.instagram.com/shovi.oficial/) 
 
 ## Files
 - `index.html`: HTML document structure, metadata, external libraries, and script loading order.
