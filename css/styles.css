@@ -438,7 +438,6 @@ body {
         }
 
 
-
         /* Corrección responsive: nunca comprimir las etiquetas de los eventos.
            Si no cabe el contenido en horizontal, la tarjeta pasa a una columna. */
         #events-grid {
@@ -473,35 +472,19 @@ body {
         .event-card .event-title i {
             flex: 0 0 auto;
         }
-        /* Unique palettes apply ONLY to the boss-name header badge, never the full card. */
-        .event-card .event-title.boss-name-jihwa {
-            color: #ffe4f1 !important; background: linear-gradient(110deg, rgba(190, 24, 93, .30), rgba(124, 58, 237, .20)) !important;
-            border-color: rgba(244, 114, 182, .62) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
-        }
-        .event-card .event-title.boss-name-yaksha {
-            color: #e0f2fe !important; background: linear-gradient(110deg, rgba(14, 116, 144, .32), rgba(30, 64, 175, .22)) !important;
-            border-color: rgba(103, 232, 249, .58) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
-        }
-        .event-card .event-title.boss-name-carapace {
-            color: #fef3c7 !important; background: linear-gradient(110deg, rgba(120, 53, 15, .34), rgba(87, 83, 20, .24)) !important;
-            border-color: rgba(253, 224, 71, .55) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
-        }
-        .event-card .event-title.boss-name-bulhu {
-            color: #ede9fe !important; background: linear-gradient(110deg, rgba(91, 33, 182, .32), rgba(112, 26, 117, .24)) !important;
-            border-color: rgba(196, 181, 253, .62) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
-        }
+        /* Distinct MIR4 palettes for every Mirage Ship boss name badge only; cards keep their existing surfaces. */
+
+
+        /* Plano 3 boss badges: distinct MIR4-inspired palettes, limited to name bars. */
+
+
+        .mirage-condition-opening { display:block; min-height:0; margin:.25rem 0 0 !important; }
+        .event-card .condition-only-panel { min-width:0; background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(79,70,229,.08),rgba(15,23,42,.14)); border-color:rgba(196,181,253,.25); box-shadow:inset 0 1px 0 rgba(255,255,255,.04); }
+        .event-card .condition-only-panel p { overflow-wrap:anywhere; }
+        @media (max-width:640px) { .event-card .condition-only-panel { padding:.85rem; } }
 
         /* Distinct palettes for every existing event name badge only; card backgrounds remain unchanged. */
-        .event-card .event-title.palette-frenesi { color:#ffedd5!important; background:linear-gradient(110deg,rgba(154,52,18,.34),rgba(180,83,9,.20))!important; border-color:rgba(251,146,60,.62)!important; }
-        .event-card .event-title.palette-furia { color:#ffe4e6!important; background:linear-gradient(110deg,rgba(159,18,57,.34),rgba(127,29,29,.22))!important; border-color:rgba(251,113,133,.60)!important; }
-        .event-card .event-title.palette-lideres { color:#fef9c3!important; background:linear-gradient(110deg,rgba(113,63,18,.34),rgba(133,77,14,.22))!important; border-color:rgba(250,204,21,.60)!important; }
-        .event-card .event-title.palette-oratorio { color:#e0e7ff!important; background:linear-gradient(110deg,rgba(49,46,129,.36),rgba(67,56,202,.20))!important; border-color:rgba(129,140,248,.62)!important; }
-        .event-card .event-title.palette-cima-sur { color:#fee2e2!important; background:linear-gradient(110deg,rgba(127,29,29,.34),rgba(153,27,27,.20))!important; border-color:rgba(248,113,113,.62)!important; }
-        .event-card .event-title.palette-cima-norte { color:#f3e8ff!important; background:linear-gradient(110deg,rgba(88,28,135,.34),rgba(76,29,149,.22))!important; border-color:rgba(192,132,252,.62)!important; }
-        .event-card .event-title.palette-purgatorio { color:#fae8ff!important; background:linear-gradient(110deg,rgba(112,26,117,.34),rgba(88,28,135,.22))!important; border-color:rgba(232,121,249,.60)!important; }
-        .event-card .event-title.palette-wb-valles { color:#dcfce7!important; background:linear-gradient(110deg,rgba(20,83,45,.34),rgba(6,95,70,.22))!important; border-color:rgba(74,222,128,.60)!important; }
-        .event-card .event-title.palette-wb-laberintos { color:#cffafe!important; background:linear-gradient(110deg,rgba(21,94,117,.34),rgba(8,145,178,.20))!important; border-color:rgba(34,211,238,.60)!important; }
-        .event-card .event-title.palette-torre { color:#fce7f3!important; background:linear-gradient(110deg,rgba(131,24,67,.32),rgba(157,23,77,.20))!important; border-color:rgba(244,114,182,.60)!important; }
+
 
         .event-card .event-card-content > .flex.items-center.justify-between.gap-2.mb-3 > .flex.items-center.gap-2 {
             flex: 0 1 auto;
@@ -529,16 +512,7 @@ body {
             }
     
         /* Distinct palettes for every existing event name badge only; card backgrounds remain unchanged. */
-        .event-card .event-title.palette-frenesi { color:#ffedd5!important; background:linear-gradient(110deg,rgba(154,52,18,.34),rgba(180,83,9,.20))!important; border-color:rgba(251,146,60,.62)!important; }
-        .event-card .event-title.palette-furia { color:#ffe4e6!important; background:linear-gradient(110deg,rgba(159,18,57,.34),rgba(127,29,29,.22))!important; border-color:rgba(251,113,133,.60)!important; }
-        .event-card .event-title.palette-lideres { color:#fef9c3!important; background:linear-gradient(110deg,rgba(113,63,18,.34),rgba(133,77,14,.22))!important; border-color:rgba(250,204,21,.60)!important; }
-        .event-card .event-title.palette-oratorio { color:#e0e7ff!important; background:linear-gradient(110deg,rgba(49,46,129,.36),rgba(67,56,202,.20))!important; border-color:rgba(129,140,248,.62)!important; }
-        .event-card .event-title.palette-cima-sur { color:#fee2e2!important; background:linear-gradient(110deg,rgba(127,29,29,.34),rgba(153,27,27,.20))!important; border-color:rgba(248,113,113,.62)!important; }
-        .event-card .event-title.palette-cima-norte { color:#f3e8ff!important; background:linear-gradient(110deg,rgba(88,28,135,.34),rgba(76,29,149,.22))!important; border-color:rgba(192,132,252,.62)!important; }
-        .event-card .event-title.palette-purgatorio { color:#fae8ff!important; background:linear-gradient(110deg,rgba(112,26,117,.34),rgba(88,28,135,.22))!important; border-color:rgba(232,121,249,.60)!important; }
-        .event-card .event-title.palette-wb-valles { color:#dcfce7!important; background:linear-gradient(110deg,rgba(20,83,45,.34),rgba(6,95,70,.22))!important; border-color:rgba(74,222,128,.60)!important; }
-        .event-card .event-title.palette-wb-laberintos { color:#cffafe!important; background:linear-gradient(110deg,rgba(21,94,117,.34),rgba(8,145,178,.20))!important; border-color:rgba(34,211,238,.60)!important; }
-        .event-card .event-title.palette-torre { color:#fce7f3!important; background:linear-gradient(110deg,rgba(131,24,67,.32),rgba(157,23,77,.20))!important; border-color:rgba(244,114,182,.60)!important; }
+
 
         .event-card .event-card-content > .flex.items-center.justify-between.gap-2.mb-3 > .flex.items-center.gap-2 {
                 width: 100%;
@@ -903,7 +877,7 @@ body {
         #nav-menu-mirage-ship .mirage-plano-trigger { display: flex !important; grid-template-columns: none; justify-content: flex-start !important; gap: .65rem; min-height: 2.55rem; padding: .65rem .75rem; border: 1px solid transparent; border-radius: .6rem; font-weight: 700; }
         #nav-menu-mirage-ship .mirage-plano-trigger .submenu-label { flex: 1; text-align: left !important; }
         #nav-menu-mirage-ship .mirage-plano-trigger[aria-expanded="true"] { color: #fcd34d; background: rgba(245,158,11,.08); border-color: rgba(245,158,11,.16); }
-        #nav-menu-mirage-ship .nav-nested-menu { position: static !important; inset: auto !important; transform: none !important; width: auto !important; min-width: 0 !important; max-width: none !important; margin: .2rem .15rem .25rem .7rem; padding: .25rem 0 .25rem .55rem; border: 0; border-left: 1px solid rgba(148,163,184,.25); border-radius: 0; background: transparent; box-shadow: none; z-index: auto; }
+        #nav-menu-mirage-ship .nav-nested-menu { position: static !important; inset: auto !important; transform: none !important; width: auto !important; min-width: 0 !important; max-width: none !important; max-height: min(58vh, 420px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: rgba(148,163,184,.35) transparent; margin: .2rem .15rem .25rem .7rem; padding: .25rem 0 .25rem .55rem; border: 0; border-left: 1px solid rgba(148,163,184,.25); border-radius: 0; background: transparent; box-shadow: none; z-index: auto; }
         #nav-menu-mirage-ship .nav-nested-menu .nav-submenu-option { min-height: 2.25rem; padding: .55rem .65rem; border-radius: .5rem; font-size: .7rem; }
         #nav-menu-mirage-ship .nav-nested-menu .nav-submenu-option[aria-current="page"] { border: 1px solid rgba(245,158,11,.22); background: rgba(245,158,11,.12); }
         @media (max-width: 640px) { #nav-menu-mirage-ship { max-width: min(88vw, 240px); } #nav-menu-mirage-ship .nav-nested-menu { margin-left: .5rem; padding-left: .4rem; } }
@@ -1250,7 +1224,7 @@ body {
 }
 .events-grid-shell.is-all-paged #events-grid { grid-column:2; grid-row:1; min-width:0; }
 .all-events-page-status {
-    margin:0 0 .75rem;
+    margin:.8rem 0 0;
     padding:.4rem .6rem;
     color:#c4b5fd;
     font:800 .65rem/1.45 'Inter',sans-serif;
@@ -1395,11 +1369,660 @@ body {
     .events-grid-shell.is-all-paged { grid-template-columns:2.15rem minmax(0,1fr) 2.15rem; column-gap:.26rem; }
     .all-events-side-nav { width:2.02rem; height:2.02rem; top:calc(50vh - 1.01rem); }
     .all-events-side-nav svg { width:1.08rem; height:1.08rem; }
-    .all-events-page-status { margin-bottom:.55rem; padding:.35rem .12rem; font-size:.58rem; letter-spacing:.045em; }
+    .all-events-page-status { margin-top:.6rem; padding:.35rem .12rem; font-size:.58rem; letter-spacing:.045em; }
     #events-grid.all-page-enter-from-next { transform:translate3d(16px,0,0) scale(.997); }
     #events-grid.all-page-enter-from-previous { transform:translate3d(-16px,0,0) scale(.997); }
 }
 @media (prefers-reduced-motion:reduce) {
     .all-events-side-nav,#events-grid { animation:none !important; transition:none !important; }
     #events-grid.all-page-enter-from-next,#events-grid.all-page-enter-from-previous { opacity:1; transform:none; filter:none; }
+}
+
+/* Stable card title header. Boss names never expand on hover; the full title wraps inside its own header line. */
+.event-card .event-card-title-header {
+    display:flex !important;
+    flex-direction:column;
+    align-items:stretch !important;
+    justify-content:flex-start !important;
+    width:100%;
+    min-width:0;
+    margin:0 0 .58rem !important;
+    padding:0 0 .62rem;
+    border-bottom:1px solid rgba(148,163,184,.20);
+    grid-template-columns:minmax(0,1fr) !important;
+    gap:0 !important;
+}
+.event-card .event-card-title-header .event-title {
+    display:inline-flex !important;
+    align-items:center;
+    align-self:flex-start;
+    justify-self:start;
+    flex:0 1 auto !important;
+    box-sizing:border-box;
+    width:fit-content !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    overflow:visible !important;
+    flex-wrap:wrap;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    word-break:normal !important;
+    hyphens:auto;
+    line-height:1.35;
+    transition:none !important;
+    box-shadow:none;
+}
+.event-card .event-card-title-header .event-title > i {
+    flex:0 0 auto;
+    width:1em;
+    text-align:center;
+}
+.event-card .event-card-title-header .event-title-text {
+    display:inline;
+    flex:1 1 auto;
+    min-width:0;
+    max-width:100%;
+    overflow:visible;
+    text-overflow:clip;
+    white-space:normal !important;
+    overflow-wrap:anywhere;
+    word-break:normal;
+    line-height:1.35;
+}
+/* Status and bell are a separate, left-aligned row under each title. */
+.event-card .event-card-status-row {
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    width:100%;
+    min-width:0;
+    margin:0 0 .8rem;
+}
+.event-card .event-card-status-controls {
+    display:flex !important;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:flex-start !important;
+    gap:.4rem;
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    grid-column:auto !important;
+    grid-row:auto !important;
+    justify-self:start !important;
+    align-self:center !important;
+    white-space:normal;
+}
+.event-card .event-card-status-controls > span:last-child { white-space:nowrap; }
+@media (max-width:420px) {
+    .event-card .event-card-title-header { padding-bottom:.48rem; margin-bottom:.48rem !important; }
+    .event-card .event-card-title-header .event-title { padding:.28rem .42rem !important; font-size:10px !important; gap:.3rem !important; }
+    .event-card .event-card-status-row { margin-bottom:.68rem; }
+    .event-card .event-card-status-controls { gap:.3rem; }
+    .event-card .event-card-status-controls .alert-bell-button,
+    .event-card .event-card-status-controls .bell-locked { padding:.24rem !important; }
+    .event-card .event-card-status-controls > span:last-child { padding:.24rem .38rem !important; font-size:9px !important; }
+}
+@media (max-width:340px) {
+    .event-card .event-card-title-header .event-title { padding:.22rem .3rem !important; font-size:9px !important; }
+    .event-card .event-card-status-controls { gap:.22rem; }
+    .event-card .event-card-status-controls .alert-bell-button,
+    .event-card .event-card-status-controls .bell-locked { padding:.2rem !important; }
+    .event-card .event-card-status-controls > span:last-child { padding:.2rem .28rem !important; font-size:8px !important; }
+}
+
+/* The ALL dashboard uses the available viewport width; individual tabs retain their original width. */
+.events-main.is-all-dashboard {
+    box-sizing:border-box;
+    width:calc(100vw - 3rem);
+    max-width:2000px !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+}
+.events-main.is-all-dashboard .events-grid-shell.is-all-paged {
+    grid-template-columns:clamp(2.15rem,2.8vw,3rem) minmax(0,1fr) clamp(2.15rem,2.8vw,3rem);
+    column-gap:clamp(.18rem,.4vw,.55rem);
+}
+.events-main.is-all-dashboard #events-grid {
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr)) !important;
+    gap:clamp(.75rem,1vw,1.25rem) !important;
+    align-items:stretch;
+}
+.events-main.is-all-dashboard .all-events-side-nav {
+    width:clamp(2.15rem,2.8vw,3rem);
+    height:clamp(2.15rem,2.8vw,3rem);
+}
+@media (max-width:640px) {
+    .events-main.is-all-dashboard {
+        width:calc(100vw - 1.5rem);
+    }
+    .events-main.is-all-dashboard .events-grid-shell.is-all-paged {
+        grid-template-columns:1.95rem minmax(0,1fr) 1.95rem;
+        column-gap:.16rem;
+    }
+    .events-main.is-all-dashboard .all-events-side-nav {
+        width:1.88rem;
+        height:1.88rem;
+    }
+}
+@media (prefers-reduced-motion:reduce) {
+    .event-card .event-title,
+    .event-card .event-title-text {
+        transition:none !important;
+    }
+}
+
+
+/* Final MIR4 title system: centered headings, balanced status controls, subtle active glow, and unique boss palettes. */
+/* Keep the header title centered on its divider and let long names wrap naturally without hover expansion. */
+.event-card .event-card-title-header {
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100%;
+    min-width: 0;
+}
+.event-card .event-card-title-header .event-title {
+    align-self: center !important;
+    justify-self: center !important;
+    margin-inline: auto !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: fit-content !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    flex-wrap: wrap;
+}
+.event-card .event-card-title-header .event-title > i {
+    align-self: center;
+    flex: 0 0 auto;
+}
+.event-card .event-card-title-header .event-title-text {
+    text-align: center !important;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+/* Balanced controls: state on the left, bell on the right, including active-card lock state. */
+.event-card .event-card-status-controls {
+    display: flex !important;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between !important;
+    width: 100%;
+    gap: .65rem;
+}
+.event-card .event-card-status-controls > span:last-child {
+    order: 0;
+    margin-left: 0;
+    margin-right: auto;
+    flex: 0 1 auto;
+    min-width: 0;
+}
+.event-card .event-card-status-controls > .alert-bell-button,
+.event-card .event-card-status-controls > .bell-locked {
+    order: 2;
+    margin-left: auto;
+    margin-right: 0;
+    flex: 0 0 auto;
+}
+@media (max-width: 420px) {
+    .event-card .event-card-title-header .event-title { max-width: 100% !important; }
+    .event-card .event-card-status-controls { gap: .45rem; }
+}
+
+/* Less aggressive active-event green glow: narrow edge, shorter reach, no pulsing. */
+.event-card.glow-active,
+.event-card.glow-active:hover,
+.event-card.glow-active:focus-within {
+    border-color: rgba(52, 211, 153, .52) !important;
+    box-shadow: inset 0 0 8px rgba(34, 197, 94, .035),
+                0 0 0 1px rgba(34, 197, 94, .075),
+                0 0 11px rgba(34, 197, 94, .085) !important;
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+/* MIR4VE dark-fantasy title plaque: restrained relic gold, clean typography, stable layout. */
+.event-card .event-card-title-header {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    width: 100%;
+    min-width: 0;
+    margin-top: -0.56rem !important;
+    margin-bottom: 0.48rem !important;
+    padding: 0 0 0.5rem !important;
+    border-bottom: 1px solid rgba(201, 170, 100, 0.24) !important;
+    gap: 0 !important;
+    position: relative;
+    z-index: 2;
+    isolation: isolate;
+}
+
+.event-card .event-card-title-header .event-title {
+    display: inline-flex !important;
+    align-items: center !important;
+    align-self: center !important;
+    justify-self: center !important;
+    justify-content: center !important;
+    flex: 0 1 auto !important;
+    flex-wrap: wrap !important;
+    gap: 0.48rem !important;
+    width: fit-content !important;
+    max-width: min(100%, 36rem) !important;
+    min-width: 0 !important;
+    margin: 0 auto !important;
+    padding: 0.32rem 0.72rem !important;
+    box-sizing: border-box;
+    border: 1px solid rgba(195, 162, 89, 0.58) !important;
+    border-radius: 0.48rem !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #f2e3bd !important;
+    -webkit-text-fill-color: #f2e3bd !important;
+    font-family: 'Manrope', 'Inter', 'Segoe UI', sans-serif !important;
+    font-size: clamp(0.88rem, calc(0.82rem + 0.28vw), 1rem) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.045em !important;
+    line-height: 1.28 !important;
+    text-align: center !important;
+    text-transform: uppercase !important;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.78), 0 0 7px rgba(213, 180, 105, 0.08) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18) !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    isolation: isolate;
+    transition: none !important;
+    overflow-wrap: anywhere !important;
+    word-break: normal !important;
+    white-space: normal !important;
+}
+
+.event-card .event-card-title-header .event-title-text {
+    display: inline;
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    color: #f2e3bd !important;
+    -webkit-text-fill-color: #f2e3bd !important;
+    background: none !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    font-weight: 600 !important;
+    letter-spacing: inherit !important;
+    line-height: inherit !important;
+    text-align: center !important;
+    white-space: normal !important;
+    overflow: visible;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    text-overflow: clip;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.82), 0 0 6px rgba(213, 180, 105, 0.08) !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+    isolation: isolate;
+}
+
+.event-card .event-card-title-header .event-title > i {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 auto;
+    align-self: center !important;
+    width: 1.12em;
+    min-width: 1.12em;
+    margin: 0 0.06rem 0 0;
+    color: #e7c678 !important;
+    -webkit-text-fill-color: #e7c678 !important;
+    font-size: 0.94em !important;
+    line-height: 1 !important;
+    text-align: center;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8), 0 0 5px rgba(213, 180, 105, 0.10) !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+}
+
+/* Active green illumination stays on the card's edge; title glyphs remain visually isolated. */
+.event-card.glow-active .event-card-title-header,
+.event-card.glow-active .event-card-title-header .event-title,
+.event-card.glow-active .event-card-title-header .event-title-text {
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+}
+.event-card.glow-active .event-card-title-header .event-title {
+    color: #f2e3bd !important;
+    -webkit-text-fill-color: #f2e3bd !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border-color: rgba(195, 162, 89, 0.58) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.78), 0 0 7px rgba(213, 180, 105, 0.08) !important;
+}
+.event-card.glow-active .event-card-title-header .event-title-text {
+    color: #f2e3bd !important;
+    -webkit-text-fill-color: #f2e3bd !important;
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.82), 0 0 6px rgba(213, 180, 105, 0.08) !important;
+}
+.event-card.glow-active .event-card-title-header .event-title > i {
+    color: #e7c678 !important;
+    -webkit-text-fill-color: #e7c678 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8), 0 0 5px rgba(213, 180, 105, 0.10) !important;
+}
+
+@media (max-width: 640px) {
+    .event-card .event-card-title-header {
+        margin-top: -0.42rem !important;
+        margin-bottom: 0.42rem !important;
+        padding-bottom: 0.44rem !important;
+    }
+    .event-card .event-card-title-header .event-title {
+        max-width: 100% !important;
+        padding: 0.29rem 0.52rem !important;
+        gap: 0.38rem !important;
+        font-size: clamp(0.82rem, 3.1vw, 0.93rem) !important;
+        letter-spacing: 0.035em !important;
+    }
+    .event-card .event-card-status-controls { gap: 0.45rem; }
+}
+@media (max-width: 360px) {
+    .event-card .event-card-title-header .event-title {
+        padding: 0.26rem 0.4rem !important;
+        gap: 0.3rem !important;
+        font-size: 0.78rem !important;
+        letter-spacing: 0.025em !important;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .event-card .event-card-title-header,
+    .event-card .event-card-title-header .event-title,
+    .event-card .event-card-title-header .event-title-text,
+    .event-card .event-card-title-header .event-title > i {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+
+/* Final title contrast: waiting names are white at 80%, active names are solid white. */
+.event-card:not(.glow-active) .event-card-title-header .event-title-text {
+    color: rgba(255, 255, 255, 0.8) !important;
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.8) !important;
+    opacity: 1 !important;
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.76) !important;
+}
+.event-card.glow-active .event-card-title-header .event-title-text {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    opacity: 1 !important;
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.78) !important;
+}
+.event-card .event-card-title-header .event-title {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+}
+/* Only the glyph is gradient-filled; the boss name and the rest of the title stay white. */
+.event-card .event-card-title-header .event-title > i.boss-title-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    background-image: linear-gradient(135deg, var(--boss-icon-gradient-start), var(--boss-icon-gradient-end)) !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.48)) !important;
+    text-shadow: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+}
+.event-card.glow-active .event-card-title-header .event-title > i.boss-title-icon {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    background-image: linear-gradient(135deg, var(--boss-icon-gradient-start), var(--boss-icon-gradient-end)) !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.48)) !important;
+}
+
+/* Final event-title palette: transparent plaque, palette-matched text, colored outline only. */
+.event-card .event-card-title-header .event-title {
+    position: relative !important;
+    box-sizing: border-box !important;
+    border: 1px solid var(--boss-icon-gradient-start, #94A3B8) !important;
+    border-color: color-mix(in srgb, var(--boss-icon-gradient-start, #94A3B8) 68%, transparent) !important;
+    border-radius: 0.62rem !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: var(--boss-icon-gradient-start, #E2E8F0) !important;
+    -webkit-text-fill-color: var(--boss-icon-gradient-start, #E2E8F0) !important;
+    font-weight: 600 !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.24), inset 0 0 0 1px rgba(255, 255, 255, 0.012) !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    isolation: isolate !important;
+}
+@supports not (border-color: color-mix(in srgb, white 50%, transparent)) {
+    .event-card .event-card-title-header .event-title {
+        border-color: var(--boss-icon-gradient-start, #94A3B8) !important;
+    }
+}
+.event-card .event-card-title-header .event-title-text {
+    color: var(--boss-icon-gradient-start, #E2E8F0) !important;
+    -webkit-text-fill-color: var(--boss-icon-gradient-start, #E2E8F0) !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.78) !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 0.88 !important;
+    isolation: isolate !important;
+    transition: opacity 160ms ease !important;
+}
+.event-card.glow-active .event-card-title-header .event-title-text {
+    color: var(--boss-icon-gradient-start, #E2E8F0) !important;
+    -webkit-text-fill-color: var(--boss-icon-gradient-start, #E2E8F0) !important;
+    background: transparent !important;
+    background-image: none !important;
+    opacity: 1 !important;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.82) !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
+.event-card .event-card-title-header .event-title > i.boss-title-icon,
+.event-card.glow-active .event-card-title-header .event-title > i.boss-title-icon {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    background-image: linear-gradient(135deg, var(--boss-icon-gradient-start, #E2E8F0), var(--boss-icon-gradient-end, #64748B)) !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.48)) !important;
+    text-shadow: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+}
+.event-card.glow-active .event-card-title-header,
+.event-card.glow-active .event-card-title-header .event-title {
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
+@media (prefers-reduced-motion: reduce) {
+    .event-card .event-card-title-header .event-title-text {
+        transition: none !important;
+    }
+}
+
+/* Restored original boss-name badge palette and shape, preserving the newer independent header layout. */
+.event-card .event-card-title-header .event-title[data-title-color] {
+    --boss-badge-text: #fbbf24;
+    --boss-badge-bg-start: rgba(245, 158, 11, .10);
+    --boss-badge-bg-end: rgba(245, 158, 11, .06);
+    --boss-badge-border: rgba(245, 158, 11, .30);
+}
+.event-card .event-card-title-header .event-title[data-title-color="orange"] {
+    --boss-badge-text: #fed7aa; --boss-badge-bg-start: rgba(249, 115, 22, .15); --boss-badge-bg-end: rgba(249, 115, 22, .08); --boss-badge-border: rgba(251, 146, 60, .50);
+}
+.event-card .event-card-title-header .event-title[data-title-color="red"] {
+    --boss-badge-text: #fca5a5; --boss-badge-bg-start: rgba(239, 68, 68, .15); --boss-badge-bg-end: rgba(239, 68, 68, .08); --boss-badge-border: rgba(248, 113, 113, .50);
+}
+.event-card .event-card-title-header .event-title[data-title-color="yellow"] {
+    --boss-badge-text: #fef08a; --boss-badge-bg-start: rgba(234, 179, 8, .15); --boss-badge-bg-end: rgba(234, 179, 8, .08); --boss-badge-border: rgba(250, 204, 21, .50);
+}
+.event-card .event-card-title-header .event-title[data-title-color="purple"] {
+    --boss-badge-text: #e9d5ff; --boss-badge-bg-start: rgba(168, 85, 247, .20); --boss-badge-bg-end: rgba(168, 85, 247, .10); --boss-badge-border: rgba(192, 132, 252, .60);
+}
+.event-card .event-card-title-header .event-title[data-title-color="violet"] {
+    --boss-badge-text: #ddd6fe; --boss-badge-bg-start: rgba(139, 92, 246, .15); --boss-badge-bg-end: rgba(139, 92, 246, .08); --boss-badge-border: rgba(167, 139, 250, .50);
+}
+.event-card .event-card-title-header .event-title[data-title-color="blue"] {
+    --boss-badge-text: #60a5fa; --boss-badge-bg-start: rgba(59, 130, 246, .10); --boss-badge-bg-end: rgba(59, 130, 246, .05); --boss-badge-border: rgba(59, 130, 246, .30);
+}
+.event-card .event-card-title-header .event-title[data-title-color="indigo"] {
+    --boss-badge-text: #c7d2fe; --boss-badge-bg-start: rgba(99, 102, 241, .15); --boss-badge-bg-end: rgba(99, 102, 241, .08); --boss-badge-border: rgba(129, 140, 248, .50);
+}
+.event-card .event-card-title-header .event-title[data-title-color="emerald"] {
+    --boss-badge-text: #a7f3d0; --boss-badge-bg-start: rgba(16, 185, 129, .15); --boss-badge-bg-end: rgba(16, 185, 129, .08); --boss-badge-border: rgba(52, 211, 153, .50);
+}
+.event-card .event-card-title-header .event-title[data-title-color="slate"] {
+    --boss-badge-text: #f1f5f9; --boss-badge-bg-start: rgba(100, 116, 139, .15); --boss-badge-bg-end: rgba(100, 116, 139, .08); --boss-badge-border: rgba(148, 163, 184, .50);
+}
+.event-card .event-card-title-header .event-title[data-title-color="green"] {
+    --boss-badge-text: #bbf7d0; --boss-badge-bg-start: rgba(34, 197, 94, .15); --boss-badge-bg-end: rgba(34, 197, 94, .08); --boss-badge-border: rgba(74, 222, 128, .50);
+}
+.event-card .event-card-title-header .event-title[data-title-color="teal"] {
+    --boss-badge-text: #5eead4; --boss-badge-bg-start: rgba(20, 184, 166, .10); --boss-badge-bg-end: rgba(20, 184, 166, .05); --boss-badge-border: rgba(20, 184, 166, .30);
+}
+.event-card .event-card-title-header .event-title[data-title-color="cyan"] {
+    --boss-badge-text: #67e8f9; --boss-badge-bg-start: rgba(6, 182, 212, .10); --boss-badge-bg-end: rgba(6, 182, 212, .05); --boss-badge-border: rgba(6, 182, 212, .30);
+}
+
+/* Exact legacy named-boss palettes from the supplied original stylesheet. */
+.event-card[data-event-id="mirage_jihwa"] .event-card-title-header .event-title,
+.event-card .event-card-title-header .event-title.boss-name-jihwa {
+    --boss-badge-text: #ffe4f1; --boss-badge-bg-start: rgba(190, 24, 93, .30); --boss-badge-bg-end: rgba(124, 58, 237, .20); --boss-badge-border: rgba(244, 114, 182, .62);
+}
+.event-card[data-event-id="mirage_yaksha"] .event-card-title-header .event-title,
+.event-card .event-card-title-header .event-title.boss-name-yaksha {
+    --boss-badge-text: #e0f2fe; --boss-badge-bg-start: rgba(14, 116, 144, .32); --boss-badge-bg-end: rgba(30, 64, 175, .22); --boss-badge-border: rgba(103, 232, 249, .58);
+}
+.event-card[data-event-id="mirage_black_carapace"] .event-card-title-header .event-title,
+.event-card .event-card-title-header .event-title.boss-name-carapace {
+    --boss-badge-text: #fef3c7; --boss-badge-bg-start: rgba(120, 53, 15, .34); --boss-badge-bg-end: rgba(87, 83, 20, .24); --boss-badge-border: rgba(253, 224, 71, .55);
+}
+.event-card[data-event-id="mirage_bulhu"] .event-card-title-header .event-title,
+.event-card .event-card-title-header .event-title.boss-name-bulhu {
+    --boss-badge-text: #ede9fe; --boss-badge-bg-start: rgba(91, 33, 182, .32); --boss-badge-bg-end: rgba(112, 26, 117, .24); --boss-badge-border: rgba(196, 181, 253, .62);
+}
+.event-card[data-event-id="frenesi"] .event-card-title-header .event-title {
+    --boss-badge-text: #ffedd5; --boss-badge-bg-start: rgba(154, 52, 18, .34); --boss-badge-bg-end: rgba(180, 83, 9, .20); --boss-badge-border: rgba(251, 146, 60, .62);
+}
+.event-card[data-event-id="furia"] .event-card-title-header .event-title {
+    --boss-badge-text: #ffe4e6; --boss-badge-bg-start: rgba(159, 18, 57, .34); --boss-badge-bg-end: rgba(127, 29, 29, .22); --boss-badge-border: rgba(251, 113, 133, .60);
+}
+.event-card[data-event-id="lideres"] .event-card-title-header .event-title {
+    --boss-badge-text: #fef9c3; --boss-badge-bg-start: rgba(113, 63, 18, .34); --boss-badge-bg-end: rgba(133, 77, 14, .22); --boss-badge-border: rgba(250, 204, 21, .60);
+}
+.event-card[data-event-id="oratorio"] .event-card-title-header .event-title {
+    --boss-badge-text: #e0e7ff; --boss-badge-bg-start: rgba(49, 46, 129, .36); --boss-badge-bg-end: rgba(67, 56, 202, .20); --boss-badge-border: rgba(129, 140, 248, .62);
+}
+.event-card[data-event-id="cima_inferior"] .event-card-title-header .event-title {
+    --boss-badge-text: #fee2e2; --boss-badge-bg-start: rgba(127, 29, 29, .34); --boss-badge-bg-end: rgba(153, 27, 27, .20); --boss-badge-border: rgba(248, 113, 113, .62);
+}
+.event-card[data-event-id="cima_superior"] .event-card-title-header .event-title {
+    --boss-badge-text: #f3e8ff; --boss-badge-bg-start: rgba(88, 28, 135, .34); --boss-badge-bg-end: rgba(76, 29, 149, .22); --boss-badge-border: rgba(192, 132, 252, .62);
+}
+.event-card[data-event-id="purgatorio"] .event-card-title-header .event-title {
+    --boss-badge-text: #fae8ff; --boss-badge-bg-start: rgba(112, 26, 117, .34); --boss-badge-bg-end: rgba(88, 28, 135, .22); --boss-badge-border: rgba(232, 121, 249, .60);
+}
+.event-card[data-event-id="wb_valles"] .event-card-title-header .event-title {
+    --boss-badge-text: #dcfce7; --boss-badge-bg-start: rgba(20, 83, 45, .34); --boss-badge-bg-end: rgba(6, 95, 70, .22); --boss-badge-border: rgba(74, 222, 128, .60);
+}
+.event-card[data-event-id="wb_laberintos"] .event-card-title-header .event-title {
+    --boss-badge-text: #cffafe; --boss-badge-bg-start: rgba(21, 94, 117, .34); --boss-badge-bg-end: rgba(8, 145, 178, .20); --boss-badge-border: rgba(34, 211, 238, .60);
+}
+.event-card[data-event-id="domination_tower"] .event-card-title-header .event-title {
+    --boss-badge-text: #fce7f3; --boss-badge-bg-start: rgba(131, 24, 67, .32); --boss-badge-bg-end: rgba(157, 23, 77, .20); --boss-badge-border: rgba(244, 114, 182, .60);
+}
+
+/* The restored palette affects the title plaque only; the newer card/header layout stays unchanged. */
+.event-card .event-card-title-header .event-title[data-title-color] {
+    padding: .25rem .75rem !important;
+    border: 1px solid var(--boss-badge-border) !important;
+    border-radius: .5rem !important;
+    background: linear-gradient(110deg, var(--boss-badge-bg-start), var(--boss-badge-bg-end)) !important;
+    background-color: transparent !important;
+    background-image: linear-gradient(110deg, var(--boss-badge-bg-start), var(--boss-badge-bg-end)) !important;
+    color: var(--boss-badge-text) !important;
+    -webkit-text-fill-color: var(--boss-badge-text) !important;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif !important;
+    font-size: .78rem !important;
+    font-weight: 650 !important;
+    letter-spacing: .012em !important;
+    line-height: 1.35 !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08) !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+}
+.event-card .event-card-title-header .event-title[data-title-color] .event-title-text {
+    color: var(--boss-badge-text) !important;
+    -webkit-text-fill-color: var(--boss-badge-text) !important;
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    font-weight: 650 !important;
+    text-shadow: none !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+}
+.event-card .event-card-title-header .event-title[data-title-color] > i.boss-title-icon {
+    color: var(--boss-badge-text) !important;
+    -webkit-text-fill-color: var(--boss-badge-text) !important;
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    filter: none !important;
+    text-shadow: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
 }

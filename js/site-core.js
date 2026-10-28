@@ -109,32 +109,109 @@
             es: {
                 serverTime: "HORA SERVIDOR", localTime: "HORA LOCAL", weekReset: "REINICIO SEMANAL", online: "en línea", alertsOn: "Alertas activadas", alertsOff: "Alertas desactivadas", sponsor: "SPONSOR",
                 introCommunity: "COMUNIDAD DARKOMENS", introDescription: "Consulta los horarios de todos los eventos de MIR4 Global en tiempo real.", introLive: "PANEL DE ALERTAS", alertVolumeLabel: "VOLUMEN DE ALERTA", alertTriggerLabel: "DISPARADOR DE ALERTA",
-                navGroups: { domination: "DOMINACIÓN", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OTROS CONTENIDOS" }, mirageLayer1: "PLANO 1", reappearsEvery: "REAPARECE CADA:", frequency: "FRECUENCIA:", bossAppearsIn: "APARECE EN:",
-                tabs: { ALL: "TODAS", FRENESI: "FRENESÍ", FURIA: "FURIA", LIDERES: "LIDER III", CIMA: "CIMA", WB_VALLES: "VALLES", WB_LABERINTOS: "LABERINTOS", PURGATORIO: "PURGATORIO", ORATORIO: "ORATORIO CRÍPTICO", TORRE: "TORRE", W1: "W1", W2: "W2", W3: "W3" },
+                navGroups: { domination: "DOMINACIÓN", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OTROS CONTENIDOS" }, mirageLayer1: "PLANO 1", mirageLayer3: "PLANO 3", conditionStatus: "POR CONDICIÓN", monsterKillCondition: "Aparece tras eliminar entre 7.000 y 8.000 monstruos.", noFixedTime: "SIN HORARIO FIJO", reappearsEvery: "REAPARECE CADA:", frequency: "FRECUENCIA:", perDay: "AL DÍA", bossAppearsIn: "APARECE EN:",
+                tabs: { ALL: "TODAS", FRENESI: "FRENESÍ", FURIA: "FURIA", LIDERES: "LIDER III", CIMA: "CIMA", WB_VALLES: "VALLES", WB_LABERINTOS: "LABERINTOS", PURGATORIO: "PURGATORIO", ORATORIO: "ORATORIO CRÍPTICO", TORRE: "TORRE", W1: "W1", W2: "W2", W3: "W3", P3_W1: "W1", P3_W2: "W2", P3_W3: "W3", P3_W4: "W4", P3_W5: "W5", P3_W6: "W6", P3_W7: "W7", P3_W8: "W8" },
                 statusActive: "En curso", activeNow: "Evento en curso", statusWaiting: "En espera", nextOpening: "Próxima apertura:", mirageSchedule: "CICLO DE APARICIONES", nextSpawn: "Próxima aparición", timeRemaining: "Tiempo restante", durationActive: "Duración activa:", opensIn: "INICIA EN:", closesIn: "FINALIZA EN:",
                 toastTitle: "¡EVENTO ACTIVADO!", toastSub: "Alerta de TIMERS | Mir4VE", nextQueueTitle: "Próximos ciclos en espera:", durationMin: "min", durationHour: "1 hora", timePrefix: "en ", unitHour: "h", unitMinute: "m", unitSecond: "s",
-                eventTitles: { frenesi: "MS ◂ FRENESÍ ▸", furia: "MS ◂ FURIA ▸", lideres: "MS ◂ LIDER 3 ▸", oratorio: "◂ Oratorio Críptico ▸", cima_inferior: "SP ◂ JEFE SUR ▸", cima_superior: "SP ◂ JEFE NORTE ▸", purgatorio: "◂ Purgatorio ▸", wb_valles: "WB ◂ VALLES ▸", wb_laberintos: "WB ◂ LABERINTOS ▸", domination_tower: "◂ TORRE DEL DRAGÓN ▸", mirage_jihwa: "P1 · W1 ◂ Jihwa ▸", mirage_yaksha: "P1 · W1 ◂ Yaksha ▸", mirage_black_carapace: "P1 · W1 ◂ Black Carapace ▸", mirage_bulhu: "P1 · W1 ◂ Bulhu ▸", mirage_w2_guemugwang: "P1 · W2 ◂ GUEMUGWANG ▸", mirage_w2_maengryong: "P1 · W2 ◂ MAENGRYONG ▸", mirage_w2_molgrash: "P1 · W2 ◂ MOLGRASH ▸", mirage_w2_kwangryeong: "P1 · W2 ◂ KWANGRYEONG ▸", mirage_w3_bargan: "P1 · W3 ◂ BARGAN ▸", mirage_w3_barkas: "P1 · W3 ◂ BARKAS ▸", mirage_w3_bordo: "P1 · W3 ◂ BORDO ▸", mirage_w3_kelis: "P1 · W3 ◂ KELIS ▸", mirage_w3_krog: "P1 · W3 ◂ KROG ▸", mirage_w3_morg: "P1 · W3 ◂ MORG ▸", mirage_w3_talasa: "P1 · W3 ◂ TALASA ▸" },
+                eventTitles: { frenesi: "MS ◂ FRENESÍ ▸", furia: "MS ◂ FURIA ▸", lideres: "MS ◂ LIDER 3 ▸", oratorio: "◂ Oratorio Críptico ▸", cima_inferior: "SP ◂ JEFE SUR ▸", cima_superior: "SP ◂ JEFE NORTE ▸", purgatorio: "◂ Purgatorio ▸", wb_valles: "WB ◂ VALLES ▸", wb_laberintos: "WB ◂ LABERINTOS ▸", domination_tower: "◂ TORRE DEL DRAGÓN ▸", mirage_jihwa: "P1·W1 ◂ JIHWA ▸", mirage_yaksha: "P1·W1 ◂ YAKSHA ▸", mirage_black_carapace: "P1·W1 ◂ BLACK CARAPACE ▸", mirage_bulhu: "P1·W1 ◂ BULHU ▸", mirage_w2_guemugwang: "P1·W2 ◂ GUEMUGWANG ▸", mirage_w2_maengryong: "P1·W2 ◂ MAEONGRYONG ▸", mirage_w2_molgrash: "P1·W2 ◂ MOLGRASH ▸", mirage_w2_kwangryeong: "P1·W2 ◂ GWANGRYEONG ▸", mirage_w3_bargan: "P1·W3 ◂ BARGAN ▸", mirage_w3_barkas: "P1·W3 ◂ BARKAS ▸", mirage_w3_bordo: "P1·W3 ◂ BORDO ▸", mirage_w3_kelis: "P1·W3 ◂ KELIS ▸", mirage_w3_krog: "P1·W3 ◂ KROG ▸", mirage_w3_morg: "P1·W3 ◂ MORG ▸", mirage_w3_talasa: "P1·W3 ◂ TALASA ▸" },
                 bellTitle: "Alertas para este evento", stop: "DETENER", switchTo12: "Cambiar a formato de 12 horas", switchTo24: "Cambiar a formato de 24 horas", triggerAvailable: "Disparador disponible", triggerAvailableIn: "Disponible en "
             },
             pt: {
                 serverTime: "HORA DO SERVIDOR", localTime: "HORA LOCAL", weekReset: "REINÍCIO SEMANAL", online: "online", alertsOn: "Alertas ativados", alertsOff: "Alertas desativados", sponsor: "PATROCÍNIO",
                 introCommunity: "COMUNIDADE DARKOMENS", introDescription: "Consulte os horários de todos os eventos de MIR4 Global em tempo real.", introLive: "PAINEL DE ALERTAS", alertVolumeLabel: "VOLUME DO ALERTA", alertTriggerLabel: "ACIONADOR DO ALERTA",
-                navGroups: { domination: "DOMINAÇÃO", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OUTROS CONTEÚDOS" }, mirageLayer1: "CAMADA 1", reappearsEvery: "REAPARECE A CADA:", frequency: "FREQUÊNCIA:", bossAppearsIn: "SURGE EM:",
-                tabs: { ALL: "TODOS", FRENESI: "FRENESI", FURIA: "FÚRIA", LIDERES: "LÍDER III", CIMA: "PICO SECRETO", WB_VALLES: "VALES", WB_LABERINTOS: "LABIRINTOS", PURGATORIO: "PURGATÓRIO", ORATORIO: "SANTUÁRIO SECRETO", TORRE: "TORRE", W1: "W1", W2: "W2", W3: "W3" },
+                navGroups: { domination: "DOMINAÇÃO", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OUTROS CONTEÚDOS" }, mirageLayer1: "CAMADA 1", mirageLayer3: "CAMADA 3", conditionStatus: "POR CONDIÇÃO", monsterKillCondition: "Aparece após eliminar entre 7.000 e 8.000 monstros.", noFixedTime: "SEM HORÁRIO FIXO", reappearsEvery: "REAPARECE A CADA:", frequency: "FREQUÊNCIA:", perDay: "POR DIA", bossAppearsIn: "SURGE EM:",
+                tabs: { ALL: "TODOS", FRENESI: "FRENESI", FURIA: "FÚRIA", LIDERES: "LÍDER III", CIMA: "PICO SECRETO", WB_VALLES: "VALES", WB_LABERINTOS: "LABIRINTOS", PURGATORIO: "PURGATÓRIO", ORATORIO: "SANTUÁRIO SECRETO", TORRE: "TORRE", W1: "W1", W2: "W2", W3: "W3", P3_W1: "W1", P3_W2: "W2", P3_W3: "W3", P3_W4: "W4", P3_W5: "W5", P3_W6: "W6", P3_W7: "W7", P3_W8: "W8" },
                 statusActive: "Em andamento", activeNow: "Evento em andamento", statusWaiting: "Aguardando", nextOpening: "Próxima aparição:", mirageSchedule: "CICLO DE APARIÇÕES", nextSpawn: "Próxima aparição", timeRemaining: "Tempo restante", durationActive: "Duração ativa:", opensIn: "INICIA EM:", closesIn: "FINALIZA EM:",
                 toastTitle: "EVENTO INICIADO!", toastSub: "Alerta do TIMERS | Mir4VE", nextQueueTitle: "Próximos ciclos aguardando:", durationMin: "min", durationHour: "1 hora", timePrefix: "em ", unitHour: "h", unitMinute: "min", unitSecond: "s",
-                eventTitles: { frenesi: "MS ◂ FRENESI ▸", furia: "MS ◂ FÚRIA ▸", lideres: "MS ◂ LÍDER 3 ▸", oratorio: "◂ Santuário Secreto ▸", cima_inferior: "SP ◂ BOSS SUL ▸", cima_superior: "SP ◂ BOSS NORTE ▸", purgatorio: "◂ Purgatório ▸", wb_valles: "WB ◂ VALES ▸", wb_laberintos: "WB ◂ LABIRINTOS ▸", domination_tower: "◂ TORRE DO DRAGÃO ▸", mirage_jihwa: "C1 · W1 ◂ Jihwa ▸", mirage_yaksha: "C1 · W1 ◂ Yaksha ▸", mirage_black_carapace: "C1 · W1 ◂ Black Carapace ▸", mirage_bulhu: "C1 · W1 ◂ Bulhu ▸", mirage_w2_guemugwang: "P1 · W2 ◂ GUEMUGWANG ▸", mirage_w2_maengryong: "P1 · W2 ◂ MAENGRYONG ▸", mirage_w2_molgrash: "P1 · W2 ◂ MOLGRASH ▸", mirage_w2_kwangryeong: "P1 · W2 ◂ KWANGRYEONG ▸", mirage_w3_bargan: "P1 · W3 ◂ BARGAN ▸", mirage_w3_barkas: "P1 · W3 ◂ BARKAS ▸", mirage_w3_bordo: "P1 · W3 ◂ BORDO ▸", mirage_w3_kelis: "P1 · W3 ◂ KELIS ▸", mirage_w3_krog: "P1 · W3 ◂ KROG ▸", mirage_w3_morg: "P1 · W3 ◂ MORG ▸", mirage_w3_talasa: "P1 · W3 ◂ TALASA ▸" },
+                eventTitles: { frenesi: "MS ◂ FRENESI ▸", furia: "MS ◂ FÚRIA ▸", lideres: "MS ◂ LÍDER 3 ▸", oratorio: "◂ Santuário Secreto ▸", cima_inferior: "SP ◂ BOSS SUL ▸", cima_superior: "SP ◂ BOSS NORTE ▸", purgatorio: "◂ Purgatório ▸", wb_valles: "WB ◂ VALES ▸", wb_laberintos: "WB ◂ LABIRINTOS ▸", domination_tower: "◂ TORRE DO DRAGÃO ▸", mirage_jihwa: "C1·W1 ◂ JIHWA ▸", mirage_yaksha: "C1·W1 ◂ YAKSHA ▸", mirage_black_carapace: "C1·W1 ◂ BLACK CARAPACE ▸", mirage_bulhu: "C1·W1 ◂ BULHU ▸", mirage_w2_guemugwang: "C1·W2 ◂ GUEMUGWANG ▸", mirage_w2_maengryong: "C1·W2 ◂ MAEONGRYONG ▸", mirage_w2_molgrash: "C1·W2 ◂ MOLGRASH ▸", mirage_w2_kwangryeong: "C1·W2 ◂ GWANGRYEONG ▸", mirage_w3_bargan: "C1·W3 ◂ BARGAN ▸", mirage_w3_barkas: "C1·W3 ◂ BARKAS ▸", mirage_w3_bordo: "C1·W3 ◂ BORDO ▸", mirage_w3_kelis: "C1·W3 ◂ KELIS ▸", mirage_w3_krog: "C1·W3 ◂ KROG ▸", mirage_w3_morg: "C1·W3 ◂ MORG ▸", mirage_w3_talasa: "C1·W3 ◂ TALASA ▸" },
                 bellTitle: "Alertas para este evento", stop: "PARAR", switchTo12: "Mudar para o formato de 12 horas", switchTo24: "Mudar para o formato de 24 horas", triggerAvailable: "Alerta disponível", triggerAvailableIn: "Disponível em "
             },
             en: {
                 serverTime: "SERVER TIME", localTime: "LOCAL TIME", weekReset: "WEEKLY RESET", online: "online", alertsOn: "Alerts On", alertsOff: "Alerts Off", sponsor: "SPONSOR",
                 introCommunity: "DARKOMENS COMMUNITY", introDescription: "Check the schedules for all MIR4 Global events in real time.", introLive: "ALERT PANEL", alertVolumeLabel: "ALERT VOLUME", alertTriggerLabel: "ALERT TRIGGER",
-                navGroups: { domination: "DOMINATION", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OTHER CONTENT" }, mirageLayer1: "LAYER 1", reappearsEvery: "REAPPEARS EVERY:", frequency: "FREQUENCY:", bossAppearsIn: "SPAWNS IN:",
-                tabs: { ALL: "ALL", FRENESI: "FRENZY", FURIA: "FURY", LIDERES: "LEADER III", CIMA: "SECRET PEAK", WB_VALLES: "VALLEYS", WB_LABERINTOS: "LABYRINTHS", PURGATORIO: "PURGATORY", ORATORIO: "CRYPTIC SANCTUARY", TORRE: "TOWER", W1: "W1", W2: "W2", W3: "W3" },
+                navGroups: { domination: "DOMINATION", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OTHER CONTENT" }, mirageLayer1: "LAYER 1", mirageLayer3: "LAYER 3", conditionStatus: "CONDITION-BASED", monsterKillCondition: "Appears after defeating 7,000–8,000 monsters.", noFixedTime: "NO FIXED SCHEDULE", reappearsEvery: "REAPPEARS EVERY:", frequency: "FREQUENCY:", perDay: "PER DAY", bossAppearsIn: "SPAWNS IN:",
+                tabs: { ALL: "ALL", FRENESI: "FRENZY", FURIA: "FURY", LIDERES: "LEADER III", CIMA: "SECRET PEAK", WB_VALLES: "VALLEYS", WB_LABERINTOS: "LABYRINTHS", PURGATORIO: "PURGATORY", ORATORIO: "CRYPTIC SANCTUARY", TORRE: "TOWER", W1: "W1", W2: "W2", W3: "W3", P3_W1: "W1", P3_W2: "W2", P3_W3: "W3", P3_W4: "W4", P3_W5: "W5", P3_W6: "W6", P3_W7: "W7", P3_W8: "W8" },
                 statusActive: "Active", activeNow: "Event in progress", statusWaiting: "Waiting", nextOpening: "Next spawn:", mirageSchedule: "SPAWN CYCLE", nextSpawn: "Next spawn", timeRemaining: "Time remaining", durationActive: "Active duration:", opensIn: "STARTS IN:", closesIn: "ENDS IN:",
                 toastTitle: "EVENT STARTED!", toastSub: "TIMERS | Mir4VE alert", nextQueueTitle: "Upcoming waiting cycles:", durationMin: "min", durationHour: "1 hour", timePrefix: "in ", unitHour: "h", unitMinute: "m", unitSecond: "s",
-                eventTitles: { frenesi: "MS ◂ FRENZY ▸", furia: "MS ◂ FURY ▸", lideres: "MS ◂ LEADER 3 ▸", oratorio: "◂ Cryptic Sanctuary ▸", cima_inferior: "SP ◂ SOUTH BOSS ▸", cima_superior: "SP ◂ NORTH BOSS ▸", purgatorio: "◂ Purgatory ▸", wb_valles: "World Boss ◂ VALLEYS ▸", wb_laberintos: "World Boss ◂ LABYRINTHS ▸", domination_tower: "◂ DRAGON TOWER ▸", mirage_jihwa: "L1 · W1 ◂ Jihwa ▸", mirage_yaksha: "L1 · W1 ◂ Yaksha ▸", mirage_black_carapace: "L1 · W1 ◂ Black Carapace ▸", mirage_bulhu: "L1 · W1 ◂ Bulhu ▸", mirage_w2_guemugwang: "P1 · W2 ◂ GUEMUGWANG ▸", mirage_w2_maengryong: "P1 · W2 ◂ MAENGRYONG ▸", mirage_w2_molgrash: "P1 · W2 ◂ MOLGRASH ▸", mirage_w2_kwangryeong: "P1 · W2 ◂ KWANGRYEONG ▸", mirage_w3_bargan: "P1 · W3 ◂ BARGAN ▸", mirage_w3_barkas: "P1 · W3 ◂ BARKAS ▸", mirage_w3_bordo: "P1 · W3 ◂ BORDO ▸", mirage_w3_kelis: "P1 · W3 ◂ KELIS ▸", mirage_w3_krog: "P1 · W3 ◂ KROG ▸", mirage_w3_morg: "P1 · W3 ◂ MORG ▸", mirage_w3_talasa: "P1 · W3 ◂ TALASA ▸" },
+                eventTitles: { frenesi: "MS ◂ FRENZY ▸", furia: "MS ◂ FURY ▸", lideres: "MS ◂ LEADER 3 ▸", oratorio: "◂ Cryptic Sanctuary ▸", cima_inferior: "SP ◂ SOUTH BOSS ▸", cima_superior: "SP ◂ NORTH BOSS ▸", purgatorio: "◂ Purgatory ▸", wb_valles: "World Boss ◂ VALLEYS ▸", wb_laberintos: "World Boss ◂ LABYRINTHS ▸", domination_tower: "◂ DRAGON TOWER ▸", mirage_jihwa: "L1·W1 ◂ JIHWA ▸", mirage_yaksha: "L1·W1 ◂ YAKSHA ▸", mirage_black_carapace: "L1·W1 ◂ BLACK CARAPACE ▸", mirage_bulhu: "L1·W1 ◂ BULHU ▸", mirage_w2_guemugwang: "L1·W2 ◂ GUEMUGWANG ▸", mirage_w2_maengryong: "L1·W2 ◂ MAEONGRYONG ▸", mirage_w2_molgrash: "L1·W2 ◂ MOLGRASH ▸", mirage_w2_kwangryeong: "L1·W2 ◂ GWANGRYEONG ▸", mirage_w3_bargan: "L1·W3 ◂ BARGAN ▸", mirage_w3_barkas: "L1·W3 ◂ BARKAS ▸", mirage_w3_bordo: "L1·W3 ◂ BORDO ▸", mirage_w3_kelis: "L1·W3 ◂ KELIS ▸", mirage_w3_krog: "L1·W3 ◂ KROG ▸", mirage_w3_morg: "L1·W3 ◂ MORG ▸", mirage_w3_talasa: "L1·W3 ◂ TALASA ▸" },
                 bellTitle: "Alerts for this event", stop: "STOP", switchTo12: "Switch to 12-hour time", switchTo24: "Switch to 24-hour time", triggerAvailable: "Trigger available", triggerAvailableIn: "Available in "
+            }
+        };
+
+
+        // Plano 3 title prefixes vary by language: P3 (Spanish), C3 (Portuguese), L3 (English).
+        const P3_EVENT_TITLES = {
+            es: {
+                mirage_p3_mata: "P3·W1 ◂ MATA ▸",
+                mirage_p3_boltox: "P3·W1 ◂ BOLTOX ▸",
+                mirage_p3_bullface_f_king: "P3·W1 ◂ BULLFACE F. KING ▸",
+                mirage_p3_ma_wonwi: "P3·W2 ◂ MA WONWI ▸",
+                mirage_p3_juhui: "P3·W2 ◂ JUHUI ▸",
+                mirage_p3_tombbeast_gyo: "P3·W3 ◂ TOMBBEAST GYO ▸",
+                mirage_p3_dusk_a_emperor: "P3·W3 ◂ DUSK A. EMPEROR ▸",
+                mirage_p3_mara: "P3·W3 ◂ MARA ▸",
+                mirage_p3_boodo: "P3·W3 ◂ BOODO ▸",
+                mirage_p3_kurilacai: "P3·W4 ◂ KURILACAI ▸",
+                mirage_p3_nefariox: "P3·W4 ◂ NEFARIOX ▸",
+                mirage_p3_faluk: "P3·W5 ◂ FALUK ▸",
+                mirage_p3_illusory_dream: "P3·W5 ◂ ILLUSORY DREAM ▸",
+                mirage_p3_tale_warper_f: "P3·W5 ◂ TALE WARPER F. ▸",
+                mirage_p3_biceon_sura: "P3·W6 ◂ BICEON SURA ▸",
+                mirage_p3_cheol_mokgang: "P3·W6 ◂ CHEOL MOKGANG ▸",
+                mirage_p3_wuihan: "P3·W6 ◂ WUIHAN ▸",
+                mirage_p3_obscene_yeticlops: "P3·W6 ◂ OBSCENE YETICLOPS ▸",
+                mirage_p3_transformed_h_yeom: "P3·W6 ◂ TRANSFORMED H. YEOM ▸",
+                mirage_p3_taehyul: "P3·W7 ◂ TAEHYUL ▸",
+                mirage_p3_yiun: "P3·W7 ◂ YIUN ▸",
+                mirage_p3_yeo_whitemaur: "P3·W8 ◂ YEO WHITEMAUR ▸"
+            },
+            pt: {
+                mirage_p3_mata: "C3·W1 ◂ MATA ▸",
+                mirage_p3_boltox: "C3·W1 ◂ BOLTOX ▸",
+                mirage_p3_bullface_f_king: "C3·W1 ◂ BULLFACE F. KING ▸",
+                mirage_p3_ma_wonwi: "C3·W2 ◂ MA WONWI ▸",
+                mirage_p3_juhui: "C3·W2 ◂ JUHUI ▸",
+                mirage_p3_tombbeast_gyo: "C3·W3 ◂ TOMBBEAST GYO ▸",
+                mirage_p3_dusk_a_emperor: "C3·W3 ◂ DUSK A. EMPEROR ▸",
+                mirage_p3_mara: "C3·W3 ◂ MARA ▸",
+                mirage_p3_boodo: "C3·W3 ◂ BOODO ▸",
+                mirage_p3_kurilacai: "C3·W4 ◂ KURILACAI ▸",
+                mirage_p3_nefariox: "C3·W4 ◂ NEFARIOX ▸",
+                mirage_p3_faluk: "C3·W5 ◂ FALUK ▸",
+                mirage_p3_illusory_dream: "C3·W5 ◂ ILLUSORY DREAM ▸",
+                mirage_p3_tale_warper_f: "C3·W5 ◂ TALE WARPER F. ▸",
+                mirage_p3_biceon_sura: "C3·W6 ◂ BICEON SURA ▸",
+                mirage_p3_cheol_mokgang: "C3·W6 ◂ CHEOL MOKGANG ▸",
+                mirage_p3_wuihan: "C3·W6 ◂ WUIHAN ▸",
+                mirage_p3_obscene_yeticlops: "C3·W6 ◂ OBSCENE YETICLOPS ▸",
+                mirage_p3_transformed_h_yeom: "C3·W6 ◂ TRANSFORMED H. YEOM ▸",
+                mirage_p3_taehyul: "C3·W7 ◂ TAEHYUL ▸",
+                mirage_p3_yiun: "C3·W7 ◂ YIUN ▸",
+                mirage_p3_yeo_whitemaur: "C3·W8 ◂ YEO WHITEMAUR ▸"
+            },
+            en: {
+                mirage_p3_mata: "L3·W1 ◂ MATA ▸",
+                mirage_p3_boltox: "L3·W1 ◂ BOLTOX ▸",
+                mirage_p3_bullface_f_king: "L3·W1 ◂ BULLFACE F. KING ▸",
+                mirage_p3_ma_wonwi: "L3·W2 ◂ MA WONWI ▸",
+                mirage_p3_juhui: "L3·W2 ◂ JUHUI ▸",
+                mirage_p3_tombbeast_gyo: "L3·W3 ◂ TOMBBEAST GYO ▸",
+                mirage_p3_dusk_a_emperor: "L3·W3 ◂ DUSK A. EMPEROR ▸",
+                mirage_p3_mara: "L3·W3 ◂ MARA ▸",
+                mirage_p3_boodo: "L3·W3 ◂ BOODO ▸",
+                mirage_p3_kurilacai: "L3·W4 ◂ KURILACAI ▸",
+                mirage_p3_nefariox: "L3·W4 ◂ NEFARIOX ▸",
+                mirage_p3_faluk: "L3·W5 ◂ FALUK ▸",
+                mirage_p3_illusory_dream: "L3·W5 ◂ ILLUSORY DREAM ▸",
+                mirage_p3_tale_warper_f: "L3·W5 ◂ TALE WARPER F. ▸",
+                mirage_p3_biceon_sura: "L3·W6 ◂ BICEON SURA ▸",
+                mirage_p3_cheol_mokgang: "L3·W6 ◂ CHEOL MOKGANG ▸",
+                mirage_p3_wuihan: "L3·W6 ◂ WUIHAN ▸",
+                mirage_p3_obscene_yeticlops: "L3·W6 ◂ OBSCENE YETICLOPS ▸",
+                mirage_p3_transformed_h_yeom: "L3·W6 ◂ TRANSFORMED H. YEOM ▸",
+                mirage_p3_taehyul: "L3·W7 ◂ TAEHYUL ▸",
+                mirage_p3_yiun: "L3·W7 ◂ YIUN ▸",
+                mirage_p3_yeo_whitemaur: "L3·W8 ◂ YEO WHITEMAUR ▸"
             }
         };
 
@@ -151,7 +228,7 @@
             return 'en';
         }
         let currentLang = ['es', 'pt', 'en'].includes(savedLang) ? savedLang : detectInitialLanguage();
-        const VALID_TABS = ['ALL', 'FRENESI', 'FURIA', 'LIDERES', 'CIMA', 'WB_VALLES', 'WB_LABERINTOS', 'PURGATORIO', 'ORATORIO', 'TORRE', 'W1', 'W2', 'W3'];
+        const VALID_TABS = ['ALL', 'FRENESI', 'FURIA', 'LIDERES', 'CIMA', 'WB_VALLES', 'WB_LABERINTOS', 'PURGATORIO', 'ORATORIO', 'TORRE', 'W1', 'W2', 'W3', 'P3_W1', 'P3_W2', 'P3_W3', 'P3_W4', 'P3_W5', 'P3_W6', 'P3_W7', 'P3_W8'];
         let currentTab = VALID_TABS.includes(savedTab) ? savedTab : 'ALL';
         // Keep the ALL dashboard lightweight by drawing at most fifteen cards at a time.
         // All event states and alerts are still computed for every definition on every tick.
@@ -198,7 +275,7 @@
                 id: "frenesi",
                 cat: "FRENESI",
                 title: "MS ◂ FRENESÍ ▸",
-                icon: "fa-bolt",
+                icon: "fa-gauge-high", badgeIcon: "fa-gauge-high",
                 color: "orange",
                 durationMin: 60,
                 schedule: [[2,0], [5,0], [8,0], [11,0], [14,0], [17,0], [20,0], [23,0]]
@@ -207,7 +284,7 @@
                 id: "furia",
                 cat: "FURIA",
                 title: "MS ◂ FURIA ▸",
-                icon: "fa-fire",
+                icon: "fa-fire", badgeIcon: "fa-fire",
                 color: "red",
                 durationMin: 60,
                 schedule: [[0,30], [3,30], [6,30], [9,30], [12,30], [15,30], [18,30], [21,30]]
@@ -216,7 +293,7 @@
                 id: "lideres",
                 cat: "LIDERES",
                 title: "MS ◂ LIDER 3 ▸",
-                icon: "fa-crown",
+                icon: "fa-crown", badgeIcon: "fa-crown",
                 color: "yellow",
                 durationMin: 5,
                 schedule: [[0,0], [3,0], [6,0], [9,0], [12,0], [15,0], [18,0], [21,0]]
@@ -225,7 +302,7 @@
                 id: "oratorio",
                 cat: "ORATORIO",
                 title: "Oratorio Críptico",
-                icon: "fa-ghost",
+                icon: "fa-scroll", badgeIcon: "fa-scroll",
                 color: "indigo",
                 durationMin: 5,
                 schedule: [[0,0], [3,0], [6,0], [9,0], [12,0], [15,0], [18,0], [21,0]]
@@ -234,7 +311,7 @@
                 id: "cima_inferior",
                 cat: "CIMA",
                 title: "SP ◂ JEFE SUR ▸",
-                icon: "fa-person-hiking",
+                icon: "fa-mountain", badgeIcon: "fa-mountain",
                 color: "red",
                 durationMin: 5,
                 schedule: [[1,0], [7,0], [13,0], [19,0]]
@@ -243,7 +320,7 @@
                 id: "cima_superior",
                 cat: "CIMA",
                 title: "SP ◂ JEFE NORTE ▸",
-                icon: "fa-skull",
+                icon: "fa-mountain-sun", badgeIcon: "fa-mountain-sun",
                 color: "purple",
                 durationMin: 5,
                 schedule: [[4,0], [10,0], [16,0], [22,0]]
@@ -252,7 +329,7 @@
                 id: "purgatorio",
                 cat: "PURGATORIO",
                 title: "Purgatorio",
-                icon: "fa-dungeon",
+                icon: "fa-dungeon", badgeIcon: "fa-dungeon",
                 color: "violet",
                 durationMin: 5,
                 schedule: [[0,0], [6,0], [12,0], [18,0]]
@@ -261,7 +338,7 @@
                 id: "wb_valles",
                 cat: "WB_VALLES",
                 title: "WB (VALLES)",
-                icon: "fa-dragon",
+                icon: "fa-landmark", badgeIcon: "fa-landmark",
                 color: "green",
                 durationMin: 15,
                 schedule: [[12,0], [22,0]]
@@ -270,7 +347,7 @@
                 id: "wb_laberintos",
                 cat: "WB_LABERINTOS",
                 title: "WB (LABERINTOS)",
-                icon: "fa-khanda",
+                icon: "fa-route", badgeIcon: "fa-route",
                 color: "cyan",
                 durationMin: 15,
                 schedule: [[10,0], [20,0]]
@@ -279,32 +356,110 @@
                 id: "domination_tower",
                 cat: "TORRE",
                 title: "Torre del Dragón",
-                icon: "fa-door-open",
+                icon: "fa-tower-observation", badgeIcon: "fa-tower-observation",
                 color: "purple",
                 durationMin: 240,
                 schedule: [[9,0], [15,0], [21,0]]
             },
             // MIRAGE SHIP / PLANO 1 / W1. Respawns diarios cada 3 o 6 horas.
-            { id: "mirage_jihwa", cat: "W1", title: "Jihwa", icon: "fa-eye", color: "cyan", durationMin: 5, schedule: [[2,30],[5,30],[8,30],[11,30],[14,30],[17,30],[20,30],[23,30]] },
-            { id: "mirage_yaksha", cat: "W1", title: "Yaksha", icon: "fa-wand-sparkles", color: "purple", durationMin: 5, schedule: [[3,30],[9,30],[15,30],[21,30]] },
-            { id: "mirage_black_carapace", cat: "W1", title: "Black Carapace", icon: "fa-bug", color: "green", durationMin: 5, schedule: [[0,30],[3,30],[6,30],[9,30],[12,30],[15,30],[18,30],[21,30]] },
-            { id: "mirage_bulhu", cat: "W1", title: "Bulhu", icon: "fa-meteor", color: "orange", durationMin: 5, schedule: [[4,30],[10,30],[16,30],[22,30]] },
+            { id: "mirage_jihwa", cat: "W1", title: "P1·W1 ◂ JIHWA ▸", icon: "fa-eye", badgeIcon: "fa-eye", color: "cyan", durationMin: 5, schedule: [[2,30],[5,30],[8,30],[11,30],[14,30],[17,30],[20,30],[23,30]] },
+            { id: "mirage_yaksha", cat: "W1", title: "P1·W1 ◂ YAKSHA ▸", icon: "fa-wand-magic-sparkles", badgeIcon: "fa-wand-magic-sparkles", color: "purple", durationMin: 5, schedule: [[3,30],[9,30],[15,30],[21,30]] },
+            { id: "mirage_black_carapace", cat: "W1", title: "P1·W1 ◂ BLACK CARAPACE ▸", icon: "fa-bug", badgeIcon: "fa-bug", color: "green", durationMin: 5, schedule: [[0,30],[3,30],[6,30],[9,30],[12,30],[15,30],[18,30],[21,30]] },
+            { id: "mirage_bulhu", cat: "W1", title: "P1·W1 ◂ BULHU ▸", icon: "fa-meteor", badgeIcon: "fa-meteor", color: "orange", durationMin: 5, schedule: [[4,30],[10,30],[16,30],[22,30]] },
             // MIRAGE SHIP / PLANO 1 / W2. Horarios suministrados para la primera implementación funcional.
             // La duración activa se establece provisionalmente en 5 minutos, igual que W1, hasta confirmar la duración propia de W2.
-            { id: "mirage_w2_guemugwang", cat: "W2", title: "P1 · W2 ◂ GUEMUGWANG ▸", icon: "fa-dragon", color: "cyan", durationMin: 5, schedule: [[5,30],[11,30],[17,30],[23,30]] },
-            { id: "mirage_w2_maengryong", cat: "W2", title: "P1 · W2 ◂ MAENGRYONG ▸", icon: "fa-wind", color: "purple", durationMin: 5, schedule: [[0,30],[6,30],[12,30],[18,30]] },
-            { id: "mirage_w2_molgrash", cat: "W2", title: "P1 · W2 ◂ MOLGRASH ▸", icon: "fa-skull", color: "green", durationMin: 5, schedule: [[1,30],[4,30],[7,30],[10,30],[13,30],[16,30],[19,30],[22,30]] },
-            { id: "mirage_w2_kwangryeong", cat: "W2", title: "P1 · W2 ◂ KWANGRYEONG ▸", icon: "fa-burst", color: "orange", durationMin: 5, schedule: [[2,30],[5,30],[8,30],[11,30],[14,30],[17,30],[20,30],[23,30]] },
+            { id: "mirage_w2_guemugwang", cat: "W2", title: "P1·W2 ◂ GUEMUGWANG ▸", icon: "fa-dragon", badgeIcon: "fa-dragon", color: "cyan", durationMin: 5, schedule: [[5,30],[11,30],[17,30],[23,30]] },
+            { id: "mirage_w2_maengryong", cat: "W2", title: "P1·W2 ◂ MAEONGRYONG ▸", icon: "fa-fan", badgeIcon: "fa-fan", color: "purple", durationMin: 5, schedule: [[0,30],[6,30],[12,30],[18,30]] },
+            { id: "mirage_w2_molgrash", cat: "W2", title: "P1·W2 ◂ MOLGRASH ▸", icon: "fa-mask", badgeIcon: "fa-mask", color: "green", durationMin: 5, schedule: [[1,30],[4,30],[7,30],[10,30],[13,30],[16,30],[19,30],[22,30]] },
+            { id: "mirage_w2_kwangryeong", cat: "W2", title: "P1·W2 ◂ GWANGRYEONG ▸", icon: "fa-gem", badgeIcon: "fa-gem", color: "orange", durationMin: 5, schedule: [[2,30],[5,30],[8,30],[11,30],[14,30],[17,30],[20,30],[23,30]] },
             // MIRAGE SHIP / PLANO 1 / W3. Horarios proporcionados para el nuevo ciclo de contadores.
             // La duración activa se deja provisionalmente en 5 minutos, siguiendo W1/W2, hasta confirmar la duración propia de W3.
-            { id: "mirage_w3_bargan", cat: "W3", title: "P1 · W3 ◂ BARGAN ▸", icon: "fa-dragon", color: "cyan", durationMin: 5, schedule: [[4,30],[10,30],[16,30],[22,30]] },
-            { id: "mirage_w3_barkas", cat: "W3", title: "P1 · W3 ◂ BARKAS ▸", icon: "fa-wind", color: "purple", durationMin: 5, schedule: [[3,30],[9,30],[15,30],[21,30]] },
-            { id: "mirage_w3_bordo", cat: "W3", title: "P1 · W3 ◂ BORDO ▸", icon: "fa-shield-halved", color: "green", durationMin: 5, schedule: [[5,30],[11,30],[17,30],[23,30]] },
-            { id: "mirage_w3_kelis", cat: "W3", title: "P1 · W3 ◂ KELIS ▸", icon: "fa-eye", color: "orange", durationMin: 5, schedule: [[2,30],[8,30],[14,30],[20,30]] },
-            { id: "mirage_w3_krog", cat: "W3", title: "P1 · W3 ◂ KROG ▸", icon: "fa-hat-wizard", color: "blue", durationMin: 5, schedule: [[1,30],[7,30],[13,30],[19,30]] },
-            { id: "mirage_w3_morg", cat: "W3", title: "P1 · W3 ◂ MORG ▸", icon: "fa-skull", color: "violet", durationMin: 5, schedule: [[0,30],[3,30],[6,30],[9,30],[12,30],[15,30],[18,30],[21,30]] },
-            { id: "mirage_w3_talasa", cat: "W3", title: "P1 · W3 ◂ TALASA ▸", icon: "fa-meteor", color: "teal", durationMin: 5, schedule: [[2,30],[5,30],[8,30],[11,30],[14,30],[17,30],[20,30],[23,30]] }
+            { id: "mirage_w3_bargan", cat: "W3", title: "P1·W3 ◂ BARGAN ▸", icon: "fa-fire-flame-curved", badgeIcon: "fa-fire-flame-curved", color: "cyan", durationMin: 5, schedule: [[4,30],[10,30],[16,30],[22,30]] },
+            { id: "mirage_w3_barkas", cat: "W3", title: "P1·W3 ◂ BARKAS ▸", icon: "fa-shield-halved", badgeIcon: "fa-shield-halved", color: "purple", durationMin: 5, schedule: [[3,30],[9,30],[15,30],[21,30]] },
+            { id: "mirage_w3_bordo", cat: "W3", title: "P1·W3 ◂ BORDO ▸", icon: "fa-chess-king", badgeIcon: "fa-chess-king", color: "green", durationMin: 5, schedule: [[5,30],[11,30],[17,30],[23,30]] },
+            { id: "mirage_w3_kelis", cat: "W3", title: "P1·W3 ◂ KELIS ▸", icon: "fa-eye-low-vision", badgeIcon: "fa-eye-low-vision", color: "orange", durationMin: 5, schedule: [[2,30],[8,30],[14,30],[20,30]] },
+            { id: "mirage_w3_krog", cat: "W3", title: "P1·W3 ◂ KROG ▸", icon: "fa-hat-wizard", badgeIcon: "fa-hat-wizard", color: "blue", durationMin: 5, schedule: [[1,30],[7,30],[13,30],[19,30]] },
+            { id: "mirage_w3_morg", cat: "W3", title: "P1·W3 ◂ MORG ▸", icon: "fa-skull", badgeIcon: "fa-skull", color: "violet", durationMin: 5, schedule: [[0,30],[3,30],[6,30],[9,30],[12,30],[15,30],[18,30],[21,30]] },
+            { id: "mirage_w3_talasa", cat: "W3", title: "P1·W3 ◂ TALASA ▸", icon: "fa-fish", badgeIcon: "fa-fish", color: "teal", durationMin: 5, schedule: [[2,30],[5,30],[8,30],[11,30],[14,30],[17,30],[20,30],[23,30]] },
+            // MIRAGE SHIP / PLANO 3. Durations default to 5 minutes until their actual duration is confirmed.
+            { id: "mirage_p3_mata", cat: "P3_W1", title: "P3·W1 ◂ MATA ▸", icon: "fa-seedling", badgeIcon: "fa-seedling", color: "green", durationMin: 5, schedule: [[0,0],[2,0],[4,0],[6,0],[8,0],[10,0],[12,0],[14,0],[16,0],[18,0],[20,0],[22,0]] },
+            { id: "mirage_p3_boltox", cat: "P3_W1", title: "P3·W1 ◂ BOLTOX ▸", icon: "fa-bolt", badgeIcon: "fa-bolt", color: "yellow", durationMin: 5, schedule: [[1,0],[3,0],[5,0],[7,0],[9,0],[11,0],[13,0],[15,0],[17,0],[19,0],[21,0],[23,0]] },
+            { id: "mirage_p3_bullface_f_king", cat: "P3_W1", title: "P3·W1 ◂ BULLFACE F. KING ▸", icon: "fa-skull-crossbones", badgeIcon: "fa-skull-crossbones", color: "red", durationMin: 5, schedule: [[0,0],[3,0],[6,0],[12,0],[15,0],[18,0],[21,0]] },
+            { id: "mirage_p3_ma_wonwi", cat: "P3_W2", title: "P3·W2 ◂ MA WONWI ▸", icon: "fa-hand-sparkles", badgeIcon: "fa-hand-sparkles", color: "purple", durationMin: 5, triggerType: "kill-count", schedule: [] },
+            { id: "mirage_p3_juhui", cat: "P3_W2", title: "P3·W2 ◂ JUHUI ▸", icon: "fa-fingerprint", badgeIcon: "fa-fingerprint", color: "cyan", durationMin: 5, schedule: [[2,30],[5,30],[8,30],[11,30],[14,30],[17,30],[20,30],[23,30]] },
+            { id: "mirage_p3_tombbeast_gyo", cat: "P3_W3", title: "P3·W3 ◂ TOMBBEAST GYO ▸", icon: "fa-bone", badgeIcon: "fa-bone", color: "violet", durationMin: 5, schedule: [[2,30],[8,30],[14,30],[20,30]] },
+            { id: "mirage_p3_dusk_a_emperor", cat: "P3_W3", title: "P3·W3 ◂ DUSK A. EMPEROR ▸", icon: "fa-star-and-crescent", badgeIcon: "fa-star-and-crescent", color: "indigo", durationMin: 5, schedule: [[1,30],[3,30],[5,30],[7,30],[9,30],[11,30],[13,30],[15,30],[17,30],[19,30],[21,30],[23,30]] },
+            { id: "mirage_p3_mara", cat: "P3_W3", title: "P3·W3 ◂ MARA ▸", icon: "fa-ghost", badgeIcon: "fa-ghost", color: "pink", durationMin: 5, schedule: [[2,30],[5,30],[8,30],[11,30],[14,30],[17,30],[20,30],[23,30]] },
+            { id: "mirage_p3_boodo", cat: "P3_W3", title: "P3·W3 ◂ BOODO ▸", icon: "fa-hand-fist", badgeIcon: "fa-hand-fist", color: "orange", durationMin: 5, schedule: [[3,30],[9,30],[15,30],[21,30]] },
+            { id: "mirage_p3_kurilacai", cat: "P3_W4", title: "P3·W4 ◂ KURILACAI ▸", icon: "fa-compass", badgeIcon: "fa-compass", color: "teal", durationMin: 5, schedule: [[0,0],[3,0],[6,0],[9,0],[12,0],[15,0],[18,0],[21,0]] },
+            { id: "mirage_p3_nefariox", cat: "P3_W4", title: "P3·W4 ◂ NEFARIOX ▸", icon: "fa-spider", badgeIcon: "fa-spider", color: "lime", durationMin: 5, schedule: [[0,0],[2,0],[4,0],[6,0],[8,0],[10,0],[12,0],[14,0],[16,0],[18,0],[20,0],[22,0]] },
+            { id: "mirage_p3_faluk", cat: "P3_W5", title: "P3·W5 ◂ FALUK ▸", icon: "fa-feather-pointed", badgeIcon: "fa-feather-pointed", color: "crimson", durationMin: 5, schedule: [[0,30],[3,30],[6,30],[9,30],[12,30],[15,30],[18,30],[21,30]] },
+            { id: "mirage_p3_illusory_dream", cat: "P3_W5", title: "P3·W5 ◂ ILLUSORY DREAM ▸", icon: "fa-cloud-moon", badgeIcon: "fa-cloud-moon", color: "dream", durationMin: 5, triggerType: "kill-count", schedule: [] },
+            { id: "mirage_p3_tale_warper_f", cat: "P3_W5", title: "P3·W5 ◂ TALE WARPER F. ▸", icon: "fa-hourglass-half", badgeIcon: "fa-hourglass-half", color: "blue", durationMin: 5, schedule: [[1,30],[4,30],[7,30],[10,30],[13,30],[16,30],[19,30],[22,30]] },
+            { id: "mirage_p3_biceon_sura", cat: "P3_W6", title: "P3·W6 ◂ BICEON SURA ▸", icon: "fa-khanda", badgeIcon: "fa-khanda", color: "rose", durationMin: 5, schedule: [[4,30],[10,30],[16,30],[22,30]] },
+            { id: "mirage_p3_cheol_mokgang", cat: "P3_W6", title: "P3·W6 ◂ CHEOL MOKGANG ▸", icon: "fa-chess-rook", badgeIcon: "fa-chess-rook", color: "steel", durationMin: 5, schedule: [[0,30],[2,30],[4,30],[6,30],[8,30],[10,30],[12,30],[14,30],[16,30],[18,30],[20,30],[22,30]] },
+            { id: "mirage_p3_wuihan", cat: "P3_W6", title: "P3·W6 ◂ WUIHAN ▸", icon: "fa-wind", badgeIcon: "fa-wind", color: "amber", durationMin: 5, schedule: [[5,30],[11,30],[17,30],[23,30]] },
+            { id: "mirage_p3_obscene_yeticlops", cat: "P3_W6", title: "P3·W6 ◂ OBSCENE YETICLOPS ▸", icon: "fa-snowflake", badgeIcon: "fa-snowflake", color: "ice", durationMin: 5, schedule: [[0,30],[6,30],[12,30],[18,30]] },
+            { id: "mirage_p3_transformed_h_yeom", cat: "P3_W6", title: "P3·W6 ◂ TRANSFORMED H. YEOM ▸", icon: "fa-arrows-rotate", badgeIcon: "fa-arrows-rotate", color: "forest", durationMin: 5, schedule: [[1,30],[3,30],[5,30],[7,30],[9,30],[11,30],[13,30],[15,30],[17,30],[19,30],[21,30],[23,30]] },
+            { id: "mirage_p3_taehyul", cat: "P3_W7", title: "P3·W7 ◂ TAEHYUL ▸", icon: "fa-bolt-lightning", badgeIcon: "fa-bolt-lightning", color: "electric", durationMin: 5, schedule: [[1,0],[3,0],[5,0],[7,0],[9,0],[11,0],[13,0],[15,0],[17,0],[19,0],[21,0],[23,0]] },
+            { id: "mirage_p3_yiun", cat: "P3_W7", title: "P3·W7 ◂ YIUN ▸", icon: "fa-sun", badgeIcon: "fa-sun", color: "sky", durationMin: 5, schedule: [[2,0],[5,0],[8,0],[11,0],[14,0],[17,0],[20,0],[23,30]] },
+            { id: "mirage_p3_yeo_whitemaur", cat: "P3_W8", title: "P3·W8 ◂ YEO WHITEMAUR ▸", icon: "fa-water", badgeIcon: "fa-water", color: "pearl", durationMin: 5, schedule: [[1,0],[5,0],[9,0],[13,0],[17,0],[21,0]] }
         ];
+
+        // Emotion/theme-based gradients for the title icons only. Text remains white.
+        const BOSS_ICON_GRADIENTS = Object.freeze({
+            "frenesi": ["#FFD08A", "#F97316"],
+            "furia": ["#FDA4AF", "#DC2626"],
+            "lideres": ["#FDE68A", "#B7791F"],
+            "oratorio": ["#C4B5FD", "#4F46E5"],
+            "cima_inferior": ["#FDBA74", "#C2410C"],
+            "cima_superior": ["#C4B5FD", "#6366F1"],
+            "purgatorio": ["#D8B4FE", "#7E22CE"],
+            "wb_valles": ["#BEF264", "#15803D"],
+            "wb_laberintos": ["#99F6E4", "#0E7490"],
+            "domination_tower": ["#FDE68A", "#92400E"],
+            "mirage_jihwa": ["#F9A8D4", "#BE185D"],
+            "mirage_yaksha": ["#DDD6FE", "#7C3AED"],
+            "mirage_black_carapace": ["#D9F99D", "#4D7C0F"],
+            "mirage_bulhu": ["#FED7AA", "#EA580C"],
+            "mirage_w2_guemugwang": ["#99F6E4", "#0F766E"],
+            "mirage_w2_maengryong": ["#BFDBFE", "#4338CA"],
+            "mirage_w2_molgrash": ["#D9F99D", "#3F6212"],
+            "mirage_w2_kwangryeong": ["#FDE68A", "#C2410C"],
+            "mirage_w3_bargan": ["#FDBA74", "#B91C1C"],
+            "mirage_w3_barkas": ["#E2E8F0", "#64748B"],
+            "mirage_w3_bordo": ["#FEF08A", "#A16207"],
+            "mirage_w3_kelis": ["#C4B5FD", "#6D28D9"],
+            "mirage_w3_krog": ["#E9D5FF", "#9333EA"],
+            "mirage_w3_morg": ["#D1D5DB", "#6D28D9"],
+            "mirage_w3_talasa": ["#99F6E4", "#0369A1"],
+            "mirage_p3_mata": ["#BBF7D0", "#15803D"],
+            "mirage_p3_boltox": ["#FEF08A", "#CA8A04"],
+            "mirage_p3_bullface_f_king": ["#FDA4AF", "#9F1239"],
+            "mirage_p3_ma_wonwi": ["#DDD6FE", "#7E22CE"],
+            "mirage_p3_juhui": ["#A5F3FC", "#0E7490"],
+            "mirage_p3_tombbeast_gyo": ["#E7E5E4", "#78716C"],
+            "mirage_p3_dusk_a_emperor": ["#C7D2FE", "#4338CA"],
+            "mirage_p3_mara": ["#F5D0FE", "#A21CAF"],
+            "mirage_p3_boodo": ["#FDBA74", "#C2410C"],
+            "mirage_p3_kurilacai": ["#A5F3FC", "#0F766E"],
+            "mirage_p3_nefariox": ["#BEF264", "#166534"],
+            "mirage_p3_faluk": ["#FED7AA", "#9A3412"],
+            "mirage_p3_illusory_dream": ["#DDD6FE", "#6366F1"],
+            "mirage_p3_tale_warper_f": ["#BFDBFE", "#1D4ED8"],
+            "mirage_p3_biceon_sura": ["#FDA4AF", "#BE123C"],
+            "mirage_p3_cheol_mokgang": ["#E2E8F0", "#475569"],
+            "mirage_p3_wuihan": ["#BAE6FD", "#0284C7"],
+            "mirage_p3_obscene_yeticlops": ["#E0F2FE", "#64748B"],
+            "mirage_p3_transformed_h_yeom": ["#C4B5FD", "#C2410C"],
+            "mirage_p3_taehyul": ["#FEF08A", "#2563EB"],
+            "mirage_p3_yiun": ["#FDE68A", "#EA580C"],
+            "mirage_p3_yeo_whitemaur": ["#A5F3FC", "#1D4ED8"],
+        });
+        function getBossIconGradientStyle(eventId) {
+            const [start, end] = BOSS_ICON_GRADIENTS[eventId] || ["#E2E8F0", "#64748B"];
+            return `--boss-icon-gradient-start:${start};--boss-icon-gradient-end:${end};`;
+        }
 
         // Restore individual bell states from LocalStorage
         let cardBellStates = {};
@@ -1364,6 +1519,22 @@
         }
 
         function calculateEventState(eventDef, serverNow) {
+            if (eventDef.triggerType === 'kill-count') {
+                return {
+                    isActive: false,
+                    isConditionOnly: true,
+                    timeToCompare: Number.POSITIVE_INFINITY,
+                    displayTime: '',
+                    remainingSec: 0,
+                    startH: null,
+                    startM: null,
+                    durationMin: eventDef.durationMin,
+                    waitingProgress: 0,
+                    nextQueueDisplay: null,
+                    nextQueueSec: null,
+                    upcomingInstances: []
+                };
+            }
             const currentMinOfDay = serverNow.getUTCHours() * 60 + serverNow.getUTCMinutes();
             const currentSecOfMin = serverNow.getUTCSeconds();
 
@@ -1523,6 +1694,10 @@
             let hasClosingWarning = false;
 
             calculatedEvents.forEach(evt => {
+                if (evt.triggerType === 'kill-count') {
+                    previousActiveState[evt.id] = false;
+                    return;
+                }
                 const hadPreviousState = Object.prototype.hasOwnProperty.call(previousActiveState, evt.id);
                 const wasActive = previousActiveState[evt.id];
 
@@ -1653,8 +1828,9 @@
 
             container.innerHTML = eventsForRender.map(evt => {
                 const isActive = evt.state.isActive;
-                const isBellOn = isOccurrenceBellOn(evt.id, evt.state.startH, evt.state.startM);
-                let localizedTitle = formatDecoratedLabel(langDict.eventTitles[evt.id] || evt.title);
+                const isConditionOnly = evt.triggerType === 'kill-count';
+                const isBellOn = !isConditionOnly && isOccurrenceBellOn(evt.id, evt.state.startH, evt.state.startM);
+                let localizedTitle = formatDecoratedLabel(langDict.eventTitles[evt.id] || (P3_EVENT_TITLES[currentLang] && P3_EVENT_TITLES[currentLang][evt.id]) || evt.title);
                 // Consistent spacing around decorative name markers across ALL and individual views.
                 localizedTitle = localizedTitle.replace(/◂ \s*/g, "◂ ").replace(/\s* ▸/g, " ▸");
                 const formattedCardTitles = {
@@ -1693,16 +1869,18 @@
                             .map(instance => [instance.startH, instance.startM])
                     ]
                     : [...evt.schedule].sort((a, b) => (a[0] * 60 + a[1]) - (b[0] * 60 + b[1]));
-                const cycleOpeningStateClass = isCimaCycleCard
-                    ? (isActive ? 'mirage-cima-opening-active' : 'mirage-cima-opening-empty')
-                    : isLider3CycleCard
-                        ? (isActive ? 'mirage-lideres-opening-active' : 'mirage-lideres-opening-empty')
-                        : isOtherCycleCard
-                            ? (isActive ? 'mirage-unified-opening-active' : 'mirage-unified-opening-empty')
-                            : '';
-                // Calculate the real gaps between scheduled times. Even schedules get an interval
-                // (3H, 6H, ...); irregular schedules are shown as a daily frequency instead of a
-                // misleading single interval (e.g. World Boss schedules or Dragon Tower).
+                const cycleOpeningStateClass = isConditionOnly
+                    ? 'mirage-condition-opening'
+                    : isCimaCycleCard
+                        ? (isActive ? 'mirage-cima-opening-active' : 'mirage-cima-opening-empty')
+                        : isLider3CycleCard
+                            ? (isActive ? 'mirage-lideres-opening-active' : 'mirage-lideres-opening-empty')
+                            : isOtherCycleCard
+                                ? (isActive ? 'mirage-unified-opening-active' : 'mirage-unified-opening-empty')
+                                : '';
+                // Calculate every real interval between appearances, including midnight wrap.
+                // A regular schedule shows the interval; an irregular schedule shows its daily count
+                // with the multiplier in the requested order (for example, 7X AL DÍA).
                 const scheduleMinutes = [...evt.schedule]
                     .map(([hour, minute]) => hour * 60 + minute)
                     .sort((a, b) => a - b);
@@ -1711,52 +1889,55 @@
                         + (index === scheduleMinutes.length - 1 ? 1440 : 0);
                     return nextMinute - startMinute;
                 });
-                const hasUniformCycle = cycleGaps.length > 0 && cycleGaps.every(gap => gap === cycleGaps[0]);
-                const cycleIntervalLabel = hasUniformCycle
-                    ? `${Math.floor(cycleGaps[0] / 60)}H${cycleGaps[0] % 60 ? ` ${cycleGaps[0] % 60}M` : ''}`
-                    : `${evt.schedule.length}× ${currentLang === 'en' ? 'DAILY' : currentLang === 'pt' ? 'POR DIA' : 'AL DÍA'}`;
-                const cycleIntervalTitle = hasUniformCycle ? langDict.reappearsEvery : langDict.frequency;
-
-                let colorClass = "bg-amber-500/10 text-amber-400 border-amber-500/30";
-                if (evt.color === 'orange') colorClass = "bg-orange-500/15 text-orange-200 border-orange-400/50";
-                if (evt.color === 'red') colorClass = "bg-red-500/15 text-red-300 border-red-400/50";
-                if (evt.color === 'yellow') colorClass = "bg-yellow-500/15 text-yellow-200 border-yellow-400/50";
-                if (evt.color === 'purple') colorClass = "bg-purple-500/20 text-purple-200 border-purple-400/60";
-                if (evt.color === 'violet') colorClass = "bg-violet-500/15 text-violet-200 border-violet-400/50";
-                if (evt.color === 'blue') colorClass = "bg-blue-500/10 text-blue-400 border-blue-500/30";
-                if (evt.color === 'indigo') colorClass = "bg-indigo-500/15 text-indigo-200 border-indigo-400/50";
-                if (evt.color === 'emerald') colorClass = "bg-emerald-500/15 text-emerald-200 border-emerald-400/50";
-                if (evt.color === 'slate') colorClass = "bg-slate-500/15 text-slate-100 border-slate-400/50";
-                if (evt.color === 'green') colorClass = "bg-green-500/15 text-green-200 border-green-400/50";
-                if (evt.color === 'teal') colorClass = "bg-teal-500/10 text-teal-300 border-teal-500/30";
-                if (evt.color === 'cyan') colorClass = "bg-cyan-500/10 text-cyan-300 border-cyan-500/30";
+                const uniqueCycleGaps = [...new Set(cycleGaps)].sort((a, b) => a - b);
+                const formatCycleGap = gapMinutes => {
+                    const hours = Math.floor(gapMinutes / 60);
+                    const minutes = gapMinutes % 60;
+                    return `${hours ? `${hours}H` : ''}${minutes ? `${hours ? ' ' : ''}${minutes}M` : ''}` || '0M';
+                };
+                const isIrregularCycle = !isConditionOnly && uniqueCycleGaps.length > 1;
+                const cycleIntervalLabel = isConditionOnly
+                    ? langDict.noFixedTime
+                    : isIrregularCycle
+                        ? `${scheduleMinutes.length}X ${langDict.perDay}`
+                        : formatCycleGap(uniqueCycleGaps[0] || 0);
+                const cycleIntervalTitle = isConditionOnly
+                    ? langDict.conditionStatus
+                    : (isIrregularCycle ? langDict.frequency : langDict.reappearsEvery);
 
                 return `
-                <div data-event-id="${evt.id}" style="--alert-loop-offset: -${(Date.now() % 1400) / 1000}s" class="event-card ${usesMirageCycleLayout ? 'mirage-w1-individual' : ''} ${isCimaCycleCard ? 'mirage-cima-individual' : ''} ${isLider3CycleCard ? 'mirage-lideres-individual' : ''} ${isOtherCycleCard ? 'mirage-unified-individual' : ''} bg-brand-card/90 border border-brand-border/80 rounded-2xl p-5 shadow-xl relative flex flex-col justify-between ${isActive ? 'glow-active bg-emerald-950/20' : 'cursor-pointer'} ${alertGlowUntil[evt.id] > Date.now() ? 'alert-glow-active' : ''}" ${!isActive ? `onclick="toggleCardBell('${evt.id}', ${evt.state.startH}, ${evt.state.startM}, event)" title="${langDict.bellTitle}"` : ''}>
+                <div data-event-id="${evt.id}" style="--alert-loop-offset: -${(Date.now() % 1400) / 1000}s" class="event-card ${usesMirageCycleLayout ? 'mirage-w1-individual' : ''} ${isCimaCycleCard ? 'mirage-cima-individual' : ''} ${isLider3CycleCard ? 'mirage-lideres-individual' : ''} ${isOtherCycleCard ? 'mirage-unified-individual' : ''} bg-brand-card/90 border border-brand-border/80 rounded-2xl p-5 shadow-xl relative flex flex-col justify-between ${isActive ? 'glow-active bg-emerald-950/20' : (isConditionOnly ? '' : 'cursor-pointer')} ${alertGlowUntil[evt.id] > Date.now() ? 'alert-glow-active' : ''}" ${!isActive && !isConditionOnly ? `onclick="toggleCardBell('${evt.id}', ${evt.state.startH}, ${evt.state.startM}, event)" title="${langDict.bellTitle}"` : ''}>
                     
                     <i class="event-watermark fa-solid ${evt.icon}" aria-hidden="true"></i>
                     <div class="event-card-content">
-                        <!-- TOP BADGE & BELL -->
-                        <div class="event-card-header flex items-center justify-between gap-2 mb-3">
-                            <span class="event-title inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold border ${colorClass} ${({'frenesi':'palette-frenesi','furia':'palette-furia','lideres':'palette-lideres','oratorio':'palette-oratorio','cima_inferior':'palette-cima-sur','cima_superior':'palette-cima-norte','purgatorio':'palette-purgatorio','wb_valles':'palette-wb-valles','wb_laberintos':'palette-wb-laberintos','domination_tower':'palette-torre','mirage_jihwa':'boss-name-jihwa','mirage_yaksha':'boss-name-yaksha','mirage_black_carapace':'boss-name-carapace','mirage_bulhu':'boss-name-bulhu'})[evt.id] || ''}">
-                                <i class="fa-solid ${evt.icon}"></i>
-                                ${localizedTitle}
+                        <!-- Independent title header: the colored boss badge sits on its own divider line. -->
+                        <div class="event-card-header event-card-title-header">
+                            <span class="event-title inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border" data-title-color="${evt.color || 'amber'}" style="${getBossIconGradientStyle(evt.id)}" title="${localizedTitle.replace(/<[^>]*>/g, '').replace(/"/g, '&quot;')}">
+                                <i class="fa-solid ${evt.badgeIcon || evt.icon} boss-title-icon" style="${getBossIconGradientStyle(evt.id)}" aria-hidden="true"></i>
+                                <span class="event-title-text">${localizedTitle}</span>
                             </span>
-
+                        </div>
+                        <!-- Status and bell sit underneath the title, aligned to the card's left edge. -->
+                        <div class="event-card-status-row mb-3">
                             <div class="event-card-status-controls flex items-center gap-2">
                                 ${isActive
                                     ? `<span title="${langDict.statusActive}" aria-label="${langDict.statusActive}" class="p-1.5 rounded-lg border border-emerald-500/20 bg-emerald-500/5 bell-locked"><i class="fa-solid fa-circle-check text-sm"></i></span>`
-                                    : `<button type="button" onclick="toggleCardBell('${evt.id}', ${evt.state.startH}, ${evt.state.startM}, event)" title="${langDict.bellTitle}" aria-label="${langDict.bellTitle}" class="alert-bell-button p-1.5 rounded-lg border border-brand-border/60 bg-brand-dark/60 text-slate-400"><i style="--loop-offset: ${loopOffset}" class="fa-solid fa-bell text-sm ${isBellOn ? 'bell-active bell-waiting-pulse' : 'bell-off opacity-40'}"></i></button>`}
-
-                                <span style="--loop-offset: ${loopOffset}" class="text-[11px] font-orbitron font-bold px-2.5 py-1 rounded-lg ${isActive ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 animate-pulse' : 'bg-brand-dark/80 text-slate-400 border border-brand-border'}">
-                                    ${isActive ? langDict.statusActive : `<span class="waiting-dots" style="--loop-offset: ${loopOffset}">${langDict.statusWaiting}</span>`}
+                                    : (isConditionOnly ? '' : `<button type="button" onclick="toggleCardBell('${evt.id}', ${evt.state.startH}, ${evt.state.startM}, event)" title="${langDict.bellTitle}" aria-label="${langDict.bellTitle}" class="alert-bell-button p-1.5 rounded-lg border border-brand-border/60 bg-brand-dark/60 text-slate-400"><i style="--loop-offset: ${loopOffset}" class="fa-solid fa-bell text-sm ${isBellOn ? 'bell-active bell-waiting-pulse' : 'bell-off opacity-40'}"></i></button>`)}
+                                <span style="--loop-offset: ${loopOffset}" class="text-[11px] font-orbitron font-bold px-2.5 py-1 rounded-lg ${isConditionOnly ? 'bg-violet-500/15 text-violet-200 border border-violet-400/40' : (isActive ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 animate-pulse' : 'bg-brand-dark/80 text-slate-400 border border-brand-border') }" ${isConditionOnly ? `aria-label="${langDict.conditionStatus}"` : ''}>
+                                    ${isConditionOnly ? langDict.conditionStatus : (isActive ? langDict.statusActive : `<span class="waiting-dots" style="--loop-offset: ${loopOffset}">${langDict.statusWaiting}</span>`)}
                                 </span>
                             </div>
                         </div>
 
                         <!-- OPENING TIME & DURATION -->
                         <div class="${cycleOpeningStateClass} mt-4 mb-2">
-                            ${usesMirageCycleLayout
+                            ${isConditionOnly
+                                ? `<div class="condition-only-panel rounded-xl border px-4 py-4">
+                                        <div class="mb-2 flex items-center gap-2 text-violet-200"><i class="fa-solid fa-skull-crossbones" aria-hidden="true"></i><span class="text-xs font-bold tracking-wide">${langDict.conditionStatus}</span></div>
+                                        <p class="text-sm sm:text-base font-bold leading-relaxed text-slate-100">${langDict.monsterKillCondition}</p>
+                                        <p class="mt-2 text-[10px] font-bold tracking-wider text-violet-300/75">${langDict.noFixedTime}</p>
+                                   </div>`
+                                : usesMirageCycleLayout
                                 ? (isActive
                                     ? `<div class="flex w-full items-center justify-between gap-3 rounded-xl border border-emerald-400/25 bg-gradient-to-r from-emerald-500/10 via-emerald-400/5 to-transparent px-4 py-3 shadow-sm shadow-emerald-950/20">
                                             <div class="flex min-w-0 items-center gap-2.5">
@@ -1782,7 +1963,7 @@
                                        <div class="timer-number text-2xl font-black text-white tracking-wide mt-0.5">${evt.state.displayTime}</div>
                                        <div class="text-xs text-slate-400 mt-2">${langDict.durationActive} <span class="text-slate-200 font-bold">${formatActiveDuration(evt.durationMin)}</span></div>`)}
                         </div>
-                        ${usesMirageCycleLayout ? `
+                        ${usesMirageCycleLayout && !isConditionOnly ? `
                             <section class="mirage-cycle-panel" aria-label="${langDict.mirageSchedule}">
                                 <div class="mirage-cycle-grid" aria-label="${langDict.mirageSchedule}">
                                     ${cycleSchedule.map(([hour, minute]) => {
@@ -1809,7 +1990,7 @@
                     </div>
 
                     <!-- Existing cards keep their original footer. W1 individual cards show their only countdown in the boss appearance panel. -->
-                    ${usesMirageCycleLayout ? '' : `
+                    ${usesMirageCycleLayout || isConditionOnly ? '' : `
                     <div class="event-card-content mt-4 pt-3 border-t border-brand-border/50">
                         <div class="flex items-center justify-between text-xs font-orbitron">
                             <span class="text-slate-400 font-bold">${isActive ? langDict.closesIn : langDict.opensIn}</span>
@@ -1829,11 +2010,13 @@
                         <article class="event-card upcoming-cycle-card cursor-pointer bg-brand-card/90 border border-brand-border/80 rounded-2xl p-5 shadow-xl relative flex flex-col justify-between min-w-0" aria-label="${instanceLabel}" onclick="toggleCardBell('${evt.id}', ${instance.startH}, ${instance.startM}, event)" title="${langDict.bellTitle}">
                             <i class="event-watermark fa-solid ${evt.icon}" aria-hidden="true"></i>
                             <div class="event-card-content">
-                                <div class="flex items-center justify-between gap-2 mb-3">
-                                    <span class="event-title inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold border ${colorClass} ${({'frenesi':'palette-frenesi','furia':'palette-furia','lideres':'palette-lideres','oratorio':'palette-oratorio','cima_inferior':'palette-cima-sur','cima_superior':'palette-cima-norte','purgatorio':'palette-purgatorio','wb_valles':'palette-wb-valles','wb_laberintos':'palette-wb-laberintos','domination_tower':'palette-torre','mirage_jihwa':'boss-name-jihwa','mirage_yaksha':'boss-name-yaksha','mirage_black_carapace':'boss-name-carapace','mirage_bulhu':'boss-name-bulhu'})[evt.id] || ''}">
-                                        <i class="fa-solid ${evt.icon}" aria-hidden="true"></i>${localizedTitle}
+                                <div class="event-card-header event-card-title-header">
+                                    <span class="event-title inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border" data-title-color="${evt.color || 'amber'}" style="${getBossIconGradientStyle(evt.id)}" title="${localizedTitle.replace(/<[^>]*>/g, '').replace(/"/g, '&quot;')}">
+                                        <i class="fa-solid ${evt.badgeIcon || evt.icon} boss-title-icon" style="${getBossIconGradientStyle(evt.id)}" aria-hidden="true"></i><span class="event-title-text">${localizedTitle}</span>
                                     </span>
-                                    <div class="flex items-center gap-2">
+                                </div>
+                                <div class="event-card-status-row mb-3">
+                                    <div class="event-card-status-controls flex items-center gap-2">
                                         <button type="button" onclick="toggleCardBell('${evt.id}', ${instance.startH}, ${instance.startM}, event)" title="${langDict.bellTitle}" aria-label="${langDict.bellTitle}" class="alert-bell-button p-1.5 rounded-lg border border-brand-border/60 bg-brand-dark/60 text-slate-400"><i style="--loop-offset: ${loopOffset}" class="fa-solid fa-bell text-sm ${instanceBellOn ? 'bell-active bell-waiting-pulse' : 'bell-off opacity-40'}"></i></button>
                                         <span class="text-[11px] font-orbitron font-bold px-2.5 py-1 rounded-lg bg-brand-dark/80 text-slate-400 border border-brand-border"><span class="waiting-dots" style="--loop-offset: ${loopOffset}">${langDict.statusWaiting}</span></span>
                                     </div>
@@ -1873,7 +2056,10 @@
 
             const pageCount = Math.max(1, Math.ceil(totalEvents / ALL_EVENTS_PAGE_SIZE));
             allEventsPage = Math.max(0, Math.min(allEventsPage, pageCount - 1));
-            const shouldShow = currentTab === 'ALL' && pageCount > 1;
+            const isAllDashboard = currentTab === 'ALL';
+            const shouldShow = isAllDashboard && pageCount > 1;
+            const eventsMain = shell.closest('.events-main');
+            if (eventsMain) eventsMain.classList.toggle('is-all-dashboard', isAllDashboard);
             shell.classList.toggle('is-all-paged', shouldShow);
             status.classList.toggle('hidden', !shouldShow);
             previous.classList.toggle('hidden', !shouldShow);
@@ -1934,14 +2120,14 @@
         }
 
         // NAVIGATION AND REUSABLE OUTSIDE-CLICK CLOSING
-        const NAV_MENU_IDS = ['nav-menu-mirage-ship', 'nav-menu-mirage-plano1', 'nav-menu-domination', 'nav-menu-ms-p11p12', 'nav-menu-ms-sp', 'nav-menu-world-boss', 'nav-menu-other-content'];
+        const NAV_MENU_IDS = ['nav-menu-mirage-ship', 'nav-menu-mirage-plano1', 'nav-menu-mirage-plano3', 'nav-menu-domination', 'nav-menu-ms-p11p12', 'nav-menu-ms-sp', 'nav-menu-world-boss', 'nav-menu-other-content'];
         function closeDropdownMenus(exceptId = null) {
             ['lang-menu', 'server-menu', ...NAV_MENU_IDS].forEach(id => {
                 if (id === exceptId) return;
                 const menu = document.getElementById(id);
                 if (menu) menu.classList.add('hidden');
             });
-            ['lang-select', 'server-select', 'nav-trigger-mirage-ship', 'nav-trigger-mirage-plano1', 'nav-trigger-domination', 'nav-trigger-ms-p11p12', 'nav-trigger-ms-sp', 'nav-trigger-world-boss', 'nav-trigger-other-content'].forEach(id => {
+            ['lang-select', 'server-select', 'nav-trigger-mirage-ship', 'nav-trigger-mirage-plano1', 'nav-trigger-mirage-plano3', 'nav-trigger-domination', 'nav-trigger-ms-p11p12', 'nav-trigger-ms-sp', 'nav-trigger-world-boss', 'nav-trigger-other-content'].forEach(id => {
                 const button = document.getElementById(id);
                 if (!button) return;
                 const menuId = id === 'lang-select' ? 'lang-menu' : id === 'server-select' ? 'server-menu' : id.replace('nav-trigger-', 'nav-menu-');
@@ -1953,15 +2139,25 @@
             const menu = document.getElementById(menuId);
             if (!menu) return;
             const willOpen = menu.classList.contains('hidden');
-            const isNested = menuId === 'nav-menu-mirage-plano1';
+            const nestedMirageMenus = ['nav-menu-mirage-plano1', 'nav-menu-mirage-plano3'];
+            const isNested = nestedMirageMenus.includes(menuId);
             if (isNested) {
-                // Keep MIRAGE SHIP open while its PLANO 1 submenu is expanded.
-                document.getElementById('nav-menu-mirage-plano1').classList.toggle('hidden', !willOpen);
+                // A Plano submenu expands inside MIRAGE SHIP; only one Plano submenu stays open at a time.
+                const parentMenu = document.getElementById('nav-menu-mirage-ship');
+                if (parentMenu) parentMenu.classList.remove('hidden');
+                nestedMirageMenus.forEach(id => {
+                    const nested = document.getElementById(id);
+                    if (nested) nested.classList.toggle('hidden', id !== menuId || !willOpen);
+                    const nestedTrigger = nested && nested.previousElementSibling;
+                    if (nestedTrigger) nestedTrigger.setAttribute('aria-expanded', String(id === menuId && willOpen));
+                });
+                const shipTrigger = document.getElementById('nav-trigger-mirage-ship');
+                if (shipTrigger) shipTrigger.setAttribute('aria-expanded', 'true');
             } else {
                 closeDropdownMenus(willOpen ? menuId : null);
                 menu.classList.toggle('hidden', !willOpen);
             }
-            const triggerId = menuId === 'nav-menu-mirage-plano1' ? null : menuId.replace('nav-menu-', 'nav-trigger-');
+            const triggerId = isNested ? null : menuId.replace('nav-menu-', 'nav-trigger-');
             const trigger = triggerId ? document.getElementById(triggerId) : menu.previousElementSibling;
             if (trigger) trigger.setAttribute('aria-expanded', String(willOpen));
         }
@@ -1994,7 +2190,8 @@
                 LIDERES: 'nav-trigger-ms-sp', CIMA: 'nav-trigger-ms-sp',
                 WB_VALLES: 'nav-trigger-world-boss', WB_LABERINTOS: 'nav-trigger-world-boss',
                 PURGATORIO: 'nav-trigger-other-content', ORATORIO: 'nav-trigger-other-content',
-                TORRE: 'nav-trigger-domination', W1: 'nav-trigger-mirage-ship', W2: 'nav-trigger-mirage-ship', W3: 'nav-trigger-mirage-ship'
+                TORRE: 'nav-trigger-domination', W1: 'nav-trigger-mirage-ship', W2: 'nav-trigger-mirage-ship', W3: 'nav-trigger-mirage-ship',
+                P3_W1: 'nav-trigger-mirage-ship', P3_W2: 'nav-trigger-mirage-ship', P3_W3: 'nav-trigger-mirage-ship', P3_W4: 'nav-trigger-mirage-ship', P3_W5: 'nav-trigger-mirage-ship', P3_W6: 'nav-trigger-mirage-ship', P3_W7: 'nav-trigger-mirage-ship', P3_W8: 'nav-trigger-mirage-ship'
             };
             document.querySelectorAll('.nav-group-trigger').forEach(btn => btn.classList.toggle('group-active', btn.id === groupMap[tabName]));
             if (refreshDashboard) updateDashboard();
@@ -2144,6 +2341,8 @@
             });
             const mirageLayerLabel = document.querySelector('[data-i18n="mirageLayer1"]');
             if (mirageLayerLabel && langDict.mirageLayer1) mirageLayerLabel.textContent = langDict.mirageLayer1;
+            const mirageLayer3Label = document.querySelector('[data-i18n="mirageLayer3"]');
+            if (mirageLayer3Label && langDict.mirageLayer3) mirageLayer3Label.textContent = langDict.mirageLayer3;
 
             renderMasterAlertUI();
 

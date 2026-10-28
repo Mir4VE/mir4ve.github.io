@@ -216,6 +216,17 @@
                         <button type="button" role="menuitem" data-tab="W2" onclick="chooseNavTab('W2','nav-menu-mirage-plano1')" class="nav-submenu-option"><i class="fa-solid fa-crosshairs"></i><span class="submenu-label">W2</span></button>
                         <button type="button" role="menuitem" data-tab="W3" onclick="chooseNavTab('W3','nav-menu-mirage-plano1')" class="nav-submenu-option"><i class="fa-solid fa-crosshairs"></i><span class="submenu-label">W3</span></button>
                     </div>
+                    <button type="button" id="nav-trigger-mirage-plano3" class="nav-submenu-option mirage-plano-trigger" onclick="toggleNavMenu('nav-menu-mirage-plano3')" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-map-location-dot"></i><span class="submenu-label" data-i18n="mirageLayer3">PLANO 3</span><i class="fa-solid fa-chevron-down text-[9px]"></i></button>
+                    <div id="nav-menu-mirage-plano3" class="nav-submenu nav-nested-menu hidden" role="menu">
+                        <button type="button" role="menuitem" data-tab="P3_W1" onclick="chooseNavTab('P3_W1','nav-menu-mirage-plano3')" class="nav-submenu-option"><i class="fa-solid fa-crosshairs"></i><span class="submenu-label">W1</span></button>
+                        <button type="button" role="menuitem" data-tab="P3_W2" onclick="chooseNavTab('P3_W2','nav-menu-mirage-plano3')" class="nav-submenu-option"><i class="fa-solid fa-crosshairs"></i><span class="submenu-label">W2</span></button>
+                        <button type="button" role="menuitem" data-tab="P3_W3" onclick="chooseNavTab('P3_W3','nav-menu-mirage-plano3')" class="nav-submenu-option"><i class="fa-solid fa-crosshairs"></i><span class="submenu-label">W3</span></button>
+                        <button type="button" role="menuitem" data-tab="P3_W4" onclick="chooseNavTab('P3_W4','nav-menu-mirage-plano3')" class="nav-submenu-option"><i class="fa-solid fa-crosshairs"></i><span class="submenu-label">W4</span></button>
+                        <button type="button" role="menuitem" data-tab="P3_W5" onclick="chooseNavTab('P3_W5','nav-menu-mirage-plano3')" class="nav-submenu-option"><i class="fa-solid fa-crosshairs"></i><span class="submenu-label">W5</span></button>
+                        <button type="button" role="menuitem" data-tab="P3_W6" onclick="chooseNavTab('P3_W6','nav-menu-mirage-plano3')" class="nav-submenu-option"><i class="fa-solid fa-crosshairs"></i><span class="submenu-label">W6</span></button>
+                        <button type="button" role="menuitem" data-tab="P3_W7" onclick="chooseNavTab('P3_W7','nav-menu-mirage-plano3')" class="nav-submenu-option"><i class="fa-solid fa-crosshairs"></i><span class="submenu-label">W7</span></button>
+                        <button type="button" role="menuitem" data-tab="P3_W8" onclick="chooseNavTab('P3_W8','nav-menu-mirage-plano3')" class="nav-submenu-option"><i class="fa-solid fa-crosshairs"></i><span class="submenu-label">W8</span></button>
+                    </div>
                 </div>
             </div>
 
@@ -263,7 +274,6 @@
     <!-- MAIN CARDS CONTAINER -->
     <main class="events-main max-w-7xl mx-auto">
         <div id="alert-arm-notice" class="alert-arm-notice hidden" role="status" aria-live="polite"></div>
-        <div id="all-events-page-status" class="all-events-page-status hidden" role="status" aria-live="polite"></div>
         <div id="events-grid-shell" class="events-grid-shell">
             <button type="button" id="all-events-prev" class="all-events-side-nav all-events-side-nav-prev hidden" onclick="navigateAllEventsPage(-1)" aria-label="Página anterior" title="Página anterior" aria-controls="events-grid" disabled>
                 <svg viewBox="0 0 24 24" width="25" height="25" fill="none" aria-hidden="true" focusable="false"><path d="M14.75 4.75 7.5 12l7.25 7.25M8 12h11" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -275,6 +285,7 @@
                 <svg viewBox="0 0 24 24" width="25" height="25" fill="none" aria-hidden="true" focusable="false"><path d="m9.25 4.75 7.25 7.25-7.25 7.25M16 12H5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
         </div>
+        <div id="all-events-page-status" class="all-events-page-status hidden" role="status" aria-live="polite"></div>
     </main>
 
     </div> <!-- /#home-view -->
