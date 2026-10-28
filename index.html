@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#05070c">
     <meta name="color-scheme" content="dark">
+    <script>
+        try { if (localStorage.getItem('mir4ve-reading-mode') === 'true') document.documentElement.classList.add('reading-mode'); } catch (_) {}
+    </script>
     <title>TIMERS | Mir4VE</title>
     <meta name="description" content="Consulta los horarios de todos los eventos de MIR4 Global en tiempo real. Temporizadores, regiones y alertas para la comunidad.">
     <link rel="canonical" href="https://mir4ve.github.io/">
@@ -260,8 +263,17 @@
     <!-- MAIN CARDS CONTAINER -->
     <main class="events-main max-w-7xl mx-auto">
         <div id="alert-arm-notice" class="alert-arm-notice hidden" role="status" aria-live="polite"></div>
-        <div id="events-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            <!-- CARDS GENERATED DYNAMICALLY BY JS -->
+        <div id="all-events-page-status" class="all-events-page-status hidden" role="status" aria-live="polite"></div>
+        <div id="events-grid-shell" class="events-grid-shell">
+            <button type="button" id="all-events-prev" class="all-events-side-nav all-events-side-nav-prev hidden" onclick="navigateAllEventsPage(-1)" aria-label="Página anterior" title="Página anterior" aria-controls="events-grid" disabled>
+                <svg viewBox="0 0 24 24" width="25" height="25" fill="none" aria-hidden="true" focusable="false"><path d="M14.75 4.75 7.5 12l7.25 7.25M8 12h11" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div id="events-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- CARDS GENERATED DYNAMICALLY BY JS -->
+            </div>
+            <button type="button" id="all-events-next" class="all-events-side-nav all-events-side-nav-next hidden" onclick="navigateAllEventsPage(1)" aria-label="Página siguiente" title="Página siguiente" aria-controls="events-grid" disabled>
+                <svg viewBox="0 0 24 24" width="25" height="25" fill="none" aria-hidden="true" focusable="false"><path d="m9.25 4.75 7.25 7.25-7.25 7.25M16 12H5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
         </div>
     </main>
 

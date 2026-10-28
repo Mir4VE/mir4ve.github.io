@@ -109,31 +109,31 @@
             es: {
                 serverTime: "HORA SERVIDOR", localTime: "HORA LOCAL", weekReset: "REINICIO SEMANAL", online: "en línea", alertsOn: "Alertas activadas", alertsOff: "Alertas desactivadas", sponsor: "SPONSOR",
                 introCommunity: "COMUNIDAD DARKOMENS", introDescription: "Consulta los horarios de todos los eventos de MIR4 Global en tiempo real.", introLive: "PANEL DE ALERTAS", alertVolumeLabel: "VOLUMEN DE ALERTA", alertTriggerLabel: "DISPARADOR DE ALERTA",
-                navGroups: { domination: "DOMINACIÓN", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OTROS CONTENIDOS" }, mirageLayer1: "PLANO 1", reappearsEvery: "REAPARECE CADA:", bossAppearsIn: "APARECE EN:",
+                navGroups: { domination: "DOMINACIÓN", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OTROS CONTENIDOS" }, mirageLayer1: "PLANO 1", reappearsEvery: "REAPARECE CADA:", frequency: "FRECUENCIA:", bossAppearsIn: "APARECE EN:",
                 tabs: { ALL: "TODAS", FRENESI: "FRENESÍ", FURIA: "FURIA", LIDERES: "LIDER III", CIMA: "CIMA", WB_VALLES: "VALLES", WB_LABERINTOS: "LABERINTOS", PURGATORIO: "PURGATORIO", ORATORIO: "ORATORIO CRÍPTICO", TORRE: "TORRE", W1: "W1", W2: "W2", W3: "W3" },
                 statusActive: "En curso", activeNow: "Evento en curso", statusWaiting: "En espera", nextOpening: "Próxima apertura:", mirageSchedule: "CICLO DE APARICIONES", nextSpawn: "Próxima aparición", timeRemaining: "Tiempo restante", durationActive: "Duración activa:", opensIn: "INICIA EN:", closesIn: "FINALIZA EN:",
                 toastTitle: "¡EVENTO ACTIVADO!", toastSub: "Alerta de TIMERS | Mir4VE", nextQueueTitle: "Próximos ciclos en espera:", durationMin: "min", durationHour: "1 hora", timePrefix: "en ", unitHour: "h", unitMinute: "m", unitSecond: "s",
-                eventTitles: { frenesi: "MS ◂ FRENESÍ ▸", furia: "MS ◂ FURIA ▸", lideres: "MS ◂ LIDER 3 ▸", oratorio: "◂ Oratorio Críptico ▸", cima_inferior: "SP ◂ JEFE SUR ▸", cima_superior: "SP ◂ JEFE NORTE ▸", purgatorio: "◂ Purgatorio ▸", wb_valles: "WB ◂ VALLES ▸", wb_laberintos: "WB ◂ LABERINTOS ▸", domination_tower: "◂ TORRE DEL DRAGÓN ▸", mirage_jihwa: "P1 · W1 ◂ Jihwa ▸", mirage_yaksha: "P1 · W1 ◂ Yaksha ▸", mirage_black_carapace: "P1 · W1 ◂ Black Carapace ▸", mirage_bulhu: "P1 · W1 ◂ Bulhu ▸" },
+                eventTitles: { frenesi: "MS ◂ FRENESÍ ▸", furia: "MS ◂ FURIA ▸", lideres: "MS ◂ LIDER 3 ▸", oratorio: "◂ Oratorio Críptico ▸", cima_inferior: "SP ◂ JEFE SUR ▸", cima_superior: "SP ◂ JEFE NORTE ▸", purgatorio: "◂ Purgatorio ▸", wb_valles: "WB ◂ VALLES ▸", wb_laberintos: "WB ◂ LABERINTOS ▸", domination_tower: "◂ TORRE DEL DRAGÓN ▸", mirage_jihwa: "P1 · W1 ◂ Jihwa ▸", mirage_yaksha: "P1 · W1 ◂ Yaksha ▸", mirage_black_carapace: "P1 · W1 ◂ Black Carapace ▸", mirage_bulhu: "P1 · W1 ◂ Bulhu ▸", mirage_w2_guemugwang: "P1 · W2 ◂ GUEMUGWANG ▸", mirage_w2_maengryong: "P1 · W2 ◂ MAENGRYONG ▸", mirage_w2_molgrash: "P1 · W2 ◂ MOLGRASH ▸", mirage_w2_kwangryeong: "P1 · W2 ◂ KWANGRYEONG ▸", mirage_w3_bargan: "P1 · W3 ◂ BARGAN ▸", mirage_w3_barkas: "P1 · W3 ◂ BARKAS ▸", mirage_w3_bordo: "P1 · W3 ◂ BORDO ▸", mirage_w3_kelis: "P1 · W3 ◂ KELIS ▸", mirage_w3_krog: "P1 · W3 ◂ KROG ▸", mirage_w3_morg: "P1 · W3 ◂ MORG ▸", mirage_w3_talasa: "P1 · W3 ◂ TALASA ▸" },
                 bellTitle: "Alertas para este evento", stop: "DETENER", switchTo12: "Cambiar a formato de 12 horas", switchTo24: "Cambiar a formato de 24 horas", triggerAvailable: "Disparador disponible", triggerAvailableIn: "Disponible en "
             },
             pt: {
                 serverTime: "HORA DO SERVIDOR", localTime: "HORA LOCAL", weekReset: "REINÍCIO SEMANAL", online: "online", alertsOn: "Alertas ativados", alertsOff: "Alertas desativados", sponsor: "PATROCÍNIO",
                 introCommunity: "COMUNIDADE DARKOMENS", introDescription: "Consulte os horários de todos os eventos de MIR4 Global em tempo real.", introLive: "PAINEL DE ALERTAS", alertVolumeLabel: "VOLUME DO ALERTA", alertTriggerLabel: "ACIONADOR DO ALERTA",
-                navGroups: { domination: "DOMINAÇÃO", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OUTROS CONTEÚDOS" }, mirageLayer1: "CAMADA 1", reappearsEvery: "REAPARECE A CADA:", bossAppearsIn: "SURGE EM:",
+                navGroups: { domination: "DOMINAÇÃO", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OUTROS CONTEÚDOS" }, mirageLayer1: "CAMADA 1", reappearsEvery: "REAPARECE A CADA:", frequency: "FREQUÊNCIA:", bossAppearsIn: "SURGE EM:",
                 tabs: { ALL: "TODOS", FRENESI: "FRENESI", FURIA: "FÚRIA", LIDERES: "LÍDER III", CIMA: "PICO SECRETO", WB_VALLES: "VALES", WB_LABERINTOS: "LABIRINTOS", PURGATORIO: "PURGATÓRIO", ORATORIO: "SANTUÁRIO SECRETO", TORRE: "TORRE", W1: "W1", W2: "W2", W3: "W3" },
                 statusActive: "Em andamento", activeNow: "Evento em andamento", statusWaiting: "Aguardando", nextOpening: "Próxima aparição:", mirageSchedule: "CICLO DE APARIÇÕES", nextSpawn: "Próxima aparição", timeRemaining: "Tempo restante", durationActive: "Duração ativa:", opensIn: "INICIA EM:", closesIn: "FINALIZA EM:",
                 toastTitle: "EVENTO INICIADO!", toastSub: "Alerta do TIMERS | Mir4VE", nextQueueTitle: "Próximos ciclos aguardando:", durationMin: "min", durationHour: "1 hora", timePrefix: "em ", unitHour: "h", unitMinute: "min", unitSecond: "s",
-                eventTitles: { frenesi: "MS ◂ FRENESI ▸", furia: "MS ◂ FÚRIA ▸", lideres: "MS ◂ LÍDER 3 ▸", oratorio: "◂ Santuário Secreto ▸", cima_inferior: "SP ◂ BOSS SUL ▸", cima_superior: "SP ◂ BOSS NORTE ▸", purgatorio: "◂ Purgatório ▸", wb_valles: "WB ◂ VALES ▸", wb_laberintos: "WB ◂ LABIRINTOS ▸", domination_tower: "◂ TORRE DO DRAGÃO ▸", mirage_jihwa: "C1 · W1 ◂ Jihwa ▸", mirage_yaksha: "C1 · W1 ◂ Yaksha ▸", mirage_black_carapace: "C1 · W1 ◂ Black Carapace ▸", mirage_bulhu: "C1 · W1 ◂ Bulhu ▸" },
+                eventTitles: { frenesi: "MS ◂ FRENESI ▸", furia: "MS ◂ FÚRIA ▸", lideres: "MS ◂ LÍDER 3 ▸", oratorio: "◂ Santuário Secreto ▸", cima_inferior: "SP ◂ BOSS SUL ▸", cima_superior: "SP ◂ BOSS NORTE ▸", purgatorio: "◂ Purgatório ▸", wb_valles: "WB ◂ VALES ▸", wb_laberintos: "WB ◂ LABIRINTOS ▸", domination_tower: "◂ TORRE DO DRAGÃO ▸", mirage_jihwa: "C1 · W1 ◂ Jihwa ▸", mirage_yaksha: "C1 · W1 ◂ Yaksha ▸", mirage_black_carapace: "C1 · W1 ◂ Black Carapace ▸", mirage_bulhu: "C1 · W1 ◂ Bulhu ▸", mirage_w2_guemugwang: "P1 · W2 ◂ GUEMUGWANG ▸", mirage_w2_maengryong: "P1 · W2 ◂ MAENGRYONG ▸", mirage_w2_molgrash: "P1 · W2 ◂ MOLGRASH ▸", mirage_w2_kwangryeong: "P1 · W2 ◂ KWANGRYEONG ▸", mirage_w3_bargan: "P1 · W3 ◂ BARGAN ▸", mirage_w3_barkas: "P1 · W3 ◂ BARKAS ▸", mirage_w3_bordo: "P1 · W3 ◂ BORDO ▸", mirage_w3_kelis: "P1 · W3 ◂ KELIS ▸", mirage_w3_krog: "P1 · W3 ◂ KROG ▸", mirage_w3_morg: "P1 · W3 ◂ MORG ▸", mirage_w3_talasa: "P1 · W3 ◂ TALASA ▸" },
                 bellTitle: "Alertas para este evento", stop: "PARAR", switchTo12: "Mudar para o formato de 12 horas", switchTo24: "Mudar para o formato de 24 horas", triggerAvailable: "Alerta disponível", triggerAvailableIn: "Disponível em "
             },
             en: {
                 serverTime: "SERVER TIME", localTime: "LOCAL TIME", weekReset: "WEEKLY RESET", online: "online", alertsOn: "Alerts On", alertsOff: "Alerts Off", sponsor: "SPONSOR",
                 introCommunity: "DARKOMENS COMMUNITY", introDescription: "Check the schedules for all MIR4 Global events in real time.", introLive: "ALERT PANEL", alertVolumeLabel: "ALERT VOLUME", alertTriggerLabel: "ALERT TRIGGER",
-                navGroups: { domination: "DOMINATION", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OTHER CONTENT" }, mirageLayer1: "LAYER 1", reappearsEvery: "REAPPEARS EVERY:", bossAppearsIn: "SPAWNS IN:",
+                navGroups: { domination: "DOMINATION", msP11P12: "𝐏𝟏𝟏 & 𝐏𝟏𝟐", msSp: "MS & SP", worldBoss: "WORLD BOSS", otherContent: "OTHER CONTENT" }, mirageLayer1: "LAYER 1", reappearsEvery: "REAPPEARS EVERY:", frequency: "FREQUENCY:", bossAppearsIn: "SPAWNS IN:",
                 tabs: { ALL: "ALL", FRENESI: "FRENZY", FURIA: "FURY", LIDERES: "LEADER III", CIMA: "SECRET PEAK", WB_VALLES: "VALLEYS", WB_LABERINTOS: "LABYRINTHS", PURGATORIO: "PURGATORY", ORATORIO: "CRYPTIC SANCTUARY", TORRE: "TOWER", W1: "W1", W2: "W2", W3: "W3" },
                 statusActive: "Active", activeNow: "Event in progress", statusWaiting: "Waiting", nextOpening: "Next spawn:", mirageSchedule: "SPAWN CYCLE", nextSpawn: "Next spawn", timeRemaining: "Time remaining", durationActive: "Active duration:", opensIn: "STARTS IN:", closesIn: "ENDS IN:",
                 toastTitle: "EVENT STARTED!", toastSub: "TIMERS | Mir4VE alert", nextQueueTitle: "Upcoming waiting cycles:", durationMin: "min", durationHour: "1 hour", timePrefix: "in ", unitHour: "h", unitMinute: "m", unitSecond: "s",
-                eventTitles: { frenesi: "MS ◂ FRENZY ▸", furia: "MS ◂ FURY ▸", lideres: "MS ◂ LEADER 3 ▸", oratorio: "◂ Cryptic Sanctuary ▸", cima_inferior: "SP ◂ SOUTH BOSS ▸", cima_superior: "SP ◂ NORTH BOSS ▸", purgatorio: "◂ Purgatory ▸", wb_valles: "World Boss ◂ VALLEYS ▸", wb_laberintos: "World Boss ◂ LABYRINTHS ▸", domination_tower: "◂ DRAGON TOWER ▸", mirage_jihwa: "L1 · W1 ◂ Jihwa ▸", mirage_yaksha: "L1 · W1 ◂ Yaksha ▸", mirage_black_carapace: "L1 · W1 ◂ Black Carapace ▸", mirage_bulhu: "L1 · W1 ◂ Bulhu ▸" },
+                eventTitles: { frenesi: "MS ◂ FRENZY ▸", furia: "MS ◂ FURY ▸", lideres: "MS ◂ LEADER 3 ▸", oratorio: "◂ Cryptic Sanctuary ▸", cima_inferior: "SP ◂ SOUTH BOSS ▸", cima_superior: "SP ◂ NORTH BOSS ▸", purgatorio: "◂ Purgatory ▸", wb_valles: "World Boss ◂ VALLEYS ▸", wb_laberintos: "World Boss ◂ LABYRINTHS ▸", domination_tower: "◂ DRAGON TOWER ▸", mirage_jihwa: "L1 · W1 ◂ Jihwa ▸", mirage_yaksha: "L1 · W1 ◂ Yaksha ▸", mirage_black_carapace: "L1 · W1 ◂ Black Carapace ▸", mirage_bulhu: "L1 · W1 ◂ Bulhu ▸", mirage_w2_guemugwang: "P1 · W2 ◂ GUEMUGWANG ▸", mirage_w2_maengryong: "P1 · W2 ◂ MAENGRYONG ▸", mirage_w2_molgrash: "P1 · W2 ◂ MOLGRASH ▸", mirage_w2_kwangryeong: "P1 · W2 ◂ KWANGRYEONG ▸", mirage_w3_bargan: "P1 · W3 ◂ BARGAN ▸", mirage_w3_barkas: "P1 · W3 ◂ BARKAS ▸", mirage_w3_bordo: "P1 · W3 ◂ BORDO ▸", mirage_w3_kelis: "P1 · W3 ◂ KELIS ▸", mirage_w3_krog: "P1 · W3 ◂ KROG ▸", mirage_w3_morg: "P1 · W3 ◂ MORG ▸", mirage_w3_talasa: "P1 · W3 ◂ TALASA ▸" },
                 bellTitle: "Alerts for this event", stop: "STOP", switchTo12: "Switch to 12-hour time", switchTo24: "Switch to 24-hour time", triggerAvailable: "Trigger available", triggerAvailableIn: "Available in "
             }
         };
@@ -153,6 +153,10 @@
         let currentLang = ['es', 'pt', 'en'].includes(savedLang) ? savedLang : detectInitialLanguage();
         const VALID_TABS = ['ALL', 'FRENESI', 'FURIA', 'LIDERES', 'CIMA', 'WB_VALLES', 'WB_LABERINTOS', 'PURGATORIO', 'ORATORIO', 'TORRE', 'W1', 'W2', 'W3'];
         let currentTab = VALID_TABS.includes(savedTab) ? savedTab : 'ALL';
+        // Keep the ALL dashboard lightweight by drawing at most fifteen cards at a time.
+        // All event states and alerts are still computed for every definition on every tick.
+        const ALL_EVENTS_PAGE_SIZE = 15;
+        let allEventsPage = 0;
         const SERVER_CONFIG = {
             NA: { offset: -4, label: 'NA', utc: 'UTC-4' },
             ASIA: { offset: 8, label: 'ASIA', utc: 'UTC+8' },
@@ -284,7 +288,22 @@
             { id: "mirage_jihwa", cat: "W1", title: "Jihwa", icon: "fa-eye", color: "cyan", durationMin: 5, schedule: [[2,30],[5,30],[8,30],[11,30],[14,30],[17,30],[20,30],[23,30]] },
             { id: "mirage_yaksha", cat: "W1", title: "Yaksha", icon: "fa-wand-sparkles", color: "purple", durationMin: 5, schedule: [[3,30],[9,30],[15,30],[21,30]] },
             { id: "mirage_black_carapace", cat: "W1", title: "Black Carapace", icon: "fa-bug", color: "green", durationMin: 5, schedule: [[0,30],[3,30],[6,30],[9,30],[12,30],[15,30],[18,30],[21,30]] },
-            { id: "mirage_bulhu", cat: "W1", title: "Bulhu", icon: "fa-meteor", color: "orange", durationMin: 5, schedule: [[4,30],[10,30],[16,30],[22,30]] }
+            { id: "mirage_bulhu", cat: "W1", title: "Bulhu", icon: "fa-meteor", color: "orange", durationMin: 5, schedule: [[4,30],[10,30],[16,30],[22,30]] },
+            // MIRAGE SHIP / PLANO 1 / W2. Horarios suministrados para la primera implementación funcional.
+            // La duración activa se establece provisionalmente en 5 minutos, igual que W1, hasta confirmar la duración propia de W2.
+            { id: "mirage_w2_guemugwang", cat: "W2", title: "P1 · W2 ◂ GUEMUGWANG ▸", icon: "fa-dragon", color: "cyan", durationMin: 5, schedule: [[5,30],[11,30],[17,30],[23,30]] },
+            { id: "mirage_w2_maengryong", cat: "W2", title: "P1 · W2 ◂ MAENGRYONG ▸", icon: "fa-wind", color: "purple", durationMin: 5, schedule: [[0,30],[6,30],[12,30],[18,30]] },
+            { id: "mirage_w2_molgrash", cat: "W2", title: "P1 · W2 ◂ MOLGRASH ▸", icon: "fa-skull", color: "green", durationMin: 5, schedule: [[1,30],[4,30],[7,30],[10,30],[13,30],[16,30],[19,30],[22,30]] },
+            { id: "mirage_w2_kwangryeong", cat: "W2", title: "P1 · W2 ◂ KWANGRYEONG ▸", icon: "fa-burst", color: "orange", durationMin: 5, schedule: [[2,30],[5,30],[8,30],[11,30],[14,30],[17,30],[20,30],[23,30]] },
+            // MIRAGE SHIP / PLANO 1 / W3. Horarios proporcionados para el nuevo ciclo de contadores.
+            // La duración activa se deja provisionalmente en 5 minutos, siguiendo W1/W2, hasta confirmar la duración propia de W3.
+            { id: "mirage_w3_bargan", cat: "W3", title: "P1 · W3 ◂ BARGAN ▸", icon: "fa-dragon", color: "cyan", durationMin: 5, schedule: [[4,30],[10,30],[16,30],[22,30]] },
+            { id: "mirage_w3_barkas", cat: "W3", title: "P1 · W3 ◂ BARKAS ▸", icon: "fa-wind", color: "purple", durationMin: 5, schedule: [[3,30],[9,30],[15,30],[21,30]] },
+            { id: "mirage_w3_bordo", cat: "W3", title: "P1 · W3 ◂ BORDO ▸", icon: "fa-shield-halved", color: "green", durationMin: 5, schedule: [[5,30],[11,30],[17,30],[23,30]] },
+            { id: "mirage_w3_kelis", cat: "W3", title: "P1 · W3 ◂ KELIS ▸", icon: "fa-eye", color: "orange", durationMin: 5, schedule: [[2,30],[8,30],[14,30],[20,30]] },
+            { id: "mirage_w3_krog", cat: "W3", title: "P1 · W3 ◂ KROG ▸", icon: "fa-hat-wizard", color: "blue", durationMin: 5, schedule: [[1,30],[7,30],[13,30],[19,30]] },
+            { id: "mirage_w3_morg", cat: "W3", title: "P1 · W3 ◂ MORG ▸", icon: "fa-skull", color: "violet", durationMin: 5, schedule: [[0,30],[3,30],[6,30],[9,30],[12,30],[15,30],[18,30],[21,30]] },
+            { id: "mirage_w3_talasa", cat: "W3", title: "P1 · W3 ◂ TALASA ▸", icon: "fa-meteor", color: "teal", durationMin: 5, schedule: [[2,30],[5,30],[8,30],[11,30],[14,30],[17,30],[20,30],[23,30]] }
         ];
 
         // Restore individual bell states from LocalStorage
@@ -1333,6 +1352,17 @@
             return `${formatTwoDigits(hours)}:${formatTwoDigits(minutes)} ${currentServer}`;
         }
 
+        // Schedule chips follow the shared 12/24-hour preference without adding the
+        // selected server suffix to the clock time. Sorting always uses the numeric schedule.
+        function formatScheduleChipTime(hours, minutes) {
+            if (timeFormat === '12h') {
+                const hours12 = hours % 12 || 12;
+                const period = hours >= 12 ? 'PM' : 'AM';
+                return `${formatTwoDigits(hours12)}:${formatTwoDigits(minutes)} ${period}`;
+            }
+            return `${formatTwoDigits(hours)}:${formatTwoDigits(minutes)}`;
+        }
+
         function calculateEventState(eventDef, serverNow) {
             const currentMinOfDay = serverNow.getUTCHours() * 60 + serverNow.getUTCMinutes();
             const currentSecOfMin = serverNow.getUTCSeconds();
@@ -1553,9 +1583,11 @@
                             const aboutView = document.getElementById('about-view');
                             const wasOnAbout = Boolean(aboutView && !aboutView.classList.contains('hidden'));
                             const wasOnOtherTab = currentTab !== 'ALL';
+                            const wasOnSecondaryAllPage = currentTab === 'ALL' && allEventsPage > 0;
                             if (wasOnAbout) showHomeView(false);
                             if (wasOnOtherTab) setTab('ALL', false);
-                            if (wasOnAbout || wasOnOtherTab) {
+                            else if (wasOnSecondaryAllPage) allEventsPage = 0;
+                            if (wasOnAbout || wasOnOtherTab || wasOnSecondaryAllPage) {
                                 requestAnimationFrame(() => {
                                     const target = document.getElementById('tab-ALL') || document.getElementById('events-grid');
                                     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1578,6 +1610,7 @@
                         delete armedAlertTargets[armedKey];
                         alertPreparationKeys.delete(alertKey);
                         if (currentTab !== 'ALL') setTab('ALL', false);
+                        else if (allEventsPage > 0) allEventsPage = 0;
                         // The sound owner registers its own glow only after audio playback is
                         // accepted; simultaneous cards join that same visual deadline in triggerChimeSound.
                         triggerChimeSound(alertKey, evt.id, currentServer);
@@ -1607,10 +1640,18 @@
 
             const container = document.getElementById('events-grid');
             const langDict = I18N[currentLang];
+            const totalFilteredEvents = filtered.length;
+            const totalAllPages = Math.max(1, Math.ceil(totalFilteredEvents / ALL_EVENTS_PAGE_SIZE));
+            if (currentTab === 'ALL') {
+                allEventsPage = Math.max(0, Math.min(allEventsPage, totalAllPages - 1));
+            }
+            const eventsForRender = currentTab === 'ALL'
+                ? filtered.slice(allEventsPage * ALL_EVENTS_PAGE_SIZE, (allEventsPage + 1) * ALL_EVENTS_PAGE_SIZE)
+                : filtered;
             // Keep CSS loops at the same phase when cards are refreshed every second.
             const loopOffset = `-${(Date.now() % 5000) / 1000}s`;
 
-            container.innerHTML = filtered.map(evt => {
+            container.innerHTML = eventsForRender.map(evt => {
                 const isActive = evt.state.isActive;
                 const isBellOn = isOccurrenceBellOn(evt.id, evt.state.startH, evt.state.startM);
                 let localizedTitle = formatDecoratedLabel(langDict.eventTitles[evt.id] || evt.title);
@@ -1633,6 +1674,49 @@
                 const progressColor = getTimerProgressColor(elapsedRatio);
                 const previousProgressColor = getTimerProgressColor(Math.max(0, elapsedRatio - 0.12));
 
+                // Individual event tabs share the finalized W1-style cycle card.
+                // ALL deliberately retains its original card layout and behavior.
+                const isCimaCycleCard = currentTab === 'CIMA' && evt.cat === 'CIMA';
+                const isLider3CycleCard = currentTab === 'LIDERES' && evt.cat === 'LIDERES';
+                const isOtherCycleCard = currentTab !== 'ALL'
+                    && evt.cat === currentTab
+                    && !['CIMA', 'LIDERES'].includes(evt.cat);
+                const isUnifiedCycleCard = isCimaCycleCard || isLider3CycleCard || isOtherCycleCard;
+                const usesMirageCycleLayout = (evt.cat === 'W1' && currentTab !== 'ALL') || isUnifiedCycleCard;
+                // Sort by real time-to-appearance, not display text: active first, then next schedule
+                // occurrences, including the midnight wrap. The active time is listed only once.
+                const cycleSchedule = isUnifiedCycleCard
+                    ? [
+                        ...(isActive ? [[evt.state.startH, evt.state.startM]] : []),
+                        ...(evt.state.upcomingInstances || [])
+                            .filter(instance => !isActive || instance.startH !== evt.state.startH || instance.startM !== evt.state.startM)
+                            .map(instance => [instance.startH, instance.startM])
+                    ]
+                    : [...evt.schedule].sort((a, b) => (a[0] * 60 + a[1]) - (b[0] * 60 + b[1]));
+                const cycleOpeningStateClass = isCimaCycleCard
+                    ? (isActive ? 'mirage-cima-opening-active' : 'mirage-cima-opening-empty')
+                    : isLider3CycleCard
+                        ? (isActive ? 'mirage-lideres-opening-active' : 'mirage-lideres-opening-empty')
+                        : isOtherCycleCard
+                            ? (isActive ? 'mirage-unified-opening-active' : 'mirage-unified-opening-empty')
+                            : '';
+                // Calculate the real gaps between scheduled times. Even schedules get an interval
+                // (3H, 6H, ...); irregular schedules are shown as a daily frequency instead of a
+                // misleading single interval (e.g. World Boss schedules or Dragon Tower).
+                const scheduleMinutes = [...evt.schedule]
+                    .map(([hour, minute]) => hour * 60 + minute)
+                    .sort((a, b) => a - b);
+                const cycleGaps = scheduleMinutes.map((startMinute, index) => {
+                    const nextMinute = scheduleMinutes[(index + 1) % scheduleMinutes.length]
+                        + (index === scheduleMinutes.length - 1 ? 1440 : 0);
+                    return nextMinute - startMinute;
+                });
+                const hasUniformCycle = cycleGaps.length > 0 && cycleGaps.every(gap => gap === cycleGaps[0]);
+                const cycleIntervalLabel = hasUniformCycle
+                    ? `${Math.floor(cycleGaps[0] / 60)}H${cycleGaps[0] % 60 ? ` ${cycleGaps[0] % 60}M` : ''}`
+                    : `${evt.schedule.length}× ${currentLang === 'en' ? 'DAILY' : currentLang === 'pt' ? 'POR DIA' : 'AL DÍA'}`;
+                const cycleIntervalTitle = hasUniformCycle ? langDict.reappearsEvery : langDict.frequency;
+
                 let colorClass = "bg-amber-500/10 text-amber-400 border-amber-500/30";
                 if (evt.color === 'orange') colorClass = "bg-orange-500/15 text-orange-200 border-orange-400/50";
                 if (evt.color === 'red') colorClass = "bg-red-500/15 text-red-300 border-red-400/50";
@@ -1648,7 +1732,7 @@
                 if (evt.color === 'cyan') colorClass = "bg-cyan-500/10 text-cyan-300 border-cyan-500/30";
 
                 return `
-                <div data-event-id="${evt.id}" style="--alert-loop-offset: -${(Date.now() % 1400) / 1000}s" class="event-card ${evt.cat === 'W1' && currentTab !== 'ALL' ? 'mirage-w1-individual' : ''} bg-brand-card/90 border border-brand-border/80 rounded-2xl p-5 shadow-xl relative flex flex-col justify-between ${isActive ? 'glow-active bg-emerald-950/20' : 'cursor-pointer'} ${alertGlowUntil[evt.id] > Date.now() ? 'alert-glow-active' : ''}" ${!isActive ? `onclick="toggleCardBell('${evt.id}', ${evt.state.startH}, ${evt.state.startM}, event)" title="${langDict.bellTitle}"` : ''}>
+                <div data-event-id="${evt.id}" style="--alert-loop-offset: -${(Date.now() % 1400) / 1000}s" class="event-card ${usesMirageCycleLayout ? 'mirage-w1-individual' : ''} ${isCimaCycleCard ? 'mirage-cima-individual' : ''} ${isLider3CycleCard ? 'mirage-lideres-individual' : ''} ${isOtherCycleCard ? 'mirage-unified-individual' : ''} bg-brand-card/90 border border-brand-border/80 rounded-2xl p-5 shadow-xl relative flex flex-col justify-between ${isActive ? 'glow-active bg-emerald-950/20' : 'cursor-pointer'} ${alertGlowUntil[evt.id] > Date.now() ? 'alert-glow-active' : ''}" ${!isActive ? `onclick="toggleCardBell('${evt.id}', ${evt.state.startH}, ${evt.state.startM}, event)" title="${langDict.bellTitle}"` : ''}>
                     
                     <i class="event-watermark fa-solid ${evt.icon}" aria-hidden="true"></i>
                     <div class="event-card-content">
@@ -1671,8 +1755,8 @@
                         </div>
 
                         <!-- OPENING TIME & DURATION -->
-                        <div class="mt-4 mb-2">
-                            ${evt.cat === 'W1' && currentTab !== 'ALL'
+                        <div class="${cycleOpeningStateClass} mt-4 mb-2">
+                            ${usesMirageCycleLayout
                                 ? (isActive
                                     ? `<div class="flex w-full items-center justify-between gap-3 rounded-xl border border-emerald-400/25 bg-gradient-to-r from-emerald-500/10 via-emerald-400/5 to-transparent px-4 py-3 shadow-sm shadow-emerald-950/20">
                                             <div class="flex min-w-0 items-center gap-2.5">
@@ -1698,24 +1782,24 @@
                                        <div class="timer-number text-2xl font-black text-white tracking-wide mt-0.5">${evt.state.displayTime}</div>
                                        <div class="text-xs text-slate-400 mt-2">${langDict.durationActive} <span class="text-slate-200 font-bold">${formatActiveDuration(evt.durationMin)}</span></div>`)}
                         </div>
-                        ${evt.cat === 'W1' && currentTab !== 'ALL' ? `
+                        ${usesMirageCycleLayout ? `
                             <section class="mirage-cycle-panel" aria-label="${langDict.mirageSchedule}">
                                 <div class="mirage-cycle-grid" aria-label="${langDict.mirageSchedule}">
-                                    ${[...evt.schedule].sort((a,b) => (a[0]*60+a[1])-(b[0]*60+b[1])).map(([hour, minute]) => {
+                                    ${cycleSchedule.map(([hour, minute]) => {
                                         const upcoming = evt.state.upcomingInstances[0];
                                         // En tarjetas W1 individuales, resaltar la aparición en curso;
                                         // al terminar, volver a resaltar la siguiente aparición. TODAS no cambia.
                                         const isNext = isActive
                                             ? evt.state.startH === hour && evt.state.startM === minute
                                             : upcoming && upcoming.startH === hour && upcoming.startM === minute;
-                                        return `<div class="mirage-cycle-row ${isNext ? 'is-next' : ''}"><span class="mirage-cycle-time">${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}</span></div>`;
+                                        return `<div class="mirage-cycle-row ${isNext ? 'is-next' : ''}"><span class="mirage-cycle-time">${formatScheduleChipTime(hour, minute)}</span></div>`;
                                     }).join('')}
                                 </div>
                             </section>
                             <div class="mirage-next-spawn" aria-label="${langDict.nextSpawn}">
                                 <div class="mirage-next-spawn-cell">
-                                    <span class="mirage-next-spawn-label">${langDict.reappearsEvery}</span>
-                                    <span class="mirage-next-spawn-value">${(evt.id === 'mirage_jihwa' || evt.id === 'mirage_black_carapace') ? '3H' : '6H'}</span>
+                                    <span class="mirage-next-spawn-label">${cycleIntervalTitle}</span>
+                                    <span class="mirage-next-spawn-value">${cycleIntervalLabel}</span>
                                 </div>
                                 <div class="mirage-next-spawn-cell">
                                     <span class="mirage-next-spawn-label">${isActive ? langDict.closesIn : langDict.bossAppearsIn}</span>
@@ -1725,7 +1809,7 @@
                     </div>
 
                     <!-- Existing cards keep their original footer. W1 individual cards show their only countdown in the boss appearance panel. -->
-                    ${evt.cat === 'W1' && currentTab !== 'ALL' ? '' : `
+                    ${usesMirageCycleLayout ? '' : `
                     <div class="event-card-content mt-4 pt-3 border-t border-brand-border/50">
                         <div class="flex items-center justify-between text-xs font-orbitron">
                             <span class="text-slate-400 font-bold">${isActive ? langDict.closesIn : langDict.opensIn}</span>
@@ -1736,7 +1820,7 @@
                         </div>
                     </div>`}
                 </div>
-                ${currentTab !== 'ALL' && evt.cat !== 'W1' ? `
+                ${currentTab !== 'ALL' && !usesMirageCycleLayout ? `
                     ${evt.state.upcomingInstances.filter(instance => isActive || instance.displayTime !== evt.state.displayTime).map((instance, instanceIndex) => {
                         const upcomingProgress = Math.round((instance.waitingProgress || 0) * 100);
                         const instanceBellOn = isOccurrenceBellOn(evt.id, instance.startH, instance.startM);
@@ -1774,6 +1858,79 @@
                 ` : ''}
                 `;
             }).join('');
+            renderAllEventsPagination(totalFilteredEvents);
+
+        }
+
+        // Side controls are available only in ALL. The timer engine still processes every event;
+        // only the selected fifteen-card slice is inserted into the DOM.
+        function renderAllEventsPagination(totalEvents) {
+            const shell = document.getElementById('events-grid-shell');
+            const status = document.getElementById('all-events-page-status');
+            const previous = document.getElementById('all-events-prev');
+            const next = document.getElementById('all-events-next');
+            if (!shell || !status || !previous || !next) return;
+
+            const pageCount = Math.max(1, Math.ceil(totalEvents / ALL_EVENTS_PAGE_SIZE));
+            allEventsPage = Math.max(0, Math.min(allEventsPage, pageCount - 1));
+            const shouldShow = currentTab === 'ALL' && pageCount > 1;
+            shell.classList.toggle('is-all-paged', shouldShow);
+            status.classList.toggle('hidden', !shouldShow);
+            previous.classList.toggle('hidden', !shouldShow);
+            next.classList.toggle('hidden', !shouldShow);
+
+            if (!shouldShow) return;
+
+            const start = allEventsPage * ALL_EVENTS_PAGE_SIZE + 1;
+            const end = Math.min(totalEvents, start + ALL_EVENTS_PAGE_SIZE - 1);
+            const translations = {
+                es: { showing: `MOSTRANDO ${start}–${end} DE ${totalEvents} · PÁGINA ${allEventsPage + 1} DE ${pageCount}`, previous: 'Página anterior', next: 'Página siguiente' },
+                pt: { showing: `MOSTRANDO ${start}–${end} DE ${totalEvents} · PÁGINA ${allEventsPage + 1} DE ${pageCount}`, previous: 'Página anterior', next: 'Página siguiente' },
+                en: { showing: `SHOWING ${start}–${end} OF ${totalEvents} · PAGE ${allEventsPage + 1} OF ${pageCount}`, previous: 'Previous page', next: 'Next page' }
+            };
+            const labels = translations[currentLang] || translations.es;
+            status.textContent = labels.showing;
+            previous.disabled = allEventsPage <= 0;
+            next.disabled = allEventsPage >= pageCount - 1;
+            previous.setAttribute('aria-label', labels.previous);
+            previous.title = labels.previous;
+            next.setAttribute('aria-label', labels.next);
+            next.title = labels.next;
+        }
+
+        function navigateAllEventsPage(delta) {
+            if (currentTab !== 'ALL') return;
+            const step = Number(delta);
+            if (!Number.isInteger(step) || step === 0) return;
+            setAllEventsPage(allEventsPage + step);
+        }
+
+        function setAllEventsPage(pageIndex) {
+            if (currentTab !== 'ALL') return;
+            const requestedPage = Number(pageIndex);
+            if (!Number.isInteger(requestedPage) || requestedPage < 0) return;
+            const totalPages = Math.max(1, Math.ceil(EVENT_DEFINITIONS.length / ALL_EVENTS_PAGE_SIZE));
+            const targetPage = Math.max(0, Math.min(requestedPage, totalPages - 1));
+            if (targetPage === allEventsPage) return;
+
+            const grid = document.getElementById('events-grid');
+            const motionAllowed = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const enteringClass = targetPage > allEventsPage ? 'all-page-enter-from-next' : 'all-page-enter-from-previous';
+            if (grid && motionAllowed) {
+                grid.classList.remove('all-page-enter-from-next', 'all-page-enter-from-previous');
+                grid.classList.add(enteringClass);
+                // Ensure the off-canvas starting position is committed before replacing the cards.
+                void grid.offsetWidth;
+            }
+
+            allEventsPage = targetPage;
+            updateDashboard();
+
+            if (grid && motionAllowed) {
+                requestAnimationFrame(() => requestAnimationFrame(() => {
+                    grid.classList.remove('all-page-enter-from-next', 'all-page-enter-from-previous');
+                }));
+            }
         }
 
         // NAVIGATION AND REUSABLE OUTSIDE-CLICK CLOSING
@@ -1822,6 +1979,8 @@
 
         function setTab(tabName, refreshDashboard = true) {
             currentTab = VALID_TABS.includes(tabName) ? tabName : 'ALL';
+            // Selecting ALL from navigation starts at page one; pagination controls change pages directly.
+            if (currentTab === 'ALL') allEventsPage = 0;
             appStorage.setItem(STORAGE_ACTIVE_TAB, currentTab);
             tabName = currentTab;
             const baseInactive = "tab-btn inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-card/80 border border-brand-border/80 text-slate-400 hover:text-white hover:border-slate-600 transition-all duration-200 whitespace-nowrap";
