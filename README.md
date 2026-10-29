@@ -48,3 +48,9 @@ The event destination is set in the promo anchor in `index.html` (`https://forum
 
 The logo artwork is custom-drawn SVG for recognition and does not imply official sponsorship or endorsement by the platforms shown.
 
+## Local browser notifications
+
+- `js/local-notifications.js` displays standard browser notifications for alarms while the page is running, but never requests permission or shows a permission prompt. Desktop notifications appear only if the user has already granted permission in browser/site settings; local alarm audio works independently.
+- `manifest.webmanifest` and `pwa-icon-*.png` provide app metadata and icons.
+- `service-worker.js` is used only for same-origin offline caching.
+- Sound alarms and desktop notifications remain page-local. Browser/OS suspension can pause page execution or audio; guaranteed delivery while the browser is fully suspended would require a server-side sender, which is not part of this project.

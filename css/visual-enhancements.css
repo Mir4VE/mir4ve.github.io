@@ -548,3 +548,43 @@ body > header,
     .site-credits-footer__logo-link:focus-visible { transform: none; }
 }
 
+
+
+/* Card-specific confirmation notices are anchored above the selected card. */
+
+/* Card-specific alert confirmation: fixed to the selected card, without layout shifts. */
+.alert-arm-notice.alert-arm-notice-card-anchor {
+    position: fixed !important;
+    z-index: 10050;
+    margin: 0;
+    transform: translate(-50%, -100%);
+    pointer-events: none;
+}
+.alert-arm-notice.alert-arm-notice-card-anchor.alert-arm-notice-visible {
+    transform: translate(-50%, -100%);
+    animation: arm-notice-card-enter .18s ease-out both;
+}
+.alert-arm-notice.alert-arm-notice-card-anchor.alert-arm-notice-below-card,
+.alert-arm-notice.alert-arm-notice-card-anchor.alert-arm-notice-below-card.alert-arm-notice-visible {
+    transform: translate(-50%, 0);
+}
+.alert-arm-notice.alert-arm-notice-card-anchor.alert-arm-notice-below-card.alert-arm-notice-visible {
+    animation: arm-notice-card-below-enter .18s ease-out both;
+}
+.alert-arm-notice.alert-arm-notice-card-anchor.alert-arm-notice-leaving {
+    transform: translate(-50%, -100%) translateY(-4px);
+}
+.alert-arm-notice.alert-arm-notice-card-anchor.alert-arm-notice-below-card.alert-arm-notice-leaving {
+    transform: translate(-50%, -4px);
+}
+@keyframes arm-notice-card-enter {
+    from { opacity: 0; transform: translate(-50%, calc(-100% - 5px)); }
+    to { opacity: 1; transform: translate(-50%, -100%); }
+}
+@keyframes arm-notice-card-below-enter {
+    from { opacity: 0; transform: translate(-50%, -5px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .alert-arm-notice.alert-arm-notice-card-anchor { animation: none !important; }
+}

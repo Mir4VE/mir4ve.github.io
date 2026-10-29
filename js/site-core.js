@@ -523,6 +523,7 @@
         let audioCtx = null;
         let masterGain = null; // Interface sounds remain at their original level.
         let alertGain = null;  // Only the main event alarm uses this per-server volume.
+        let alertCueBuffer = null; // Reused PCM cue avoids hundreds of oscillators and echo nodes.
         const AUDIO_PREFS_KEY = 'mir4_audio_preferences_v2';
         const DEFAULT_AUDIO_PREFS = { volume: 60, triggerMinutes: 1, triggerCooldownUntil: 0 };
         const EVENT_ALARM_PRESET = {
@@ -532,12 +533,13 @@
             notes: [659.25, 523.25, 392],
             wave: "sine",
             volume: 100,
-            duration: 0.3,
-            spacing: 0.13,
-            attack: 0.025,
-            release: 0.3,
+            duration: 0.18,
+            spacing: 0.11,
+            attack: 0.012,
+            release: 0.13,
             filter: 7500,
-            echo: 0.04,
+            echo: 0.025,
+            echoDelay: 0.045,
             pitch: 2,
             repeat: 1,
             pattern: "original",
@@ -545,18 +547,25 @@
         };
         let audioPrefs = { ...DEFAULT_AUDIO_PREFS };
         const armedAlertTargets = Object.create(null);
+        // Absolute-time Web Audio plans keep the alarm cue aligned with the selected trigger
+        // even when background-tab JavaScript timers are throttled. Plans are cancelled if
+        // the browser suspends the AudioContext, so a stale cue never plays late on resume.
+        const PRECISE_ALERT_SCHEDULE_HORIZON_MS = 15 * 60 * 1000;
+        // Schedule with a small lead so the audio thread, not a throttled JS timer, owns onset.
+        const MIN_AUDIO_SCHEDULE_LEAD_MS = 80;
+        const scheduledAlarmAudioPlans = new Map();
+        let scheduledAlertMembership = new Map();
         let previewStopTimer = null;
         let previewUnlockTimer = null;
-        let previewAlarmInterval = null;
         let previewInProgress = false;
         let previewStopping = false;
         let previewSoundNodes = [];
         let previewInertElements = [];
         let previewPreviousFocus = null;
-        let triggerChangeLocked = false;
-        let triggerUnlockTimer = null;
         let triggerFeedbackTimer = null;
         let armNoticeTimer = null;
+        let armNoticeAnchor = null;
+        let armNoticePositionFrame = 0;
         let alertSettingsUnlockAt = 0;
         let alertSettingsUnlockTimer = null;
         // Arbitration global: si varias tarjetas generan una señal prácticamente a la vez,
@@ -567,6 +576,56 @@
             if (now - lastCoordinatedEventCueAt < 350) return false;
             lastCoordinatedEventCueAt = now;
             return true;
+        }
+
+        function ensureAlertCueBuffer() {
+            if (!audioCtx) return null;
+            if (alertCueBuffer && alertCueBuffer.sampleRate === audioCtx.sampleRate) return alertCueBuffer;
+            try {
+                const preset = EVENT_ALARM_PRESET;
+                const sampleRate = audioCtx.sampleRate;
+                const dryDuration = (preset.notes.length - 1) * preset.spacing + preset.duration + preset.release;
+                const totalDuration = dryDuration + (preset.echo > 0 ? preset.echoDelay : 0) + 0.025;
+                const frameCount = Math.max(1, Math.ceil(totalDuration * sampleRate));
+                const buffer = audioCtx.createBuffer(1, frameCount, sampleRate);
+                const samples = buffer.getChannelData(0);
+                const dry = new Float32Array(frameCount);
+                const levels = [0.12, 0.10, 0.085];
+
+                preset.notes.forEach((frequency, noteIndex) => {
+                    const noteStart = noteIndex * preset.spacing;
+                    const firstFrame = Math.max(0, Math.floor(noteStart * sampleRate));
+                    const lastFrame = Math.min(frameCount, Math.ceil((noteStart + preset.duration + preset.release) * sampleRate));
+                    const attack = Math.max(0.004, preset.attack);
+                    for (let frame = firstFrame; frame < lastFrame; frame++) {
+                        const age = frame / sampleRate - noteStart;
+                        let envelope;
+                        if (age < 0 || age >= preset.duration + preset.release) continue;
+                        if (age < attack) envelope = age / attack;
+                        else if (age <= preset.duration) envelope = 1;
+                        else envelope = Math.max(0, 1 - ((age - preset.duration) / preset.release));
+                        dry[frame] += Math.sin(2 * Math.PI * frequency * age) * levels[noteIndex] * envelope;
+                    }
+                });
+
+                const echoFrames = Math.round(Math.max(0, preset.echoDelay || 0) * sampleRate);
+                for (let frame = 0; frame < frameCount; frame++) {
+                    const echo = frame >= echoFrames ? dry[frame - echoFrames] * preset.echo : 0;
+                    // Very light saturation protects the peaks without adding harsh clipping.
+                    const value = dry[frame] + echo;
+                    samples[frame] = Math.max(-0.95, Math.min(0.95, value));
+                }
+                const fadeFrames = Math.min(Math.round(0.012 * sampleRate), frameCount);
+                for (let i = 0; i < fadeFrames; i++) {
+                    const factor = (fadeFrames - i - 1) / fadeFrames;
+                    samples[frameCount - fadeFrames + i] *= factor;
+                }
+                alertCueBuffer = buffer;
+                return alertCueBuffer;
+            } catch (_) {
+                alertCueBuffer = null;
+                return null;
+            }
         }
 
         function initAudioContext() {
@@ -580,6 +639,22 @@
                     alertGain = audioCtx.createGain();
                     alertGain.gain.value = Math.max(0, Math.min(1, Number(audioPrefs.volume) / 100));
                     alertGain.connect(audioCtx.destination);
+                    ensureAlertCueBuffer();
+                    audioCtx.addEventListener('statechange', () => {
+                        if (!audioCtx) return;
+                        if (audioCtx.state !== 'running') {
+                            // Never leave future nodes queued on a paused/interrupted audio clock:
+                            // if it resumes after the wall-clock target, those nodes could ring late.
+                            cancelScheduledAlertAudioPlans(true);
+                        } else {
+                            setTimeout(() => {
+                                cancelPlansWhoseAudioClockMissedTarget();
+                                if (activeAlarm && Date.now() >= activeAlarm.deadlineAt) stopChimeSound(false);
+                                suppressTransitionSounds = true;
+                                if (typeof updateDashboard === 'function') updateDashboard();
+                            }, 0);
+                        }
+                    });
                 }
             }
             if (audioCtx && audioCtx.state === 'suspended') {
@@ -589,13 +664,27 @@
             }
         }
 
+        // Call from a real user gesture so browsers can unlock/resume Web Audio before
+        // any alarm is armed. The caller still updates the UI synchronously; this promise
+        // only confirms whether the browser actually allowed audio playback.
+        function ensureAudioContextRunningFromGesture() {
+            initAudioContext();
+            if (!audioCtx) return Promise.resolve(false);
+            if (audioCtx.state === 'running') return Promise.resolve(true);
+            try {
+                return Promise.resolve(audioCtx.resume()).then(() => audioCtx?.state === 'running').catch(() => false);
+            } catch (error) {
+                return Promise.resolve(false);
+            }
+        }
+
         // Original activation/deactivation tones retained; every sound now passes through masterGain.
         function playActivationSound() {
-            initAudioContext(); if (!audioCtx) return;
+            if (!audioCtx || audioCtx.state !== 'running' || !masterGain) return;
             try { const now=audioCtx.currentTime; [[880,0,0.11],[1320,0.025,0.055],[1760,0.045,0.025]].forEach(([freq,delay,volume])=>{const osc=audioCtx.createOscillator(),gain=audioCtx.createGain(),t=now+delay;osc.type='sine';osc.frequency.setValueAtTime(freq,t);gain.gain.setValueAtTime(0.0001,t);gain.gain.exponentialRampToValueAtTime(volume,t+0.012);gain.gain.exponentialRampToValueAtTime(0.0001,t+0.42);osc.connect(gain);gain.connect(masterGain);osc.start(t);osc.stop(t+0.44);}); } catch(e) {}
         }
         function playDeactivationSound() {
-            initAudioContext(); if (!audioCtx) return;
+            if (!audioCtx || audioCtx.state !== 'running' || !masterGain) return;
             try { const now=audioCtx.currentTime; [[784,0,0.075],[587.33,0.09,0.05],[440,0.17,0.028]].forEach(([freq,delay,volume])=>{const osc=audioCtx.createOscillator(),gain=audioCtx.createGain(),t=now+delay;osc.type='sine';osc.frequency.setValueAtTime(freq,t);gain.gain.setValueAtTime(0.0001,t);gain.gain.exponentialRampToValueAtTime(volume,t+0.012);gain.gain.exponentialRampToValueAtTime(0.0001,t+0.28);osc.connect(gain);gain.connect(masterGain);osc.start(t);osc.stop(t+0.30);}); } catch(e) {}
         }
 
@@ -632,11 +721,13 @@
         let alertPreLock = false;
         const alertPreparationKeys = new Set();
         const ALARM_MAX_DURATION_MS = 15000;
-        const ALERT_CYCLE_MS = 900;
+        const ALERT_CYCLE_MS = 1000; // 15 clean cues fit inside the 15-second alert window.
 
-        async function triggerChimeSound(eventId = 'general', cardEventId = null, serverId = currentServer) {
+        async function triggerChimeSound(eventId = 'general', cardEventId = null, serverId = currentServer, options = {}) {
             if (!isAlertPlaybackAllowed() || serverId !== currentServer) return;
-            // A card may join the visual glow while the first alarm owns the shared audio channel.
+            const scheduledPlan = options?.scheduledPlan && !options.scheduledPlan.cancelled
+                ? options.scheduledPlan : null;
+            // A card may join the visual glow while another alert owns the shared audio channel.
             if (activeAlarm) {
                 if (cardEventId) {
                     activeAlarm.glowCardIds.add(cardEventId);
@@ -648,33 +739,31 @@
                 }
                 return;
             }
-            initAudioContext();
-            if (!audioCtx) return;
-            try { if (audioCtx.state === 'suspended') await audioCtx.resume(); }
-            catch (error) { console.warn('El navegador no permitió activar el audio todavía:', error); return; }
-            if (serverId !== currentServer) return;
-            if (activeAlarm) {
-                if (cardEventId) {
-                    activeAlarm.glowCardIds.add(cardEventId);
-                    alertGlowUntil[cardEventId] = activeAlarm.deadlineAt;
-                    if (activeAlarm.glowCardIds.size > 1) {
-                        const toastSub = document.getElementById('toast-sub');
-                        if (toastSub) toastSub.textContent = ({ es: 'EVENTOS EN CURSO', pt: 'EVENTOS EM ANDAMENTO', en: 'EVENTS IN PROGRESS' })[currentLang] || 'EVENTOS EN CURSO';
-                    }
-                }
-                return;
-            }
-            cancelMainAlertPreview(true);
 
+            // An event alarm is only started by a sequence queued in advance on Web Audio's
+            // clock. Never synthesize a late replacement when JavaScript wakes after a deadline.
+            if (!scheduledPlan) return;
+            if (Date.now() > scheduledPlan.deadlineAt) {
+                // The sound has already run on the audio clock. Never play a stale catch-up cue.
+                scheduledAlarmAudioPlans.delete(scheduledPlan.key);
+                return;
+            }
+
+            cancelMainAlertPreview(true);
             const toast = document.getElementById('alarm-toast');
             if (!toast) return;
-            const startAt = performance.now();
+            const nowEpoch = Date.now();
+            const startEpoch = scheduledPlan ? scheduledPlan.targetEpoch : nowEpoch;
             activeAlarm = {
                 eventId, cardEventId, serverId, volume: Number(audioPrefs.volume),
-                startedAt: startAt, deadlineAt: Date.now() + ALARM_MAX_DURATION_MS,
-                glowCardIds: new Set(cardEventId ? [cardEventId] : [])
+                startedAt: performance.now() - Math.max(0, nowEpoch - startEpoch),
+                startedEpoch: startEpoch,
+                deadlineAt: scheduledPlan ? scheduledPlan.deadlineAt : nowEpoch + ALARM_MAX_DURATION_MS,
+                glowCardIds: new Set(cardEventId ? [cardEventId] : []),
+                scheduledPlan,
+                audioWasPreScheduled: Boolean(scheduledPlan)
             };
-            alarmStartedAt = startAt;
+            alarmStartedAt = activeAlarm.startedAt;
             alertPreLock = false;
             alertSettingsUnlockAt = 0;
             if (cardEventId) alertGlowUntil[cardEventId] = activeAlarm.deadlineAt;
@@ -685,6 +774,18 @@
                 pt: ['🔔 ALERTA DE EVENTO!', eventName],
                 en: ['🔔 EVENT ALERT!', eventName]
             }[currentLang] || ['🔔 ¡ALERTA DE EVENTO!', eventName];
+            // Notify the local browser-notification module after a valid alarm has started.
+            // This is page-local delivery only; no remote Push service is involved.
+            document.dispatchEvent(new CustomEvent('mir4ve:alarm-fired', {
+                detail: {
+                    eventId: cardEventId || 'general',
+                    eventTitle: String(eventName || 'MIR4VE').replace(/<[^>]*>/g, ''),
+                    serverId,
+                    occurredAt: startEpoch,
+                    durationMs: ALARM_MAX_DURATION_MS,
+                    tag: `mir4ve-alarm-${serverId}-${cardEventId || eventId}`
+                }
+            }));
             document.getElementById('toast-title').textContent = toastCopy[0];
             document.getElementById('toast-sub').textContent = toastCopy[1];
             toast.classList.remove('alarm-toast-leaving', 'hidden', 'alert-previewing');
@@ -692,26 +793,23 @@
             setPreviewPageLock(true, 'alarm');
             updateAlertControlLocks();
 
-            const playAlarmCycle = () => {
-                if (!activeAlarm || activeAlarm.serverId !== currentServer) return;
-                playSelectedAlertSound(activeAlarm.volume);
-            };
-            playAlarmCycle();
-            activeAlarm.repeatTimer = setInterval(() => {
-                if (!activeAlarm) return;
-                if (performance.now() - alarmStartedAt >= ALARM_MAX_DURATION_MS) { stopChimeSound(false, true); return; }
-                playAlarmCycle();
-            }, ALERT_CYCLE_MS);
-            alarmDeadlineTimer = setTimeout(() => stopChimeSound(false, true), ALARM_MAX_DURATION_MS);
+            // Keep the pre-scheduled plan attached to the active alert so Stop can cancel
+            // any remaining nodes. It is no longer a pending trigger candidate.
+            scheduledAlarmAudioPlans.delete(scheduledPlan.key);
+            alarmDeadlineTimer = setTimeout(
+                () => stopChimeSound(false),
+                Math.max(0, activeAlarm.deadlineAt - Date.now())
+            );
         }
 
-        function stopChimeSound(playStopCue = true, automatic = false) {
+        function stopChimeSound(playStopCue = true) {
             const wasPreview = previewInProgress;
             if (wasPreview) { cancelMainAlertPreview(true, true); if (!activeAlarm) return; }
             const previous = activeAlarm;
             const toast = document.getElementById('alarm-toast');
             const wasVisible = Boolean(toast && !toast.classList.contains('hidden'));
             if (previous?.repeatTimer) clearInterval(previous.repeatTimer);
+            if (previous?.scheduledPlan) cancelScheduledAlertAudioPlan(previous.scheduledPlan);
             if (alarmDeadlineTimer) clearTimeout(alarmDeadlineTimer);
             if (alarmFadeTimer) clearTimeout(alarmFadeTimer);
             alarmDeadlineTimer = null;
@@ -738,7 +836,6 @@
             }
             setPreviewPageLock(false);
             if (wasVisible && playStopCue && isAlertPlaybackAllowed()) playManualStopSound();
-            else if (wasVisible && automatic && isAlertPlaybackAllowed()) playAutoDismissSound();
             updateAlertControlLocks();
         }
 
@@ -747,13 +844,6 @@
             initAudioContext(); if (!audioCtx) return;
             try { const now=audioCtx.currentTime; [[784,0,0.045,0.14],[1174.66,0.07,0.035,0.2]].forEach(([freq,delay,volume,duration])=>{const osc=audioCtx.createOscillator(),gain=audioCtx.createGain(),t=now+delay;osc.type='sine';osc.frequency.setValueAtTime(freq,t);gain.gain.setValueAtTime(0.0001,t);gain.gain.exponentialRampToValueAtTime(volume,t+0.012);gain.gain.exponentialRampToValueAtTime(0.0001,t+duration);osc.connect(gain);gain.connect(masterGain || audioCtx.destination);osc.start(t);osc.stop(t+duration+0.02);}); } catch(e) {}
         }
-        async function playAutoDismissSound() {
-            initAudioContext(); if (!audioCtx) return;
-            try { if (audioCtx.state === 'suspended') await audioCtx.resume(); } catch (e) { return; }
-            if (audioCtx.state !== 'running') return;
-            try { const now=audioCtx.currentTime; [[659.25,0,0.035,0.13],[523.25,0.11,0.028,0.16],[392,0.23,0.018,0.22]].forEach(([freq,delay,volume,duration])=>{const osc=audioCtx.createOscillator(),gain=audioCtx.createGain(),t=now+delay;osc.type='sine';osc.frequency.setValueAtTime(freq,t);gain.gain.setValueAtTime(0.0001,t);gain.gain.exponentialRampToValueAtTime(volume,t+0.012);gain.gain.exponentialRampToValueAtTime(0.0001,t+duration);osc.connect(gain);gain.connect(masterGain || audioCtx.destination);osc.start(t);osc.stop(t+duration+0.02);}); } catch(e) {}
-        }
-
         function loadAudioPreferences() {
             try {
                 const serverRaw = appStorage.getItem(`${AUDIO_PREFS_KEY}_${currentServer}`);
@@ -762,8 +852,8 @@
             } catch (e) { audioPrefs = { ...DEFAULT_AUDIO_PREFS }; }
             audioPrefs.volume = [60,70,80,90,100].includes(Number(audioPrefs.volume)) ? Number(audioPrefs.volume) : 60;
             if (![1,2,3,4,5].includes(Number(audioPrefs.triggerMinutes))) audioPrefs.triggerMinutes = 1;
-            audioPrefs.triggerCooldownUntil = Number.isFinite(Number(audioPrefs.triggerCooldownUntil)) ? Number(audioPrefs.triggerCooldownUntil) : 0;
-            triggerChangeLocked = Date.now() < audioPrefs.triggerCooldownUntil;
+            // Clear legacy 60-second cooldown values saved by older versions.
+            audioPrefs.triggerCooldownUntil = 0;
             updateAlertTriggerButtons();
             updateAlertVolumeButtons();
             updateAlertControlLocks();
@@ -779,9 +869,18 @@
             }));
         }
 
+        function hasReachedScheduledAlertThreshold() {
+            const now = Date.now();
+            for (const plan of scheduledAlarmAudioPlans.values()) {
+                if (!plan.cancelled && plan.audioScheduled && plan.targetEpoch <= now && now < plan.deadlineAt) return true;
+            }
+            return false;
+        }
+
         function isAlertSettingsLocked() {
-            const triggerCooldownActive = Date.now() < Number(audioPrefs.triggerCooldownUntil || 0);
-            return Boolean(previewInProgress || activeAlarm || triggerCooldownActive || Date.now() < alertSettingsUnlockAt || isAlertImminentWindow());
+            // Lock only from the selected threshold itself while its 15-second alarm is active.
+            // There is intentionally no :30 pre-lock or arbitrary cooldown.
+            return Boolean(previewInProgress || activeAlarm || Date.now() < alertSettingsUnlockAt || hasReachedScheduledAlertThreshold());
         }
 
         function updateMasterAlertButtonLock() {
@@ -791,7 +890,7 @@
             button.disabled = locked;
             button.classList.toggle('is-action-locked', locked);
             button.setAttribute('aria-disabled', String(locked));
-            button.title = locked ? 'Panel de alertas bloqueado durante el tiempo de espera o mientras se prepara/ejecuta una alerta.' : (globalAudioEnabled ? I18N[currentLang].alertsOn : I18N[currentLang].alertsOff);
+            button.title = locked ? 'Panel de alertas bloqueado mientras suena una alarma o la previsualización.' : (globalAudioEnabled ? I18N[currentLang].alertsOn : I18N[currentLang].alertsOff);
         }
 
         function updateAlertVolumeButtons() {
@@ -817,6 +916,7 @@
             // Clicking the already-selected level is a no-op: no sound, save, or preview.
             if (nextVolume === Number(audioPrefs.volume)) return;
             audioPrefs.volume = nextVolume;
+            cancelScheduledAlertAudioPlans();
             initAudioContext();
             if (audioCtx && audioCtx.state === 'suspended') {
                 try { await audioCtx.resume(); } catch (e) {}
@@ -825,41 +925,31 @@
             saveAudioPreferences();
             updateAlertVolumeButtons();
             await previewMainAlert();
+            updateDashboard(); // Re-arm future Web Audio cues with the newly selected volume.
         }
 
         function updateAlertTriggerButtons() {
             const group = document.getElementById('alert-trigger-buttons');
             if (!group) return;
             const settingsLocked = isAlertSettingsLocked();
-            const cooldownActive = Date.now() < Number(audioPrefs.triggerCooldownUntil || 0);
             group.querySelectorAll('[data-alert-trigger]').forEach(button => {
                 const selected = Number(button.dataset.alertTrigger) === Number(audioPrefs.triggerMinutes);
                 button.classList.toggle('is-selected', selected);
                 button.setAttribute('aria-pressed', selected ? 'true' : 'false');
-                button.disabled = settingsLocked || cooldownActive;
-                button.setAttribute('aria-disabled', String(settingsLocked || cooldownActive));
+                button.disabled = settingsLocked;
+                button.setAttribute('aria-disabled', String(settingsLocked));
             });
-            group.classList.toggle('is-locked', settingsLocked || cooldownActive);
+            group.classList.toggle('is-locked', settingsLocked);
             const value = document.getElementById('alert-trigger-value');
             if (value) value.textContent = `${audioPrefs.triggerMinutes}m`;
         }
 
         function updateTriggerCooldownDisplay() {
             const label = document.getElementById('alert-trigger-cooldown');
-            const until = Number(audioPrefs.triggerCooldownUntil || 0);
-            const remaining = Math.max(0, Math.ceil((until - Date.now()) / 1000));
             if (label) {
-                if (remaining > 0) {
-                    label.textContent = `${I18N[currentLang].triggerAvailableIn}${String(Math.floor(remaining / 60)).padStart(2, '0')}:${String(remaining % 60).padStart(2, '0')}`;
-                    label.classList.add('is-counting');
-                } else {
-                    label.textContent = I18N[currentLang].triggerAvailable;
-                    label.classList.remove('is-counting');
-                }
+                label.textContent = I18N[currentLang].triggerAvailable;
+                label.classList.remove('is-counting');
             }
-            const oldLocked = triggerChangeLocked;
-            triggerChangeLocked = remaining > 0;
-            if (oldLocked !== triggerChangeLocked) updateAlertTriggerButtons();
         }
 
         function updateAlertControlLocks() {
@@ -870,34 +960,180 @@
         }
 
 
-        function isAlertImminentWindow() {
-            if (activeAlarm || previewInProgress || Date.now() < alertSettingsUnlockAt) return true;
-            const serverNow = getSelectedServerTime();
-            for (const eventDef of EVENT_DEFINITIONS) {
-                const state = calculateEventState(eventDef, serverNow);
-                for (const instance of (state.upcomingInstances || [])) {
-                    if (!isOccurrenceBellOn(eventDef.id, instance.startH, instance.startM)) continue;
-                    const dateKey = getOccurrenceDateKey(serverNow, instance.startH, instance.startM);
-                    const alertKey = `${currentServer}_${eventDef.id}_${instance.startH}_${instance.startM}_${dateKey}`;
-                    const target = armedAlertTargets[`${currentServer}_${alertKey}`];
-                    const targetSec = Number.isFinite(target) ? target : calculateAlertTargetSec(instance.remainingSec, audioPrefs.triggerMinutes);
-                    // Lock 30 seconds before the selected trigger threshold, e.g. 05:30 for 05:00.
-                    if (targetSec > 0 && instance.remainingSec <= targetSec + 30 && instance.remainingSec > Math.max(15, targetSec - 15)) return true;
-                }
-            }
-            return false;
+        function calculateAlertTargetSec(remainingSec, triggerMinutes = audioPrefs.triggerMinutes) {
+            const minutes = Number(triggerMinutes);
+            if (!Number.isFinite(remainingSec) || ![1, 2, 3, 4, 5].includes(minutes)) return -1;
+            const selectedSec = minutes * 60;
+            // Exact threshold only. Once the selected threshold has passed, do not substitute
+            // a lower minute or a 30-second warning for the user's chosen alert time.
+            return remainingSec >= selectedSec ? selectedSec : -1;
         }
 
-        function calculateAlertTargetSec(remainingSec, triggerMinutes = audioPrefs.triggerMinutes) {
-            if (!Number.isFinite(remainingSec) || remainingSec <= 15) return -1;
-            const selectedSec = Number(triggerMinutes) * 60;
-            if (remainingSec > selectedSec) return selectedSec;
-            // If the selected threshold has already passed, choose the next lower whole-minute
-            // threshold. At the final minute, 30 seconds is the last useful warning point.
-            const lowerMinute = Math.floor((remainingSec - 1) / 60) * 60;
-            if (lowerMinute > 0 && lowerMinute < remainingSec) return lowerMinute;
-            if (remainingSec > 30) return 30;
-            return -1;
+        // Convert a scheduled server-clock occurrence into an absolute local epoch timestamp.
+        // getSelectedServerTime() uses a fixed server offset, so subtracting that offset maps
+        // its UTC fields back to the corresponding real UTC instant without browser-local DST.
+        function getOccurrenceTimestamp(startH, startM, serverNow = getSelectedServerTime()) {
+            const targetMinutes = startH * 60 + startM;
+            const currentMinutes = serverNow.getUTCHours() * 60 + serverNow.getUTCMinutes();
+            const occurrence = new Date(serverNow.getTime());
+            if (targetMinutes <= currentMinutes) occurrence.setUTCDate(occurrence.getUTCDate() + 1);
+            occurrence.setUTCHours(startH, startM, 0, 0);
+            return occurrence.getTime() - SERVER_CONFIG[currentServer].offset * 3600000;
+        }
+
+        function cancelScheduledAlertAudioPlan(plan) {
+            if (!plan || plan.cancelled) return;
+            plan.cancelled = true;
+            (plan.nodes || []).forEach(node => {
+                if (node.cleanupTimer) clearTimeout(node.cleanupTimer);
+                (node.sources || []).forEach(source => {
+                    try { source.onended = null; } catch (_) {}
+                    try { source.stop(); } catch (_) {}
+                    try { source.disconnect(); } catch (_) {}
+                });
+                try {
+                    node.master?.disconnect(); node.filter?.disconnect(); node.delay?.disconnect();
+                    node.echoGain?.disconnect(); node.output?.disconnect(); node.gain?.disconnect();
+                } catch (_) {}
+            });
+            plan.nodes = [];
+        }
+
+        function cancelScheduledAlertAudioPlans(includeActivePlan = false) {
+            scheduledAlarmAudioPlans.forEach(plan => {
+                if (!includeActivePlan && activeAlarm?.scheduledPlan === plan) return;
+                cancelScheduledAlertAudioPlan(plan);
+            });
+            for (const [key, plan] of scheduledAlarmAudioPlans.entries()) {
+                if (plan.cancelled || (includeActivePlan && activeAlarm?.scheduledPlan === plan)) scheduledAlarmAudioPlans.delete(key);
+            }
+            scheduledAlertMembership.clear();
+            if (includeActivePlan && activeAlarm?.scheduledPlan) {
+                cancelScheduledAlertAudioPlan(activeAlarm.scheduledPlan);
+                activeAlarm.scheduledPlan = null;
+                activeAlarm.audioWasPreScheduled = false;
+            }
+        }
+
+        function cancelPlansWhoseAudioClockMissedTarget() {
+            if (!audioCtx) return;
+            const wallNow = Date.now();
+            let removed = false;
+            for (const [key, plan] of scheduledAlarmAudioPlans.entries()) {
+                // If wall time passed the target but the audio clock is still before its start,
+                // the context was paused. Cancel it instead of allowing a delayed catch-up sound.
+                if (plan.targetEpoch <= wallNow && audioCtx.currentTime + 0.025 < plan.audioStartAt) {
+                    cancelScheduledAlertAudioPlan(plan);
+                    scheduledAlarmAudioPlans.delete(key);
+                    removed = true;
+                }
+            }
+            if (removed) scheduledAlertMembership.clear();
+        }
+
+        function createScheduledAlertAudioPlan(alertKey, cardEventId, targetEpoch) {
+            if (!audioCtx || audioCtx.state !== 'running') return null;
+            const delayMs = targetEpoch - Date.now();
+            if (delayMs < MIN_AUDIO_SCHEDULE_LEAD_MS || delayMs > PRECISE_ALERT_SCHEDULE_HORIZON_MS) return null;
+            const audioStartAt = audioCtx.currentTime + delayMs / 1000;
+            const nodes = [];
+            // Include only cue starts whose complete buffered tail fits inside the 15s alert.
+            const cueBuffer = ensureAlertCueBuffer();
+            if (!cueBuffer) return null;
+            const cueTailMs = cueBuffer.duration * 1000;
+            const lastSafeOffsetMs = ALARM_MAX_DURATION_MS - cueTailMs;
+            // All repetitions are queued on Web Audio's clock, independent of JS timer throttling.
+            for (let offset = 0; offset <= lastSafeOffsetMs; offset += ALERT_CYCLE_MS) {
+                const beforeCount = nodes.length;
+                const scheduledNode = playSelectedAlertSound(null, nodes, audioStartAt + offset / 1000);
+                // Never label a silent/partial plan as successfully armed. A later dashboard
+                // tick may retry only while the exact target is still in the future; missed
+                // targets are consumed silently, never moved to another threshold.
+                if (!scheduledNode || nodes.length !== beforeCount + 1) {
+                    cancelScheduledAlertAudioPlan({ nodes, cancelled: false });
+                    return null;
+                }
+            }
+            return {
+                key: alertKey,
+                cardEventId,
+                targetEpoch,
+                audioStartAt,
+                deadlineAt: targetEpoch + ALARM_MAX_DURATION_MS,
+                nodes,
+                cancelled: false,
+                audioScheduled: true
+            };
+        }
+
+        function refreshPreciseAlertAudioSchedule(calculatedEvents, serverNow = getSelectedServerTime()) {
+            const now = Date.now();
+            if (previewInProgress || !audioCtx || audioCtx.state !== 'running') {
+                if (!audioCtx || audioCtx.state !== 'running') cancelScheduledAlertAudioPlans();
+                scheduledAlertMembership.clear();
+                return;
+            }
+
+            const candidates = [];
+            calculatedEvents.forEach(evt => {
+                if (evt.triggerType === 'kill-count') return;
+                (evt.state.upcomingInstances || []).forEach(instance => {
+                    if (triggeredAlerts[`${currentServer}_${evt.id}_${instance.startH}_${instance.startM}_${getOccurrenceDateKey(serverNow, instance.startH, instance.startM)}`]) return;
+                    if (!isOccurrenceBellOn(evt.id, instance.startH, instance.startM)) return;
+                    const dateKey = getOccurrenceDateKey(serverNow, instance.startH, instance.startM);
+                    const alertKey = `${currentServer}_${evt.id}_${instance.startH}_${instance.startM}_${dateKey}`;
+                    const armedKey = `${currentServer}_${alertKey}`;
+                    let targetSec = armedAlertTargets[armedKey];
+                    if (!Number.isFinite(targetSec)) {
+                        targetSec = calculateAlertTargetSec(instance.remainingSec, audioPrefs.triggerMinutes);
+                        armedAlertTargets[armedKey] = targetSec;
+                    }
+                    if (targetSec <= 0) return;
+                    const targetEpoch = getOccurrenceTimestamp(instance.startH, instance.startM, serverNow) - targetSec * 1000;
+                    const existing = scheduledAlarmAudioPlans.get(alertKey);
+                    const isInSchedulingHorizon = targetEpoch > now + MIN_AUDIO_SCHEDULE_LEAD_MS && targetEpoch <= now + PRECISE_ALERT_SCHEDULE_HORIZON_MS;
+                    const existingSequenceStillAudible = existing && !existing.cancelled && existing.targetEpoch === targetEpoch && now <= existing.deadlineAt;
+                    if (isInSchedulingHorizon || existingSequenceStillAudible) {
+                        candidates.push({ key: alertKey, eventId: evt.id, targetEpoch, targetSec, armedKey });
+                    }
+                });
+            });
+
+            candidates.sort((a, b) => a.targetEpoch - b.targetEpoch || a.key.localeCompare(b.key));
+            const groups = [];
+            const membership = new Map();
+            candidates.forEach(candidate => {
+                // If an alarm is already sounding, nearby events share that one sound rather
+                // than stacking multiple audible sequences over one another.
+                if (activeAlarm && candidate.targetEpoch >= activeAlarm.startedEpoch && candidate.targetEpoch <= activeAlarm.deadlineAt) return;
+                const currentGroup = groups[groups.length - 1];
+                if (currentGroup && candidate.targetEpoch - currentGroup.leader.targetEpoch < ALARM_MAX_DURATION_MS) {
+                    membership.set(candidate.key, currentGroup.leader.key);
+                    currentGroup.members.push(candidate);
+                } else {
+                    groups.push({ leader: candidate, members: [candidate] });
+                    membership.set(candidate.key, candidate.key);
+                }
+            });
+            scheduledAlertMembership = membership;
+
+            const desiredLeaders = new Map(groups.map(group => [group.leader.key, group.leader]));
+            for (const [key, plan] of scheduledAlarmAudioPlans.entries()) {
+                const desired = desiredLeaders.get(key);
+                if (!desired || desired.targetEpoch !== plan.targetEpoch) {
+                    if (activeAlarm?.scheduledPlan !== plan) cancelScheduledAlertAudioPlan(plan);
+                    scheduledAlarmAudioPlans.delete(key);
+                }
+            }
+
+            groups.forEach(group => {
+                const leader = group.leader;
+                const existing = scheduledAlarmAudioPlans.get(leader.key);
+                if (existing && !existing.cancelled && existing.targetEpoch === leader.targetEpoch) return;
+                if (leader.targetEpoch <= now + MIN_AUDIO_SCHEDULE_LEAD_MS) return; // Never schedule retroactively.
+                const plan = createScheduledAlertAudioPlan(leader.key, leader.eventId, leader.targetEpoch);
+                if (plan) scheduledAlarmAudioPlans.set(leader.key, plan);
+            });
         }
 
         function refreshArmedAlertTargets() {
@@ -915,15 +1151,15 @@
         }
 
         function changeAlertTrigger(value) {
-            if (triggerChangeLocked || isAlertSettingsLocked() || Date.now() < Number(audioPrefs.triggerCooldownUntil || 0)) return;
+            if (isAlertSettingsLocked()) return;
             const nextValue = Number(value);
             if (![1, 2, 3, 4, 5].includes(nextValue) || nextValue === Number(audioPrefs.triggerMinutes)) return;
             playTimeFormatSound();
             audioPrefs.triggerMinutes = nextValue;
-            audioPrefs.triggerCooldownUntil = Date.now() + 60000;
+            audioPrefs.triggerCooldownUntil = 0;
             saveAudioPreferences();
+            cancelScheduledAlertAudioPlans();
             refreshArmedAlertTargets();
-            triggerChangeLocked = true;
             updateAlertControlLocks();
             const feedback = document.getElementById('alert-trigger-feedback');
             if (feedback) {
@@ -934,18 +1170,7 @@
                 if (triggerFeedbackTimer) clearTimeout(triggerFeedbackTimer);
                 triggerFeedbackTimer = setTimeout(() => { feedback.classList.remove('is-visible'); triggerFeedbackTimer = null; }, 1700);
             }
-            if (triggerUnlockTimer) clearTimeout(triggerUnlockTimer);
-            const cooldownServer = currentServer;
-            const cooldownUntil = audioPrefs.triggerCooldownUntil;
-            triggerUnlockTimer = setTimeout(() => {
-                if (currentServer !== cooldownServer || Number(audioPrefs.triggerCooldownUntil) !== cooldownUntil) return;
-                audioPrefs.triggerCooldownUntil = 0;
-                triggerChangeLocked = false;
-                triggerUnlockTimer = null;
-                saveAudioPreferences();
-                updateTriggerCooldownDisplay();
-                updateAlertControlLocks();
-            }, 60000);
+            updateDashboard();
         }
 
         function formatAlertMoment(totalSeconds) {
@@ -953,74 +1178,171 @@
             return `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
         }
 
-        function showAlertArmNotice(message) {
+        function findAlertNoticeCard(anchor) {
+            if (!anchor || !anchor.eventId) return null;
+            const cards = document.querySelectorAll('.event-card[data-event-id]');
+            let sameEventFallback = null;
+            for (const card of cards) {
+                if (card.dataset.eventId !== String(anchor.eventId)) continue;
+                // Prefer the exact scheduled occurrence. If a live tick crossed an occurrence
+                // boundary and replaced that chip/card, anchor to the same event instead of
+                // throwing the confirmation back to the top of the page.
+                if (Number(card.dataset.startH) === Number(anchor.startH) &&
+                    Number(card.dataset.startM) === Number(anchor.startM)) return card;
+                if (!sameEventFallback) sameEventFallback = card;
+            }
+            return sameEventFallback;
+        }
+
+        function clearAlertNoticeTracking(notice) {
+            if (armNoticeTimer) clearTimeout(armNoticeTimer);
+            armNoticeTimer = null;
+            if (armNoticePositionFrame && typeof cancelAnimationFrame === 'function') {
+                cancelAnimationFrame(armNoticePositionFrame);
+            }
+            armNoticePositionFrame = 0;
+            window.removeEventListener('scroll', scheduleAlertNoticePosition, true);
+            window.removeEventListener('resize', scheduleAlertNoticePosition);
+            armNoticeAnchor = null;
+            if (notice) {
+                notice.classList.remove('alert-arm-notice-card-anchor', 'alert-arm-notice-below-card');
+                notice.style.removeProperty('left');
+                notice.style.removeProperty('top');
+                notice.style.removeProperty('max-width');
+            }
+        }
+
+        function positionAlertArmNotice() {
+            armNoticePositionFrame = 0;
+            const notice = document.getElementById('alert-arm-notice');
+            if (!notice || !armNoticeAnchor || notice.classList.contains('hidden')) return;
+            const card = findAlertNoticeCard(armNoticeAnchor);
+            if (!card) {
+                // The clicked card may disappear during a tab/pagination transition. Fall back
+                // to a visible viewport-level notice rather than leaving it off-screen.
+                armNoticeAnchor = null;
+                notice.classList.remove('alert-arm-notice-card-anchor', 'alert-arm-notice-below-card');
+                notice.style.removeProperty('left');
+                notice.style.removeProperty('top');
+                notice.style.removeProperty('max-width');
+                return;
+            }
+
+            let rect = card.getBoundingClientRect();
+            const viewportWidth = Math.max(280, document.documentElement.clientWidth || window.innerWidth || 280);
+            const viewportHeight = Math.max(240, window.innerHeight || document.documentElement.clientHeight || 240);
+            const maxWidth = Math.max(220, Math.min(440, viewportWidth - 24));
+            notice.style.maxWidth = `${maxWidth}px`;
+
+            // Keep the confirmation immediately above the card. If scrolling placed the card
+            // too close to the viewport top, move the page upward just enough to make room.
+            const noticeHeight = Math.max(notice.offsetHeight, 42);
+            const requiredTopSpace = noticeHeight + 18;
+            if (rect.top < requiredTopSpace) {
+                const pageOffset = Math.max(0, window.scrollY || window.pageYOffset || 0);
+                const scrollUp = Math.min(requiredTopSpace - rect.top, pageOffset);
+                if (scrollUp > 1) {
+                    window.scrollBy(0, -scrollUp);
+                    rect = card.getBoundingClientRect();
+                }
+            }
+
+            const estimatedWidth = Math.min(Math.max(notice.scrollWidth, 220), maxWidth);
+            const halfWidth = estimatedWidth / 2;
+            const centerX = rect.left + rect.width / 2;
+            const left = Math.min(viewportWidth - halfWidth - 12, Math.max(halfWidth + 12, centerX));
+            const fitsAbove = rect.top >= noticeHeight + 18;
+            let top;
+            if (fitsAbove) {
+                top = rect.top - 10;
+                notice.classList.remove('alert-arm-notice-below-card');
+            } else {
+                // At the absolute top of the document there may be no scroll room. In that
+                // rare geometric edge case, keep the notice fully visible directly below card.
+                top = Math.min(viewportHeight - noticeHeight - 8, Math.max(8, rect.bottom + 8));
+                notice.classList.add('alert-arm-notice-below-card');
+            }
+            notice.style.left = `${left}px`;
+            notice.style.top = `${top}px`;
+        }
+
+        function scheduleAlertNoticePosition() {
+            if (armNoticePositionFrame || typeof requestAnimationFrame !== 'function') {
+                if (typeof requestAnimationFrame !== 'function') positionAlertArmNotice();
+                return;
+            }
+            armNoticePositionFrame = requestAnimationFrame(positionAlertArmNotice);
+        }
+
+        function showAlertArmNotice(message, anchor = null) {
             const notice = document.getElementById('alert-arm-notice');
             if (!notice) return;
+            clearAlertNoticeTracking(notice);
+            notice.classList.remove('hidden', 'alert-arm-notice-leaving', 'alert-arm-notice-visible');
             notice.textContent = message;
-            notice.classList.remove('hidden', 'alert-arm-notice-leaving');
+            if (anchor && anchor.eventId) {
+                armNoticeAnchor = { eventId: String(anchor.eventId), startH: Number(anchor.startH), startM: Number(anchor.startM) };
+                notice.classList.add('alert-arm-notice-card-anchor');
+                window.addEventListener('scroll', scheduleAlertNoticePosition, true);
+                window.addEventListener('resize', scheduleAlertNoticePosition, { passive: true });
+            }
+            // Restart the entrance transition for each activation confirmation.
+            void notice.offsetWidth;
             notice.classList.add('alert-arm-notice-visible');
-            if (armNoticeTimer) clearTimeout(armNoticeTimer);
+            if (armNoticeAnchor) scheduleAlertNoticePosition();
             armNoticeTimer = setTimeout(() => {
                 notice.classList.remove('alert-arm-notice-visible');
                 notice.classList.add('alert-arm-notice-leaving');
-                setTimeout(() => { notice.classList.add('hidden'); notice.classList.remove('alert-arm-notice-leaving'); }, 180);
+                setTimeout(() => {
+                    notice.classList.add('hidden');
+                    notice.classList.remove('alert-arm-notice-leaving');
+                    clearAlertNoticeTracking(notice);
+                }, 180);
                 armNoticeTimer = null;
             }, 3000);
         }
 
-        function playSelectedAlertSound(volumeOverride = null, nodeTracker = null) {
+        function playSelectedAlertSound(volumeOverride = null, nodeTracker = null, scheduledStartTime = null) {
             initAudioContext();
-            if (!audioCtx || !alertGain) return;
-            const preset = EVENT_ALARM_PRESET;
+            if (!audioCtx || audioCtx.state !== 'running' || !alertGain) return null;
+            const cueBuffer = ensureAlertCueBuffer();
+            if (!cueBuffer) return null;
             const now = audioCtx.currentTime;
+            // Each cue uses a single AudioBufferSource, scheduled directly on the audio clock.
+            const startAt = Number.isFinite(scheduledStartTime) ? Math.max(now + 0.01, scheduledStartTime) : now + 0.005;
             let output = alertGain;
+            let gainNode = null;
+            let source = null;
             try {
                 if (volumeOverride !== null && Number.isFinite(Number(volumeOverride))) {
-                    output = audioCtx.createGain();
-                    output.gain.value = Math.max(0, Math.min(1, Number(volumeOverride) / 100));
-                    output.connect(audioCtx.destination);
+                    gainNode = audioCtx.createGain();
+                    gainNode.gain.setValueAtTime(Math.max(0, Math.min(1, Number(volumeOverride) / 100)), now);
+                    gainNode.connect(audioCtx.destination);
+                    output = gainNode;
                 }
-                const master = audioCtx.createGain();
-                master.gain.value = preset.volume / 100;
-                const filter = audioCtx.createBiquadFilter();
-                filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(preset.filter, now);
-                master.connect(filter);
-                filter.connect(output);
-                if (nodeTracker) {
-                    nodeTracker.push({ master, output: volumeOverride !== null ? output : null, cleanupTimer: null });
-                }
-
-                const originalNoteLevels = [0.12, 0.10, 0.085];
-                preset.notes.forEach((frequency, index) => {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    const t = now + index * preset.spacing;
-                    const peak = originalNoteLevels[index] * (preset.volume / 100);
-                    osc.type = preset.wave;
-                    osc.frequency.setValueAtTime(frequency, t);
-                    gain.gain.setValueAtTime(0.0001, t);
-                    gain.gain.linearRampToValueAtTime(peak, t + preset.attack);
-                    gain.gain.setValueAtTime(peak, t + preset.duration);
-                    gain.gain.exponentialRampToValueAtTime(0.0001, t + preset.duration + preset.release);
-                    osc.connect(gain);
-                    gain.connect(master);
-                    osc.start(t);
-                    osc.stop(t + preset.duration + preset.release + 0.01);
-                });
-
-                // A subtle 40 ms echo gives the three-note alert a little body without muddying it.
-                const delay = audioCtx.createDelay(0.12);
-                const echoGain = audioCtx.createGain();
-                echoGain.gain.value = preset.echo;
-                filter.connect(delay);
-                delay.connect(echoGain);
-                echoGain.connect(output);
-                const trackedNode = nodeTracker ? nodeTracker[nodeTracker.length - 1] : null;
-                const cleanup = () => { try { master.disconnect(); filter.disconnect(); delay.disconnect(); echoGain.disconnect(); if (volumeOverride !== null && output !== alertGain) output.disconnect(); } catch (e) {} };
-                const cleanupTimer = setTimeout(cleanup, 900);
-                if (trackedNode) trackedNode.cleanupTimer = cleanupTimer;
-            } catch (e) {}
+                source = audioCtx.createBufferSource();
+                source.buffer = cueBuffer;
+                source.connect(output);
+                const trackedNode = {
+                    master: null, filter: null, delay: null, echoGain: null,
+                    output: gainNode, gain: gainNode, cleanupTimer: null,
+                    sources: [source], scheduledStartTime: startAt
+                };
+                source.onended = () => {
+                    try { source.disconnect(); } catch (_) {}
+                    if (gainNode) {
+                        try { gainNode.disconnect(); } catch (_) {}
+                    }
+                };
+                source.start(startAt);
+                if (nodeTracker) nodeTracker.push(trackedNode);
+                return trackedNode;
+            } catch (_) {
+                try { source?.stop(); } catch (_) {}
+                try { source?.disconnect(); } catch (_) {}
+                try { gainNode?.disconnect(); } catch (_) {}
+                return null;
+            }
         }
 
         function applyAlarmAnimation() {
@@ -1066,26 +1388,29 @@
             previewSoundNodes.forEach(node => {
                 if (node.cleanupTimer) clearTimeout(node.cleanupTimer);
                 try {
-                    const param = node.master?.gain;
+                    const param = node.gain?.gain;
                     if (param) {
                         const current = Math.max(0.0001, param.value || 0.0001);
                         param.cancelScheduledValues(now);
                         param.setValueAtTime(current, now);
                         param.exponentialRampToValueAtTime(0.0001, end);
                     }
-                } catch (e) {}
+                } catch (_) {}
                 node.cleanupTimer = setTimeout(() => {
-                    try { node.master?.disconnect(); node.output?.disconnect(); } catch (e) {}
+                    (node.sources || []).forEach(source => {
+                        try { source.stop(); } catch (_) {}
+                        try { source.disconnect(); } catch (_) {}
+                    });
+                    try { node.gain?.disconnect(); node.output?.disconnect(); } catch (_) {}
                 }, durationMs + 35);
             });
             previewSoundNodes = [];
         }
 
         function finishMainAlertPreview({ fade = false } = {}) {
-            if (previewAlarmInterval) clearInterval(previewAlarmInterval);
             if (previewStopTimer) clearTimeout(previewStopTimer);
             if (previewUnlockTimer) clearTimeout(previewUnlockTimer);
-            previewAlarmInterval = previewStopTimer = previewUnlockTimer = null;
+            previewStopTimer = previewUnlockTimer = null;
             if (fade) fadePreviewAudioOut(240);
             else previewSoundNodes = [];
             const toast = document.getElementById('alarm-toast');
@@ -1098,6 +1423,7 @@
                 if (toast) toast.classList.remove('alarm-toast-leaving', 'alert-previewing', 'alert-animation-4');
                 setPreviewPageLock(false);
                 updateAlertControlLocks();
+                updateDashboard();
             }, fade ? 280 : 360);
         }
 
@@ -1110,6 +1436,7 @@
             if (!toast) return;
             previewInProgress = true;
             previewStopping = false;
+            cancelScheduledAlertAudioPlans();
             previewSoundNodes = [];
             updateAlertControlLocks();
             setPreviewPageLock(true);
@@ -1119,15 +1446,14 @@
             document.getElementById('toast-sub').textContent = `Volumen ${audioPrefs.volume}% · sonido de evento`;
             applyAlarmAnimation();
             const previewVolume = Number(audioPrefs.volume);
-            playSelectedAlertSound(previewVolume, previewSoundNodes);
-            previewAlarmInterval = setInterval(() => {
-                if (previewStopping || !previewInProgress) return;
-                playSelectedAlertSound(previewVolume, previewSoundNodes);
-            }, 900);
+            const previewStartAt = audioCtx.currentTime + 0.03;
+            // Queue the full five-second preview on the audio clock; JS timer jitter cannot
+            // introduce uneven spacing between notes while the preview is running.
+            for (let offset = 0; offset < 5000; offset += ALERT_CYCLE_MS) {
+                playSelectedAlertSound(previewVolume, previewSoundNodes, previewStartAt + offset / 1000);
+            }
             previewStopTimer = setTimeout(() => {
                 if (!previewInProgress || previewStopping) return;
-                if (previewAlarmInterval) clearInterval(previewAlarmInterval);
-                previewAlarmInterval = null;
                 // Let the final notes and release tail finish before restoring the interface.
                 previewUnlockTimer = setTimeout(() => {
                     previewUnlockTimer = null;
@@ -1140,6 +1466,7 @@
                         setPreviewPageLock(false);
                         updateAlertControlLocks();
                         previewSoundNodes = [];
+                        updateDashboard(); // Re-arm queued alarms after the preview's final fade.
                     }, 220);
                 }, 360);
             }, 5000);
@@ -1149,8 +1476,6 @@
             if (!previewInProgress) return false;
             if (previewStopping) return true;
             previewStopping = true;
-            if (previewAlarmInterval) clearInterval(previewAlarmInterval);
-            previewAlarmInterval = null;
             if (previewStopTimer) clearTimeout(previewStopTimer);
             previewStopTimer = null;
             if (previewUnlockTimer) clearTimeout(previewUnlockTimer);
@@ -1166,6 +1491,7 @@
                 if (toast) toast.classList.remove('alarm-toast-leaving', 'alert-previewing', 'alert-animation-4');
                 setPreviewPageLock(false);
                 if (unlock) updateAlertControlLocks();
+                updateDashboard();
             }, fade ? 280 : 1);
             return true;
         }
@@ -1196,7 +1522,7 @@
         // Separate from the general UI click and all event/alert sounds.
         function playTimeFormatSound() {
             initAudioContext();
-            if (!audioCtx) return;
+            if (!audioCtx || audioCtx.state !== 'running') return;
             try {
                 const now = audioCtx.currentTime;
                 [[659.25, 0, 0.035, 0.075], [880, 0.055, 0.027, 0.095]].forEach(([frequency, delay, volume, duration]) => {
@@ -1215,14 +1541,24 @@
             } catch (e) {}
         }
 
-        // Unlock/resume Web Audio on the first real user gesture so later scheduled alerts can be heard.
-        // Browsers block automatic audio until the visitor interacts with the page at least once.
+        // Unlock/resume Web Audio on a real user gesture, but never re-render cards on pointerdown.
+        // updateDashboard() rebuilds the card DOM; doing that between pointerdown and click detaches
+        // the clicked bell button, so its left-click never reaches the delegated click handler.
+        // The regular dashboard tick will refresh alarm schedules once the audio context resumes.
         document.addEventListener('pointerdown', () => {
             initAudioContext();
-        }, { once: true, passive: true });
+            if (audioCtx && audioCtx.state === 'suspended') {
+                try {
+                    const resumePromise = audioCtx.resume();
+                    if (resumePromise && typeof resumePromise.catch === 'function') resumePromise.catch(() => {});
+                } catch (_) {}
+            }
+        }, { passive: true });
 
         document.addEventListener('click', (event) => {
-            const target = event.target.closest('.tab-btn, .nav-group-trigger, .nav-submenu-option, #lang-select, #lang-menu button, #sponsor-btn, #server-select, #server-menu button, #home-nav-btn, #about-nav-btn, .token-coin');
+            const node = event.target instanceof Element ? event.target : event.target?.parentElement;
+            if (!node) return;
+            const target = node.closest('.tab-btn, .nav-group-trigger, .nav-submenu-option, #lang-select, #lang-menu button, #sponsor-btn, #server-select, #server-menu button, #home-nav-btn, #about-nav-btn, .token-coin');
             if (target) playUiClickSound();
         });
 
@@ -1230,13 +1566,11 @@
         // If at least one scheduled alert is enabled, one click performs a full clean
         // (all event defaults and every occurrence off). If none are enabled, it enables all.
         function toggleGlobalAudio() {
-            if (previewInProgress || activeAlarm) return;
-            initAudioContext();
+            if (isAlertSettingsLocked()) return;
+            // Call resume synchronously inside the user's click gesture, but do not delay UI state.
+            const audioReady = ensureAudioContextRunningFromGesture();
             const nextValue = !hasAnyEnabledBell();
 
-            // Synchronize legacy event defaults, known occurrences, and any saved overrides.
-            // Keeping explicit occurrence values prevents old individual settings from
-            // unexpectedly re-enabling a bell after a global clean or a page reload.
             Object.keys(cardBellStates).forEach(key => { cardBellStates[key] = nextValue; });
             EVENT_DEFINITIONS.forEach(eventDef => {
                 cardBellStates[eventDef.id] = nextValue;
@@ -1247,11 +1581,23 @@
             globalAudioEnabled = nextValue;
             appStorage.setItem(serverPreferenceKey(STORAGE_MASTER_ALERT), String(nextValue));
             appStorage.setItem(serverPreferenceKey(STORAGE_BELLS), JSON.stringify(cardBellStates));
+            cancelScheduledAlertAudioPlans();
 
             if (nextValue) {
-                playActivationSound();
+                Object.keys(triggeredAlerts).forEach(key => { if (key.startsWith(`${currentServer}_`)) delete triggeredAlerts[key]; });
+                refreshArmedAlertTargets();
+                audioReady.then(ready => {
+                    if (ready) playActivationSound();
+                    else showAlertArmNotice(({ es: 'Las alertas quedaron activadas, pero el navegador no habilitó el audio. Interactúa con la página para permitirlo; los umbrales que sigan pendientes se programarán.', pt: 'Os alertas foram ativados, mas o navegador não habilitou o áudio. Interaja com a página para permitir o som; os limites ainda pendentes serão programados.', en: 'Alerts are enabled, but the browser did not unlock audio. Interact with the page to allow sound; thresholds still in the future will be scheduled.' })[currentLang]);
+                    // updateDashboard already ran synchronously after the click; the 1s ticker
+                    // refreshes audio scheduling after resume without a second async DOM rebuild.
+                });
             } else {
-                playDeactivationSound();
+                Object.keys(armedAlertTargets).forEach(key => { if (key.startsWith(`${currentServer}_${currentServer}_`)) delete armedAlertTargets[key]; });
+                alertPreparationKeys.clear();
+                alertPreLock = false;
+                setPreviewPageLock(false);
+                audioReady.then(ready => { if (ready) playDeactivationSound(); });
                 stopChimeSound();
             }
 
@@ -1266,54 +1612,89 @@
             if (!eventDef) return;
             const serverNow = getSelectedServerTime();
             const state = calculateEventState(eventDef, serverNow);
-            // The active card itself has no alert control; future occurrences remain independent.
-            if (state.isActive && state.startH === startH && state.startM === startM) return;
-            initAudioContext();
-
             const bellKey = getOccurrenceBellKey(eventId, startH, startM);
             const nextValue = !isOccurrenceBellOn(eventId, startH, startM);
             const upcoming = (state.upcomingInstances || []).find(instance =>
                 instance.startH === startH && instance.startM === startM);
             const remaining = upcoming?.remainingSec;
-            // Prevent late arming close to the start. The narrow 55–60 s boundary asks for
-            // confirmation and schedules the next useful cue (normally 30 s); below that
-            // boundary, activation is blocked to avoid an immediate or misleading alert.
-            if (nextValue && Number.isFinite(remaining) && remaining <= 60 && remaining > 5) {
-                if (remaining >= 55) {
-                    const accepted = window.confirm('Falta aproximadamente 1 minuto para que suene esta alerta. ¿En verdad quieres activarla?');
-                    if (!accepted) return;
-                } else {
-                    showAlertArmNotice('El tiempo restante no permite realizar esta acción.');
-                    return;
-                }
-            }
-            if (nextValue && Number.isFinite(remaining) && remaining <= 5) {
-                showAlertArmNotice('El tiempo restante no permite realizar esta acción.');
-                return;
-            }
+            const audioReady = nextValue ? ensureAudioContextRunningFromGesture() : Promise.resolve(audioCtx?.state === 'running');
+            const noticeAnchor = { eventId, startH, startM };
+            let confirmationMessage = '';
+
             cardBellStates[bellKey] = nextValue;
-            const targetAlertKey = `${currentServer}_${eventId}_${startH}_${startM}_${getOccurrenceDateKey(serverNow, startH, startM)}`;
+            const targetDateKey = getOccurrenceDateKey(serverNow, startH, startM);
+            const targetAlertKey = `${currentServer}_${eventId}_${startH}_${startM}_${targetDateKey}`;
             const armedKey = `${currentServer}_${targetAlertKey}`;
             if (nextValue) {
-                // Re-arming an occurrence creates a fresh chance to alert; the previous firing must not poison it.
+                // A click arms only the selected threshold. If that exact threshold has already
+                // passed for this occurrence, leave it silent and eligible for the next occurrence.
                 delete triggeredAlerts[targetAlertKey];
                 const targetSec = calculateAlertTargetSec(remaining, audioPrefs.triggerMinutes);
                 armedAlertTargets[armedKey] = targetSec;
-                if (Number.isFinite(remaining) && remaining >= 55 && remaining <= 60) {
-                    const moment = targetSec > 0 ? formatAlertMoment(targetSec) : 'próximo umbral disponible';
-                    showAlertArmNotice(`Alerta programada: sonará cuando falten ${moment} para el evento.`);
+                if (Number.isFinite(remaining) && targetSec <= 0) {
+                    confirmationMessage = ({ es: `Alerta activada para la próxima aparición: el umbral de ${audioPrefs.triggerMinutes} minuto(s) ya pasó en esta.`, pt: `Alerta ativado para a próxima aparição: o limite de ${audioPrefs.triggerMinutes} minuto(s) já passou nesta.`, en: `Alert enabled for the next occurrence: the ${audioPrefs.triggerMinutes}-minute threshold has already passed for this one.` })[currentLang];
+                } else if (targetSec > 0) {
+                    confirmationMessage = ({ es: `Alerta programada para cuando falten ${formatAlertMoment(targetSec)} para el evento.`, pt: `Alerta programado quando faltarem ${formatAlertMoment(targetSec)} para o evento.`, en: `Alert scheduled for ${formatAlertMoment(targetSec)} before the event.` })[currentLang];
                 }
-            } else delete armedAlertTargets[armedKey];
+            } else {
+                delete armedAlertTargets[armedKey];
+            }
             persistBellPreferences();
 
-            if (nextValue) playActivationSound();
-            else playDeactivationSound();
+            if (nextValue) {
+                audioReady.then(ready => {
+                    if (ready) playActivationSound();
+                    else showAlertArmNotice(({ es: 'Alerta guardada, pero el navegador no habilitó el audio. Interactúa con la página para permitir el sonido; el umbral no se reproducirá tarde.', pt: 'Alerta salvo, mas o navegador não habilitou o áudio. Interaja com a página para permitir o som; o limite não será reproduzido atrasado.', en: 'Alert saved, but the browser did not unlock audio. Interact with the page to allow sound; the threshold will not be replayed late.' })[currentLang], noticeAnchor);
+                    // Avoid rebuilding #events-grid again after the click target has already been
+                    // handled. The regular one-second dashboard tick will schedule audio when ready.
+                });
+            } else {
+                if (audioCtx?.state === 'running') playDeactivationSound();
+            }
 
-            // A single bell remains independent; the master indicator updates to reflect
-            // whether any scheduled alert is still enabled, without changing other bells.
             renderMasterAlertUI();
             updateDashboard();
+            if (nextValue && confirmationMessage) showAlertArmNotice(confirmationMessage, noticeAnchor);
         }
+
+        // Delegated click handling survives every dynamic re-render and avoids double toggles
+        // between the card surface and its nested bell button.
+        document.addEventListener('click', (clickEvent) => {
+            const target = clickEvent.target instanceof Element ? clickEvent.target : clickEvent.target?.parentElement;
+            if (!target) return;
+
+            const bellButton = target.closest('[data-bell-toggle="true"]');
+            if (bellButton) {
+                clickEvent.preventDefault();
+                clickEvent.stopPropagation();
+                toggleCardBell(
+                    bellButton.dataset.eventId,
+                    Number(bellButton.dataset.startH),
+                    Number(bellButton.dataset.startM),
+                    clickEvent
+                );
+                return;
+            }
+
+            const card = target.closest('[data-card-bell-toggle="true"]');
+            if (!card || target.closest('a, input, select, textarea, [data-skip-card-toggle]')) return;
+            toggleCardBell(
+                card.dataset.eventId,
+                Number(card.dataset.startH),
+                Number(card.dataset.startM),
+                clickEvent
+            );
+        });
+
+        document.addEventListener('keydown', (keyEvent) => {
+            if (keyEvent.key !== 'Enter' && keyEvent.key !== ' ') return;
+            const target = keyEvent.target instanceof Element ? keyEvent.target : null;
+            const card = target?.closest('[data-card-bell-toggle="true"]');
+            // Do not hijack keys while a nested control receives focus.
+            if (!card || target !== card || target.closest('button, a, input, select, textarea')) return;
+            keyEvent.preventDefault();
+            toggleCardBell(card.dataset.eventId, Number(card.dataset.startH), Number(card.dataset.startM), keyEvent);
+        });
 
         function renderMasterAlertUI() {
             const btn = document.getElementById('global-alert-btn');
@@ -1376,22 +1757,6 @@
             button.setAttribute('aria-expanded', String(willOpen));
         }
 
-        // A warning is eligible only while its own Global is selected. Returning to a
-        // server inside the 60-second window may still play it, except at exactly 60s
-        // (the boundary is deliberately skipped to avoid timing-edge double behavior).
-        function markAlertsAtExactThresholdAsMissed(server) {
-            const serverNow = new Date(Date.now() + SERVER_CONFIG[server].offset * 3600000);
-            EVENT_DEFINITIONS.forEach(eventDef => {
-                const state = calculateEventState(eventDef, serverNow);
-                (state.upcomingInstances || []).forEach(instance => {
-                    if (instance.remainingSec === 60) {
-                        const alertKey = `${server}_${eventDef.id}_${instance.startH}_${instance.startM}_${getOccurrenceDateKey(serverNow, instance.startH, instance.startM)}`;
-                        triggeredAlerts[alertKey] = true;
-                    }
-                });
-            });
-        }
-
         function selectServer(server) {
             if (!Object.prototype.hasOwnProperty.call(SERVER_CONFIG, server) || server === currentServer) {
                 document.getElementById('server-menu').classList.add('hidden');
@@ -1399,15 +1764,16 @@
                 return;
             }
             // Do not evaluate alerts for other Globals while they are unselected.
-            // On entry, only the exact 60-second boundary is skipped; if the alert is
-            // already under 60 seconds it may still play. Expired events never catch up.
-            // An already-running alert or its preview is allowed to finish; new alerts are
-            // still evaluated only for the selected Global. This prevents server navigation
+            // Exact scheduled thresholds are recalculated for the selected Global only;
+            // expired alerts are never played late. An already-running alert or preview
+            // is allowed to finish; new alerts are evaluated only for the selected Global.
+            // This prevents server navigation
             // from interrupting an alert that has already begun.
             saveAudioPreferences();
+            cancelScheduledAlertAudioPlans();
             // Server changes isolate alert playback: fade/cancel a preview and stop the old Global's active alarm.
             if (previewInProgress) cancelMainAlertPreview(true, true);
-            if (activeAlarm) stopChimeSound(false, false);
+            if (activeAlarm) stopChimeSound(false);
             Object.keys(alertGlowUntil).forEach(eventId => { delete alertGlowUntil[eventId]; });
             alertPreparationKeys.clear();
             alertPreLock = false;
@@ -1729,15 +2095,20 @@
             }
             suppressTransitionSounds = false;
 
-            // Selector-based warning schedule. If the chosen threshold was already passed,
-            // advance to the next lower minute rather than firing immediately; if a threshold
-            // is missed during throttling, step down by one minute until a valid 15s window.
+            // Absolute-time scheduler: only the selected threshold is valid. Audio is queued
+            // ahead on Web Audio's clock; a missed/suspended plan is marked missed and disabled,
+            // never shifted to another minute and never replayed late when the page returns.
             let bellStateChanged = false;
+            let missedAlertCount = 0;
+            const nowEpochMs = Date.now();
+            const pendingAlertOccurrences = [];
             calculatedEvents.forEach(evt => {
+                if (evt.triggerType === 'kill-count') return;
                 (evt.state.upcomingInstances || []).forEach(instance => {
                     const bellKey = getOccurrenceBellKey(evt.id, instance.startH, instance.startM);
-                    const alertKey = `${currentServer}_${evt.id}_${instance.startH}_${instance.startM}_${getOccurrenceDateKey(serverNow, instance.startH, instance.startM)}`;
-                    if (!isAlertPlaybackAllowed() || triggeredAlerts[alertKey] || !isOccurrenceBellOn(evt.id, instance.startH, instance.startM)) return;
+                    const dateKey = getOccurrenceDateKey(serverNow, instance.startH, instance.startM);
+                    const alertKey = `${currentServer}_${evt.id}_${instance.startH}_${instance.startM}_${dateKey}`;
+                    if (triggeredAlerts[alertKey] || !isOccurrenceBellOn(evt.id, instance.startH, instance.startM)) return;
                     const armedKey = `${currentServer}_${alertKey}`;
                     let targetSec = armedAlertTargets[armedKey];
                     if (!Number.isFinite(targetSec)) {
@@ -1745,60 +2116,113 @@
                         armedAlertTargets[armedKey] = targetSec;
                     }
                     if (targetSec <= 0) return;
-                    // Redirect and lock 1.5–2.5 s before the trigger so the ALL view is ready.
-                    // This is per occurrence and only for the currently selected server.
-                    if (instance.remainingSec <= targetSec + 2 && instance.remainingSec > targetSec) {
-                        if (!alertPreparationKeys.has(alertKey)) {
-                            alertPreparationKeys.add(alertKey);
-                            alertPreLock = true;
-                            // Lock and start the dim/focus transition immediately. Only navigate/scroll
-                            // when the user is actually on another category; the ALL view needs no jump.
-                            setPreviewPageLock(true, 'alarm');
-                            const homeView = document.getElementById('home-view');
-                            const aboutView = document.getElementById('about-view');
-                            const wasOnAbout = Boolean(aboutView && !aboutView.classList.contains('hidden'));
-                            const wasOnOtherTab = currentTab !== 'ALL';
-                            const wasOnSecondaryAllPage = currentTab === 'ALL' && allEventsPage > 0;
-                            if (wasOnAbout) showHomeView(false);
-                            if (wasOnOtherTab) setTab('ALL', false);
-                            else if (wasOnSecondaryAllPage) allEventsPage = 0;
-                            if (wasOnAbout || wasOnOtherTab || wasOnSecondaryAllPage) {
-                                requestAnimationFrame(() => {
-                                    const target = document.getElementById('tab-ALL') || document.getElementById('events-grid');
-                                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                });
-                            }
+                    const targetEpoch = getOccurrenceTimestamp(instance.startH, instance.startM, serverNow) - targetSec * 1000;
+                    pendingAlertOccurrences.push({ evt, instance, bellKey, alertKey, armedKey, targetSec, targetEpoch });
+                });
+            });
+            pendingAlertOccurrences.sort((a, b) => a.targetEpoch - b.targetEpoch || a.alertKey.localeCompare(b.alertKey));
+
+            pendingAlertOccurrences.forEach(candidate => {
+                const { evt, instance, bellKey, alertKey, armedKey, targetSec, targetEpoch } = candidate;
+                if (triggeredAlerts[alertKey] || !isOccurrenceBellOn(evt.id, instance.startH, instance.startM)) return;
+                const msUntilTarget = targetEpoch - nowEpochMs;
+                if (msUntilTarget > 0) {
+                    // Focus/navigation prep may be delayed by a hidden-tab throttle; audio itself
+                    // has already been queued independently for this exact target timestamp.
+                    if (msUntilTarget <= 2000 && !alertPreparationKeys.has(alertKey)) {
+                        alertPreparationKeys.add(alertKey);
+                        alertPreLock = true;
+                        setPreviewPageLock(true, 'alarm');
+                        const aboutView = document.getElementById('about-view');
+                        const wasOnAbout = Boolean(aboutView && !aboutView.classList.contains('hidden'));
+                        const wasOnOtherTab = currentTab !== 'ALL';
+                        const wasOnSecondaryAllPage = currentTab === 'ALL' && allEventsPage > 0;
+                        if (wasOnAbout) showHomeView(false);
+                        if (wasOnOtherTab) setTab('ALL', false);
+                        else if (wasOnSecondaryAllPage) allEventsPage = 0;
+                        if (wasOnAbout || wasOnOtherTab || wasOnSecondaryAllPage) {
+                            requestAnimationFrame(() => {
+                                const target = document.getElementById('tab-ALL') || document.getElementById('events-grid');
+                                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            });
                         }
                     }
-                    // Never catch up late after a tab/server switch or timer throttling.
-                    // The configured trigger is valid only for its own 15-second window.
-                    if (instance.remainingSec < targetSec - 15) {
-                        armedAlertTargets[armedKey] = -1;
-                        if (alertPreparationKeys.delete(alertKey) && !activeAlarm && !previewInProgress) {
-                            alertPreLock = false;
-                            setPreviewPageLock(false);
-                        }
-                        return;
-                    }
-                    if (instance.remainingSec <= targetSec && instance.remainingSec > Math.max(15, targetSec - 15)) {
-                        triggeredAlerts[alertKey] = true;
-                        delete armedAlertTargets[armedKey];
-                        alertPreparationKeys.delete(alertKey);
-                        if (currentTab !== 'ALL') setTab('ALL', false);
-                        else if (allEventsPage > 0) allEventsPage = 0;
-                        // The sound owner registers its own glow only after audio playback is
-                        // accepted; simultaneous cards join that same visual deadline in triggerChimeSound.
+                    return;
+                }
+
+                const latenessMs = nowEpochMs - targetEpoch;
+                const leaderKey = scheduledAlertMembership.get(alertKey) || alertKey;
+                const scheduledPlan = scheduledAlarmAudioPlans.get(leaderKey) ||
+                    (activeAlarm?.eventId === leaderKey ? activeAlarm.scheduledPlan : null);
+                let soundWasScheduled = Boolean(scheduledPlan && !scheduledPlan.cancelled && scheduledPlan.audioScheduled);
+                const joinsCurrentAlarm = Boolean(activeAlarm &&
+                    targetEpoch >= activeAlarm.startedEpoch && targetEpoch <= activeAlarm.deadlineAt &&
+                    nowEpochMs <= activeAlarm.deadlineAt);
+
+                if (joinsCurrentAlarm) {
+                    triggerChimeSound(alertKey, evt.id, currentServer);
+                } else if (soundWasScheduled && latenessMs <= ALARM_MAX_DURATION_MS) {
+                    if (leaderKey === alertKey && !activeAlarm) {
+                        // Starts the visual alarm without duplicating the sequence already playing
+                        // on Web Audio's clock.
+                        triggerChimeSound(alertKey, evt.id, currentServer, { scheduledPlan });
+                    } else if (activeAlarm && latenessMs <= ALARM_MAX_DURATION_MS) {
+                        // Nearby occurrences join the active alarm and its green glow.
                         triggerChimeSound(alertKey, evt.id, currentServer);
+                    } else if (!activeAlarm && leaderKey !== alertKey) {
+                        // A coalesced event's leader was already processed but the sound window
+                        // is still valid; attach the shared visual alarm to the leader event.
+                        triggerChimeSound(leaderKey, scheduledPlan.cardEventId, currentServer, { scheduledPlan });
+                    }
+                } else if (soundWasScheduled && latenessMs > ALARM_MAX_DURATION_MS) {
+                    // The scheduled sound had its exact time and is over. Clear state silently;
+                    // never emit a stale catch-up alarm when a suspended page becomes visible.
+                } else {
+                    // The exact instant was missed because no valid audio sequence remained queued.
+                    // Consume this occurrence and turn off its one-shot bell instead of falling back
+                    // to 4m/3m/30s or replaying an obsolete alarm when the page becomes visible.
+                    triggeredAlerts[alertKey] = true;
+                    armedAlertTargets[armedKey] = -1;
+                    alertPreparationKeys.delete(alertKey);
+                    if (cardBellStates[bellKey] !== false) {
                         cardBellStates[bellKey] = false;
                         bellStateChanged = true;
                     }
-                });
+                    missedAlertCount++;
+                    if (alertPreparationKeys.size === 0 && !activeAlarm && !previewInProgress) {
+                        alertPreLock = false;
+                        setPreviewPageLock(false);
+                    }
+                    return;
+                }
+
+                triggeredAlerts[alertKey] = true;
+                alertPreparationKeys.delete(alertKey);
+                cardBellStates[bellKey] = false;
+                bellStateChanged = true;
             });
+            if (missedAlertCount > 0) {
+                const messages = {
+                    es: missedAlertCount === 1
+                        ? 'Una alarma no pudo sonar en su umbral exacto porque el navegador suspendió o no habilitó el audio. No sonará tarde; activa de nuevo la campana para la próxima aparición.'
+                        : `${missedAlertCount} alarmas no pudieron sonar en su umbral exacto porque el navegador suspendió o no habilitó el audio. No sonarán tarde; reactiva las campanas para próximas apariciones.`,
+                    pt: missedAlertCount === 1
+                        ? 'Um alarme não pôde tocar no limite exato porque o navegador suspendeu ou não habilitou o áudio. Ele não tocará atrasado; ative o sino novamente para a próxima aparição.'
+                        : `${missedAlertCount} alarmes não puderam tocar no limite exato porque o navegador suspendeu ou não habilitou o áudio. Eles não tocarão atrasados; reative os sinos para próximas aparições.`,
+                    en: missedAlertCount === 1
+                        ? 'An alarm could not play at its exact threshold because the browser suspended or did not unlock audio. It will not ring late; re-enable the bell for the next occurrence.'
+                        : `${missedAlertCount} alarms could not play at their exact thresholds because the browser suspended or did not unlock audio. They will not ring late; re-enable the bells for upcoming occurrences.`
+                };
+                showAlertArmNotice(messages[currentLang] || messages.es);
+            }
             if (bellStateChanged) {
                 persistBellPreferences();
                 renderMasterAlertUI();
             }
 
+            // Maintain a rolling 15-minute audio schedule for every enabled occurrence. The
+            // audio thread, not setInterval, owns the precise sound onset while the tab is hidden.
+            refreshPreciseAlertAudioSchedule(calculatedEvents, serverNow);
             updateAlertControlLocks();
 
             let filtered = calculatedEvents;
@@ -1906,7 +2330,7 @@
                     : (isIrregularCycle ? langDict.frequency : langDict.reappearsEvery);
 
                 return `
-                <div data-event-id="${evt.id}" style="--alert-loop-offset: -${(Date.now() % 1400) / 1000}s" class="event-card ${usesMirageCycleLayout ? 'mirage-w1-individual' : ''} ${isCimaCycleCard ? 'mirage-cima-individual' : ''} ${isLider3CycleCard ? 'mirage-lideres-individual' : ''} ${isOtherCycleCard ? 'mirage-unified-individual' : ''} bg-brand-card/90 border border-brand-border/80 rounded-2xl p-5 shadow-xl relative flex flex-col justify-between ${isActive ? 'glow-active bg-emerald-950/20' : (isConditionOnly ? '' : 'cursor-pointer')} ${alertGlowUntil[evt.id] > Date.now() ? 'alert-glow-active' : ''}" ${!isActive && !isConditionOnly ? `onclick="toggleCardBell('${evt.id}', ${evt.state.startH}, ${evt.state.startM}, event)" title="${langDict.bellTitle}"` : ''}>
+                <div data-event-id="${evt.id}" style="--alert-loop-offset: -${(Date.now() % 1400) / 1000}s" class="event-card ${usesMirageCycleLayout ? 'mirage-w1-individual' : ''} ${isCimaCycleCard ? 'mirage-cima-individual' : ''} ${isLider3CycleCard ? 'mirage-lideres-individual' : ''} ${isOtherCycleCard ? 'mirage-unified-individual' : ''} bg-brand-card/90 border border-brand-border/80 rounded-2xl p-5 shadow-xl relative flex flex-col justify-between ${isActive ? 'glow-active bg-emerald-950/20' : (isConditionOnly ? '' : 'cursor-pointer')} ${alertGlowUntil[evt.id] > Date.now() ? 'alert-glow-active' : ''}" ${!isActive && !isConditionOnly ? `data-card-bell-toggle="true" data-start-h="${evt.state.startH}" data-start-m="${evt.state.startM}" title="${langDict.bellTitle}"` : ''}>
                     
                     <i class="event-watermark fa-solid ${evt.icon}" aria-hidden="true"></i>
                     <div class="event-card-content">
@@ -1922,7 +2346,7 @@
                             <div class="event-card-status-controls flex items-center gap-2">
                                 ${isActive
                                     ? `<span title="${langDict.statusActive}" aria-label="${langDict.statusActive}" class="p-1.5 rounded-lg border border-emerald-500/20 bg-emerald-500/5 bell-locked"><i class="fa-solid fa-circle-check text-sm"></i></span>`
-                                    : (isConditionOnly ? '' : `<button type="button" onclick="toggleCardBell('${evt.id}', ${evt.state.startH}, ${evt.state.startM}, event)" title="${langDict.bellTitle}" aria-label="${langDict.bellTitle}" class="alert-bell-button p-1.5 rounded-lg border border-brand-border/60 bg-brand-dark/60 text-slate-400"><i style="--loop-offset: ${loopOffset}" class="fa-solid fa-bell text-sm ${isBellOn ? 'bell-active bell-waiting-pulse' : 'bell-off opacity-40'}"></i></button>`)}
+                                    : (isConditionOnly ? '' : `<button type="button" data-bell-toggle="true" data-event-id="${evt.id}" data-start-h="${evt.state.startH}" data-start-m="${evt.state.startM}" title="${langDict.bellTitle}" aria-label="${langDict.bellTitle}" class="alert-bell-button p-1.5 rounded-lg border border-brand-border/60 bg-brand-dark/60 text-slate-400"><i style="--loop-offset: ${loopOffset}" class="fa-solid fa-bell text-sm ${isBellOn ? 'bell-active bell-waiting-pulse' : 'bell-off opacity-40'}"></i></button>`)}
                                 <span style="--loop-offset: ${loopOffset}" class="text-[11px] font-orbitron font-bold px-2.5 py-1 rounded-lg ${isConditionOnly ? 'bg-violet-500/15 text-violet-200 border border-violet-400/40' : (isActive ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 animate-pulse' : 'bg-brand-dark/80 text-slate-400 border border-brand-border') }" ${isConditionOnly ? `aria-label="${langDict.conditionStatus}"` : ''}>
                                     ${isConditionOnly ? langDict.conditionStatus : (isActive ? langDict.statusActive : `<span class="waiting-dots" style="--loop-offset: ${loopOffset}">${langDict.statusWaiting}</span>`)}
                                 </span>
@@ -2007,7 +2431,7 @@
                         const instanceBellOn = isOccurrenceBellOn(evt.id, instance.startH, instance.startM);
                         const instanceLabel = `${localizedTitle} · ${instanceIndex + 1}`;
                         return `
-                        <article class="event-card upcoming-cycle-card cursor-pointer bg-brand-card/90 border border-brand-border/80 rounded-2xl p-5 shadow-xl relative flex flex-col justify-between min-w-0" aria-label="${instanceLabel}" onclick="toggleCardBell('${evt.id}', ${instance.startH}, ${instance.startM}, event)" title="${langDict.bellTitle}">
+                        <article class="event-card upcoming-cycle-card cursor-pointer bg-brand-card/90 border border-brand-border/80 rounded-2xl p-5 shadow-xl relative flex flex-col justify-between min-w-0" aria-label="${instanceLabel}" data-card-bell-toggle="true" data-event-id="${evt.id}" data-start-h="${instance.startH}" data-start-m="${instance.startM}" title="${langDict.bellTitle}">
                             <i class="event-watermark fa-solid ${evt.icon}" aria-hidden="true"></i>
                             <div class="event-card-content">
                                 <div class="event-card-header event-card-title-header">
@@ -2017,7 +2441,7 @@
                                 </div>
                                 <div class="event-card-status-row mb-3">
                                     <div class="event-card-status-controls flex items-center gap-2">
-                                        <button type="button" onclick="toggleCardBell('${evt.id}', ${instance.startH}, ${instance.startM}, event)" title="${langDict.bellTitle}" aria-label="${langDict.bellTitle}" class="alert-bell-button p-1.5 rounded-lg border border-brand-border/60 bg-brand-dark/60 text-slate-400"><i style="--loop-offset: ${loopOffset}" class="fa-solid fa-bell text-sm ${instanceBellOn ? 'bell-active bell-waiting-pulse' : 'bell-off opacity-40'}"></i></button>
+                                        <button type="button" data-bell-toggle="true" data-event-id="${evt.id}" data-start-h="${instance.startH}" data-start-m="${instance.startM}" title="${langDict.bellTitle}" aria-label="${langDict.bellTitle}" class="alert-bell-button p-1.5 rounded-lg border border-brand-border/60 bg-brand-dark/60 text-slate-400"><i style="--loop-offset: ${loopOffset}" class="fa-solid fa-bell text-sm ${instanceBellOn ? 'bell-active bell-waiting-pulse' : 'bell-off opacity-40'}"></i></button>
                                         <span class="text-[11px] font-orbitron font-bold px-2.5 py-1 rounded-lg bg-brand-dark/80 text-slate-400 border border-brand-border"><span class="waiting-dots" style="--loop-offset: ${loopOffset}">${langDict.statusWaiting}</span></span>
                                     </div>
                                 </div>
@@ -2559,6 +2983,24 @@
         // Deliberately do not stop or suppress event alerts when the browser is minimized,
         // loses focus, or another browser tab is selected. The selected Global server is
         // the only scope that determines which event alerts this page instance can play.
+
+        // Reconcile immediately on return from a background tab. Timers are wall-clock based,
+        // so elapsed time is not inferred from how many setInterval callbacks happened to run.
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                cancelPlansWhoseAudioClockMissedTarget();
+                if (activeAlarm && Date.now() >= activeAlarm.deadlineAt) stopChimeSound(false);
+                // Do not replay an alarm whose exact instant passed while the audio clock was paused.
+                suppressTransitionSounds = true;
+                updateDashboard();
+            }
+        });
+        window.addEventListener('pageshow', () => {
+            cancelPlansWhoseAudioClockMissedTarget();
+            if (activeAlarm && Date.now() >= activeAlarm.deadlineAt) stopChimeSound(false);
+            suppressTransitionSounds = true;
+            updateDashboard();
+        });
 
         // INITIALIZATION ON LOAD
         window.onload = function() {

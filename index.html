@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#05070c">
     <meta name="color-scheme" content="dark">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="manifest.webmanifest">
     <script>
         try { if (localStorage.getItem('mir4ve-reading-mode') === 'true') document.documentElement.classList.add('reading-mode'); } catch (_) {}
     </script>
@@ -93,6 +96,7 @@
             </div>
         </div>
 
+        <!-- Header controls remain independent of the local notification service. -->
         <!-- HEADER RIGHT CONTROLS: fixed order requested -->
         <div id="header-controls" class="flex flex-wrap items-center gap-2.5 ml-auto">
             <!-- SPONSOR FIRST -->
@@ -197,6 +201,7 @@
                         <div id="alert-trigger-feedback" class="alert-trigger-feedback" role="status" aria-live="polite"></div>
                         <div id="alert-trigger-cooldown" class="alert-trigger-cooldown" role="status" aria-live="polite">Disparador disponible</div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -455,5 +460,7 @@
   <script src="js/token-hydra-draco.js"></script>
     <!-- Floating event promotion behavior (isolated module). -->
     <script src="js/floating-event.js"></script>
+    <!-- Local browser notifications. The separate Service Worker only caches the app shell; no remote Push endpoints. -->
+    <script src="js/local-notifications.js"></script>
 </body>
 </html>
